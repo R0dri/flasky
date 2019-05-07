@@ -18,5 +18,3 @@ Usage:
 git clone 'this'
 
 source env/bin/activate
-
-cd env
