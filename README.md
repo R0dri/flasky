@@ -3,13 +3,20 @@ https://realpython.com/python-virtual-environments-a-primer/#using-different-ver
 
 Commands (setup from zero):
 Setup virtual envirorment:
+
 python3 -m venv env
 Activate envirorment:
+
 source env/bin/activate
 go to work dir:
+
 cd env
+
+
 
 Usage:
 git clone 'this'
+
 source env/bin/activate
+
 cd env
