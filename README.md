@@ -111,5 +111,7 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
     MAIL_SERVER = config.get('MAIL_SERVER'), etc...
 ** Probar la aplicacion ->  
 *** flask run en lugar de python app, 
+*** export FLASK_ENV=development (para se actualice el deamon al guardad)
 *** crear una variable temporal para probar enviando al puerto 0000 que lo hace visible afuera (export FLASK=run.py)
 *** luego correr (flask run --host=0.0.0.0)
+
