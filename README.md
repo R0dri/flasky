@@ -230,7 +230,3 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 
    1 file changed, 49 insertions(+), 1 deletion(-)
    :END:
-
-
-
->>>>>>> 7f1b1ee06f953b0f72754de08a9e18f1b2061e24
