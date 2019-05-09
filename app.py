@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
@@ -56,11 +55,11 @@ def security_context_processor():
     return dict(hello="world")
 
 # Create a user to test with
-@app.before_first_request
-def create_user():
-    db.create_all()
-    user_datastore.create_user(username='r', password='p')
-    db.session.commit()
+# @app.before_first_request
+# def create_user():
+#     db.create_all()
+#     user_datastore.create_user(username='r', password='p')
+#     db.session.commit()
 
 # Views
 @app.route('/')
