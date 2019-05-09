@@ -1,0 +1,8 @@
+{% extends "layouts/layout.html" %}
+{% block page_content %}
+<div class="container">
+  <h1>Hi, {{ current_user.username }}</h1>
+  <a href="logout">log out</a>
+</div>
+
+{% endblock %}
