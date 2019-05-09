@@ -22,6 +22,39 @@ source env/bin/activate
 Docker install Reference: https://linoxide.com/linux-how-to/install-docker-ubuntu/
 SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
 
+*  Requerimientos [0/2]
+   sugerimos un codigo que puede estar conformado por el codigo de SAP y un adicional para 2 o 3 usuarios de la empresa que serian los encargados de levantar tickets. Los demas miembros de la empresa pueden ver el estado de sus solicitudes mediante el codigo generico de la empresa que seria solo de lectura / consulta de los reportes
+
+** TODO Conectar con base de datos 
+** TODO Login del cliente (código y pwrd) -  [0/5]
+   - Telefono 1 - se llena automaticamente desde el contacto
+   - Celular -  se llena automaticamente desde el contacto
+   - Correo -  se llena automaticamente desde el contacto
+*** TODO crear el formulario HTML
+*** TODO Login
+*** TODO Registro
+*** TODO mail para resetar clave
+*** TODO Grabar informacion en BD
+
+** Llamada de servicio [0/3]
+   - Prioridad: Muy alta / Alta / Media / Baja
+   - Asunto: Descripción o titulo del problema en 100 caracteres
+   - Tipo de problema
+   - Subtipo de problema
+   - Tipo de llamada
+   - Persona de contacto: Usuario dueño del login
+   - Usuario solicitante: Campo abierto de 100 caracteres, iría en SAP a un UDF simplemente informativo.
+   - Fecha y hora de creación -  esta iría automática.
+   - Telefono 1 - se llena automaticamente desde el contacto
+   - Celular -  se llena automaticamente desde el contacto
+   - Correo -  se llena automaticamente desde el contacto
+   - Proyecto: se llena automaticamente desde el cliente
+   - Comentarios: Descripción del problema ( 250000 carcteres) El sistema tiene 256 mil pero mejor dejarlo en 250 por si nosotros queremos añadir algo.
+   - Attachment (file o foto o ambos): quiza lo mejor es q sea un file, ya ven ellos si quieren un PDF con mil fotos o una sola foto, etc.
+*** TODO crear el formulario HTML
+*** TODO Grabar informacion en BD
+*** TODO Crear tabla de historico de formularios con status.
+
 * Docker commands
 ** Start and Enable Service to start on Boot
    $ sudo systemctl start docker
@@ -36,6 +69,7 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
    sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=B1Admin@'    -p 1433:1433 --name SQL2017  -v /home/workbook/dockervolumes/var/opt/mssql  -d mcr.microsoft.com/mssql/server:2017-latest
 
 * Ubuntu/nginx setup
+  https://www.youtube.com/watch?v=goToXTC96Co&list=PLovF0v_9CWzJNX8Ag0KUi78BdSeAw2Kow&index=10&t=498s
 ** hostname: ver el hostname del server
 ** hostnamectl set-hostname nombredelserver: para setear el hostname
 ** archivo de hosts:
@@ -114,4 +148,87 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 *** export FLASK_ENV=development (para se actualice el deamon al guardad)
 *** crear una variable temporal para probar enviando al puerto 0000 que lo hace visible afuera (export FLASK=run.py)
 *** luego correr (flask run --host=0.0.0.0)
+** NGINX
+*** sudo apt install nginx
+*** pip install gunicorn -> en el environment
+*** Actualizar los archivos para nginx y gunicorn
+    nginx es el servior que administra los archivos y requests, gunicorn es el que procesa o administra el codigo en python
+*** sudo rm /ect/nginx/sites-enabled/default
+*** sudo nano /ect/nginx/sites-enabled/Flasky
+    esto es para obtener la direcion de los archivos y redireccionar a gunicorn
+    :codigo:
+    #+BEGIN_SRC json
+    server {
+        listen 80;
+        server_name 192.168.0.127;
+
+        location /static {
+            alias /home/workbook/flasky/flasky/static;
+        }
+
+        location / {
+                proxy_pass http://localhost:8000;
+                include /etc/nginx/proxy_params;
+                proxy_redirect off;
+        }
+    }
+    #+END_SRC
+    :end:
+*** sudo ufw allow http/tcp -> para habilitar el puerto 80 en el firewall
+*** sudo ufw delete allow 5000 -> para eliminar el puerto 5000 en el firewall
+*** sudo ufw enable 
+*** sudo systemctl restart nginx
+** GUNICORN
+*** gunicorn -w 3 run:app para esto debemos estar en el directorio de la aplicacion .py  
+    (app es la vairable de la aplicacion que se encuentra en el app.py)
+    w es el numero de workers.. segun la documentacion en NGINX es (2 x el numero de cores) + 1 en nuestro caso son 2 cores, necesitamos 5 workers
+*** nproc --all -para saber el numero de cores en el server.
+*** SERVICO para que este automatico el GUNICORN
+**** sudo apt install supervisor
+**** crear archivo de configuracion: sudo vim /etc/supervisor/conf.d/flasky.conf
+     :notes:
+     [program:flasky] 
+     directory=/home/workbook/flasky 
+     command=/home/workbook/flasky/newenv/bin/gunicorn -w 5 app:app 
+     user=workbook 
+     autostart=true 
+     autorestart=true 
+     stopasgroup=true 
+     killasgroup=true 
+     stderr_logfile=/var/log/flasky/flasky.err.log 
+     stdout_logfile=/var/log/flasky/flasky.out.log 
+     :end:
+**** con mkdir -p crea toda la ruta si no existiera un archivo
+**** crear la carpeta de los archivos de log sudo mkdir -p /var/log/flasky 
+**** crear log err sudo touch /var/log/flasky/flasky.err.log 
+**** crear log out sudo touch /var/log/flasky/flasky.out.log 
+**** finalmente, solo queda reiniciar el supervisor con sudo supervisorctl reload
+* Comandos de git
+** git rm --cached -r env/ -> quitar archivos y dejar de trackear
+** git ls-tree --name-only -r 7f1b1 -> para mosrar los archivos que se encuentran en el commit.
+** git log --pretty=oneline --reverse -> para mostrar en resumido el log
+** git merge sqlcon -> git merge <nomre del branch> hay que estar posicionado sobre el branch al que se le quiere agregar el cambio.
+** $ git push --delete <remote_name> <branch_name> eliminar branch remota
+** $ git branch -d <branch_name> eliminar branch local
+** git branch -> para enlistar los branches existentes y en cual nos encontramos.
+** TODO git commit desde el server error por atender.. 
+   :Actividad:
+   [master 9bb45a3] configuracion del Flask security
+   Committer: devops <workbook@support.www.nexxtwifi.com>
+   Your name and email address were configured automatically based
+   on your username and hostname. Please check that they are accurate.
+   You can suppress this message by setting them explicitly. Run the
+   following command and follow the instructions in your editor to edit
+   your configuration file:
+   
+       git config --global --edit
+
+   After doing this, you may fix the identity used for this commit with:
+
+       git commit --amend --reset-author
+
+   1 file changed, 49 insertions(+), 1 deletion(-)
+   :END:
+
+
 
