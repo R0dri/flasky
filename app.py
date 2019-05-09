@@ -51,8 +51,8 @@ security = Security(app, user_datastore,
                     login_form=ExtendedLoginForm)
 
 @security.register_context_processor
-def security_context_processor():
-    return dict(hello="world")
+def context_processor():
+    return dict(hello=True)
 
 # Create a user to test with
 # @app.before_first_request
@@ -63,9 +63,18 @@ def security_context_processor():
 
 # Views
 @app.route('/')
-@login_required
+# @login_required
 def home():
     return render_template('index.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route('/user')
+def user():
+    return render_template('user.html')
+
 
 if __name__ == '__main__':
     app.run()
