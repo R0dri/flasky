@@ -7,9 +7,11 @@ from flask_security.forms import RegisterForm, StringField, Required, LoginForm
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MYMSSQL'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'somesupersecretstring'
+app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['SECURITY_USER_IDENTITY_ATTRIBUTES'] = 'username'
 
 # Create database connection object
@@ -37,12 +39,11 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
 
 class ExtendedLoginForm(LoginForm):
-    email = StringField('Username', [Required()])
+    email = StringField('username', [Required()])
 
 class ExtendedRegisterForm(RegisterForm):
-    email = StringField('Username', [Required()])
-    first_name = StringField('First Name', [Required()])
-    last_name = StringField('Last Name', [Required()])
+    email = StringField('')
+    username = StringField('username', [Required()])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -54,7 +55,7 @@ security = Security(app, user_datastore,
 def context_processor():
     return dict(hello=True)
 
-# Create a user to test with
+#Create a user to test with
 # @app.before_first_request
 # def create_user():
 #     db.create_all()
@@ -71,9 +72,11 @@ def home():
 def test():
     return render_template('test.html')
 
-@app.route('/user')
-def user():
-    return render_template('user.html')
+@app.route('/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first();
+    return render_template('user.html', user=user)
 
 
 if __name__ == '__main__':
