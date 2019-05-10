@@ -36,7 +36,6 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 *** TODO Registro
 *** TODO mail para resetar clave
 *** TODO Grabar informacion en BD
-
 ** Llamada de servicio [0/3]
    - Prioridad: Muy alta / Alta / Media / Baja
    - Asunto: Descripción o titulo del problema en 100 caracteres
@@ -230,3 +229,8 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 
    1 file changed, 49 insertions(+), 1 deletion(-)
    :END:
+* MSSQL 
+** insalar freetds
+   https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+** conectar SQL server con Pyodbc y SQLAlchemy
+   https://stackoverflow.com/questions/53753948/connecting-to-sql-server-using-pyodbc-sqlalchemy
