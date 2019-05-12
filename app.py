@@ -88,5 +88,9 @@ def user():
 def about():
     return render_template('index.html')
 
+@app.route('/llamada')
+def llamada():
+    return render_template('formulario.html')
+
 if __name__ == '__main__':
     app.run()
