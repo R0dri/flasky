@@ -14,14 +14,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 app = Flask(__name__)
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'super-secret'
-<<<<<<< HEAD
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MYMSSQL'
-=======
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@MSSQLSRV/WS'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MSSQLSRV'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
->>>>>>> 11c6136181f89e75db86b162404679f17af5ca96
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MSSQLSRV'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'somesupersecretstring'
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
@@ -67,12 +62,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True)
     username = db.Column(db.String(255), unique=True)
-<<<<<<< HEAD
     telefono = db.Column(db.String(255))
     celular = db.Column(db.String(255))
-=======
-    # email = db.Column(db.String(255), unique=True)
->>>>>>> 11c6136181f89e75db86b162404679f17af5ca96
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     empresa = db.Column(db.String(255))
@@ -85,21 +76,8 @@ class User(db.Model, UserMixin):
 
 
 class ExtendedLoginForm(LoginForm):
-<<<<<<< HEAD
-    email = StringField('Usuario o Mail', [Required()])
-
-
-class ExtendedRegisterForm(RegisterForm):
-    username = StringField('Nombre de Usuario', [Required()])
-    email = StringField('Mail', [Required()])
-    telefono = StringField('Telefono', [Required()])
-    celular = StringField('Celular', [Required()])
-    first_name = StringField('Primer Nombre', [Required()])
-    last_name = StringField('Apellido', [Required()])
-    empresa = StringField('Nombre Empersa', [Required()])
-=======
     # username = StringField('Usuario', [Required()])
-    email = StringField('Usuario', [Required()])
+    email = StringField('Correo', [Required()])
     password = StringField('Contrasena', [Required()])
 
 class ExtendedRegisterForm(RegisterForm):
@@ -107,10 +85,10 @@ class ExtendedRegisterForm(RegisterForm):
     # email = StringField('Usuario', [Required()])
     first_name = StringField('Nombres', [Required()])
     last_name = StringField('Apellidos', [Required()])
+    telefono = StringField('telefono', [Required()])
+    celular = StringField('telefono', [Required()])
     password = StringField('Contrasena', [Required()])
     password_confirm = StringField('Confirmar Contrasena', [Required()])
-
->>>>>>> 11c6136181f89e75db86b162404679f17af5ca96
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -122,19 +100,11 @@ security = Security(app, user_datastore,
 def context_processor():
     return dict(hello=True)
 
-<<<<<<< HEAD
 #Create a user to test with
 # @app.before_first_request
 # def create_user():
 #     db.create_all()
 #     user_datastore.create_user(email='r', password='p')
-=======
-# Create a user to test with
-@app.before_first_request
-# def create_user():
-#     db.create_all()
-#     user_datastore.create_user(username='t', password='p')
->>>>>>> 11c6136181f89e75db86b162404679f17af5ca96
 #     db.session.commit()
 
 # # Views
@@ -147,7 +117,6 @@ def home():
 def test():
     return render_template('test.html')
 
-<<<<<<< HEAD
 @app.route('/<username>')
 @login_required
 def euser(username):
@@ -223,13 +192,14 @@ class query(Resource):
 
 api.add_resource(llamadaServicio, '/llamada_servicio')
 api.add_resource(query, '/query')
-=======
+
 @app.route('/formulario')
 def formulario():
     return render_template('usrform.html')
 
-@app.route('/user')
+@app.route('/euser')
 def user():
+    user = User.query.filter_by(username=username).first();
     return render_template('user.html')
 
 @app.route('/about')
@@ -244,7 +214,6 @@ def llamada():
 # @login_required
 # def historial():
 #     return render_template('usrform.html')
->>>>>>> 11c6136181f89e75db86b162404679f17af5ca96
 
 if __name__ == '__main__':
     app.run()
