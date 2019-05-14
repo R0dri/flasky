@@ -80,6 +80,10 @@ def home():
 def test():
     return render_template('test.html')
 
+@app.route('/formulario')
+def formulario():
+    return render_template('usrform.html')
+
 @app.route('/user')
 def user():
     return render_template('user.html')
@@ -91,6 +95,11 @@ def about():
 @app.route('/llamada')
 def llamada():
     return render_template('formulario.html')
+
+# @app.route('/historial')
+# @login_required
+# def historial():
+#     return render_template('usrform.html')
 
 if __name__ == '__main__':
     app.run()

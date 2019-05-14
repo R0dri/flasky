@@ -14,39 +14,25 @@
 
 				<!-- Author -->
 				<p class="lead">
-					by
+					por
 					<a href="#">Addviosry GC</a>
 				</p>
 
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="#">cheeky</a>
-                    <small class="text-muted"> Posted on January 1, 2019 at 12:00pm</small>
-                </div>
-                    <h3><a class="article-title" href="#"> titulo </a></h2>
-						            <cite title="blockquote-footer">Source Title</cite>
-                    <p class="article-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!
-                    </p>
-            </div>
-            <hr>
-        </article>
-
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="#">cheeky</a>
-                    <small class="text-muted"> Posted on January 1, 2019 at 12:00pm</small>
-                </div>
-                <h3><a class="article-title" href="#"> titulo </a></h2>
-						        <cite title="blockquote-footer">Source Title</cite>
-                    <p class="article-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!
-                    </p>
-            </div>
-            <hr>
-        </article>
+        <div data-bind="foreach: llamadas">
+           <article class="media content-section">
+               <div class="media-body">
+                   <div class="article-metadata">
+                       <a class="mr-2" href="#" data-bind="text:usuario"></a>
+                       <small class="text-muted">Creado en </small>
+                       <small class="text-muted" data-bind="text:createTime"></small>
+                   </div>
+                   <h3><a class="article-title" data-bind="text:subject"></a></h2>
+						           <cite title="blockquote-footer" data-bind="text:ProSubType"></cite>
+                       <p class="article-content" data-bind="text: dscription"></p>
+               </div>
+               <hr>
+           </article>
+        </div>
 
 				<!-- Single Comment -->
 				<div class="media mb-4">
@@ -59,78 +45,10 @@
 			</div>
 
 			<hr>
+	    <div class="col-md-4 oContainer">
+          {% include "layouts/sidebar_cus.html" %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
-
-{% block sidebar %}
-     <!-- Sidebar Widgets Column -->
-	<div class="col-md-4">
-
-		  <!-- Categories Widget -->
-		  <div class="card my-4">
-			    <h5 class="card-header">Categorias</h5>
-			    <div class="card-body">
-				      <div class="row">
-					        <!-- <div class="col-lg-6"> -->
-					        <div >
-						          <ul class="list-unstyled mb-0">
-							            <li>
-								              <a href="llamada">Llamada de servicio</a>
-							            </li>
-							            <li>
-								              <a href="formulario">Historial</a>
-							            </li>
-							            <li>
-								              <a href="#">Llamadas abiertas</a>
-							            </li>
-						          </ul>
-					        </div>
-					        <!-- <div class="col-lg-6"> -->
-					        <!-- <ul class="list-unstyled mb-0"> -->
-					        <!-- <li> -->
-					        <!-- <a href="#">JavaScript</a> -->
-					        <!-- </li> -->
-					        <!-- <li> -->
-					        <!-- <a href="#">CSS</a> -->
-					        <!-- </li> -->
-					        <!-- <li> -->
-					        <!-- <a href="#">Tutorials</a> -->
-					        <!-- </li> -->
-					        <!-- </ul> -->
-					        <!-- </div> -->
-				      </div>
-			    </div>
-		  </div>
-		<!-- Search Widget -->
-		<div class="card my-4">
-			<h5 class="card-header">Busqueda</h5>
-			<div class="card-body">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Buscar...">
-					<span class="input-group-btn">
-						<button class="btn btn-secondary" type="button">Ir!</button>
-					</span>
-				</div>
-			</div>
-		</div>
-    
-		<!-- Side Widget -->
-		<div class="card my-4">
-			  <h5 class="card-header">Datos del usuario</h5>
-			  <div class="card-body">
-				    You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
-			  </div>
-		</div>
-    
-    
-	</div>
-  
-</div>
-<!-- /.row -->
-
-</div>
-<!-- /.container -->
-
-
-
-{% endblock %}
