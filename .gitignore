@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 env/
 mssql/
 database.py
 models.py
+=======
+newenv/
+env/
+__pycache__/
+app.pyc
+>>>>>>> 11c6136181f89e75db86b162404679f17af5ca96

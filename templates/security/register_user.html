@@ -7,6 +7,7 @@
 <h1>{{ _('Register') }}</h1>
 <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
   {{ register_user_form.hidden_tag() }}
+<<<<<<< HEAD
 
   {{ render_field_with_errors(register_user_form.username) }}
   {{ render_field_with_errors(register_user_form.email) }}
@@ -15,6 +16,12 @@
   {{ render_field_with_errors(register_user_form.first_name) }}
   {{ render_field_with_errors(register_user_form.last_name) }}
   {{ render_field_with_errors(register_user_form.empresa) }}
+=======
+    {{ render_field_with_errors(register_user_form.username) }}
+  {{ render_field_with_errors(register_user_form.email) }}
+    {{ render_field_with_errors(register_user_form.first_name) }}
+    {{ render_field_with_errors(register_user_form.last_name) }}
+>>>>>>> 11c6136181f89e75db86b162404679f17af5ca96
   {{ render_field_with_errors(register_user_form.password) }}
   {% if register_user_form.password_confirm %}
     {{ render_field_with_errors(register_user_form.password_confirm) }}

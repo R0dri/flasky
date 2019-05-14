@@ -36,7 +36,6 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 *** TODO Registro
 *** TODO mail para resetar clave
 *** TODO Grabar informacion en BD
-
 ** Llamada de servicio [0/3]
    - Prioridad: Muy alta / Alta / Media / Baja
    - Asunto: Descripción o titulo del problema en 100 caracteres
@@ -230,7 +229,29 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 
    1 file changed, 49 insertions(+), 1 deletion(-)
    :END:
+* MSSQL 
+** insalar freetds
+   https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+** conectar SQL server con Pyodbc y SQLAlchemy
+   https://stackoverflow.com/questions/53753948/connecting-to-sql-server-using-pyodbc-sqlalchemy
 
+* Reunion Feedback
+- Alerta/tutorial al inicio. Info redireccionada al about.
+- crystal report...
+- remove user desde home page del usuario
+- codigos de usuarios predefinidos
+- tikets generan alertas asociados a usuarios de soporte definido
+  - timeouts de respuesta/lectura (tag de recibido/trabajando)
+  - gris/verde de que lado esta la bola +fecha (ETA)
+  - timeout del ETA
+  - historial de soluciones (llamadas completadas)
+- alerta informativa en prioridad alta
+  - default prioridad media
+- tipo de problema general y subtipo acorde al tipo general
+  - producto (sap, addon, otros)
+  - problema (segun el producto)
+- sidebar
+  - leyenda
+  - ayuda (tipos de notas)
+  - notas similares?
 
-
->>>>>>> 7f1b1ee06f953b0f72754de08a9e18f1b2061e24
