@@ -15,11 +15,11 @@ app.config['SECRET_KEY'] = 'super-secret'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MYMSSQL'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MSSQLSRV'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@localhost'
+app.config['SECURITY_POST_REGISTER_VIEW'] = '/about'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'somesupersecretstring'
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
-app.config['DEBUG_TB_ENABLED'] = True
+app.config['DEBUG_TB_ENABLED'] = False 
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 api = Api(app)
@@ -111,13 +111,21 @@ def context_processor():
 @app.route('/')
 @login_required
 def home():
-    return render_template('usrform.html')
+    return render_template('historial.html')
 
-@app.route('/usuario')
+@app.route('/<usuario>')
 @login_required
-def usuario ():
-    return render_template('usuario.html')
+def usuario (usuario):
+    user = User.query.filter_by(username=usuario).first();
+    return render_template('usuario.html',user=user)
 
+# @app.route('/<username>')
+# @login_required
+# def euser(username):
+#     user = User.query.filter_by(username=username).first();
+#     return render_template('user.html', user=user)
+
+@app.route('/about')
 def about():
     return render_template('about.html')
 
@@ -133,9 +141,9 @@ class usuarioInfo(Resource):
         return jsonify(su)
 
 class historial(Resource):
-    def get(self):
-        headers = {'Content-Type':'text/html'}
-        return make_response(render_template('historial.html'),200,headers)
+    # def get(self):
+    #     headers = {'Content-Type':'text/html'}
+    #     return make_response(render_template('historial.html'),200,headers)
 
     def post(self):
         try:
@@ -227,11 +235,6 @@ api.add_resource(historial, '/historial')
 # def test():
 #     return render_template('test.html')
 
-# # @app.route('/<username>')
-# @login_required
-# def euser(username):
-#     user = User.query.filter_by(username=username).first();
-#     return render_template('user.html', user=user)
 
 
 

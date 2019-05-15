@@ -26,19 +26,21 @@
 
     //######### Obtiene el historial de llamadas de servicio ########
     this.getLlamadas = (obsesion) => {
+        let ob2 = obsesion;
         $.ajax({type: "GET",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                url: "agcsap.no-ip.org:4489/llamadas",
+                url: "agcsap.no-ip.org:4489/historial",
                 data: ko.toJSON(obsesion),
                 success: function (data) {
-                    var jsonText = JSON.stringify(data.d);
+                    var jsonText = JSON.stringify(data);
                     self.llamadas(ko.mapping.fromJSON(jsonText)());
                     return true;
                 }
                }).then(function(data){
                }, handleError);
         function handleError(xhr, status, err){
+            alert('error devuelto de ajax');
             alert(err);
         };
     };

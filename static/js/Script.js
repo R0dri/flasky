@@ -53,9 +53,13 @@ function grabarForm () {
 }
 
 var getHistorico = () => {
-    let jsonObj  ='{"ProSubType":"Addon","createTime":"19 Jan 2019","usuario":"cheeky","priority":"2","problemTyp":"A-ASEGURADORA","callType":"CAPACITACION","BPContact":"nombre variable del usuario solicitante","subject":"asunto del problema","dscription":"Descripcion del problema detallado en texto de 100 caracteres...."}'; 
-    // vmv.getLlamadas(jsonObj);
-    vmv.getLlamadasJson(jsonObj);
+    let jsonObj = {
+        usuario: document.querySelector("#oUser").innerText,
+        bandera: 'tabla'
+    };
+    // let jsonObj  ='{"ProSubType":"Addon","createTime":"19 Jan 2019","usuario":"cheeky","priority":"2","problemTyp":"A-ASEGURADORA","callType":"CAPACITACION","BPContact":"nombre variable del usuario solicitante","subject":"asunto del problema","dscription":"Descripcion del problema detallado en texto de 100 caracteres...."}'; 
+    vmv.getLlamadas(jsonObj);
+    // vmv.getLlamadasJson(jsonObj);
 }
 
 // let BPContact;
