@@ -1,0 +1,54 @@
+{% extends "layouts/layout.html" %}
+{% block page_content %}
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<div class="row">
+
+			<!-- Post Content Column -->
+			<div class="col-lg-8">
+
+				<!-- Title -->
+				<h1 class="mt-4">Llamadas de Servicio</h1>
+
+				<!-- Author -->
+				<p class="lead">
+					por
+					<a href="#">Addviosry GC</a>
+				</p>
+
+        <div data-bind="foreach: llamadas">
+           <article class="media content-section">
+               <div class="media-body">
+                   <div class="article-metadata">
+                       <a class="mr-2" href="#" data-bind="text:usuario"></a>
+                       <small class="text-muted">Creado en </small>
+                       <small class="text-muted" data-bind="text:createTime"></small>
+                   </div>
+                   <h3><a class="article-title" data-bind="text:subject"></a></h2>
+						           <cite title="blockquote-footer" data-bind="text:ProSubType"></cite>
+                       <p class="article-content" data-bind="text: dscription"></p>
+               </div>
+               <hr>
+           </article>
+        </div>
+
+				<!-- Single Comment -->
+				<div class="media mb-4">
+					  <img class="mr-3 rounded-circle" src="http://placehold.it/20x20" >
+					<div class="media-body">
+						<h5 class="mt-0">Commenter Name</h5>
+						Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+					</div>
+				</div>
+			</div>
+
+			<hr>
+	    <div class="col-md-4 oContainer">
+          {% include "layouts/sidebar_cus.html" %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
