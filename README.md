@@ -23,6 +23,8 @@ source env/bin/activate
 Docker install Reference: https://linoxide.com/linux-how-to/install-docker-ubuntu/
 SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
 
+* Comandos utiles
+** Reiniciar nginx  kill -HUP <pid>
 *  Requerimientos [0/2]
    sugerimos un codigo que puede estar conformado por el codigo de SAP y un adicional para 2 o 3 usuarios de la empresa que serian los encargados de levantar tickets. Los demas miembros de la empresa pueden ver el estado de sus solicitudes mediante el codigo generico de la empresa que seria solo de lectura / consulta de los reportes
 
@@ -231,7 +233,29 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
    :END:
 * MSSQL 
 ** insalar freetds
-   https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+*** mac
+    https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+*** linux
+    https://stackoverflow.com/questions/33341510/how-to-install-freetds-in-linux#33364524
+    - instalar sudo apt-get install unixodbc unixodbc-dev freetds-dev freetds-bin tdsodbc
+    - sudo vim /etc/odbcinst.ini
+    :codigo:
+    #+BEGIN_SRC shell
+    [FreeTDS]
+    Description = v0.91 with protocol v7.2
+    Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+    #+END_SRC
+    :end:
+    - Crear el dns en /etc/odbc.ini
+    :codigo:
+    #+BEGIN_SRC shell
+    [dbserverdsn]
+    Driver = FreeTDS
+    Server = dbserver.domain.com
+    Port = 1433
+    TDS_Version = 7.2
+    #+END_SRC
+    :end:
 ** conectar SQL server con Pyodbc y SQLAlchemy
    https://stackoverflow.com/questions/53753948/connecting-to-sql-server-using-pyodbc-sqlalchemy
 
@@ -254,4 +278,23 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
   - leyenda
   - ayuda (tipos de notas)
   - notas similares?
+* API Refernce
+# API Reference
+'/usuario'
+- muestra usuario.html
 
+'/usuarioInfo'
+- recibe json codigo usuario
+- devuelve json resultado select users
+
+'/historial' usrform -> historial.html
+- recibe json codigo usuario, bandera(para cada query)
+    - 4 query usuario, llamada servicio
+- devuelve json resultado global
+
+'/about'
+- devuelve pagina info about.html
+- nombre manual/ayuda
+
+'/ticket' en vez del test y /llamada
+- devuelve forumlario "llamada"(ahora ticket.html)

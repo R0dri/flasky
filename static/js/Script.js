@@ -44,7 +44,9 @@ function grabarForm () {
         callType: document.querySelector("#tllamada")[c].value,
         BPContact: document.querySelector("#Usuario").value,
         subject: document.querySelector("#asunto").value,
-        usuario: document.querySelector("#oUser").value,
+        usuario: document.querySelector("#oUser").innerText,
+        ProSubType: '',
+        estado: '',
         dscription: document.querySelector("#dscription").value
     };
     vmv.grabarF(obsesion);

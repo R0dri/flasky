@@ -4,19 +4,22 @@
 
     //######### Graba los datos del formulario ########
     this.grabarF = (obsesion) => {
+        let ob2 = obsesion;
         $.ajax({type: "POST",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                url: "agcsap.no-ip.org:4489/grabar",
+                url: "llamada",
                 data: ko.toJSON(obsesion),
                 success: function (data) {
-                    // var jsonText = JSON.stringify(data.d);
+                    var jsonText = JSON.stringify(data);
+                    alert(jsonText);
                     // self.factura(ko.mapping.fromJSON(jsonText)());
                     return true;
                 }
                }).then(function(data){
                }, handleError);
         function handleError(xhr, status, err){
+            alert('error devuelto de ajax');
             alert(err);
         };
     };
