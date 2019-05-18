@@ -1,0 +1,5 @@
+{{ _('Welcome %(email)s!', email=hello) }}
+
+{{ security.hello }}
+{{ var.hey }}
+

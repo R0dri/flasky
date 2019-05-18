@@ -1,9 +1,37 @@
 {% extends "layouts/layout.html" %}
 {% block page_content %}
 <div class="container">
-  <h1>Hi, {{ current_user.username }}</h1>
-  <h2>Welcome back, {{ user.username }}</h2>
-  <p>Your password is: {{ user.password }}</p>
+  <h1>Hola, {{ current_user.username }}</h1>
+  <div class="row">
+      <label class="col-sm-1" for="ui_usuario">Usuario</label>
+      <div class="col-sm-3">
+          <span id="ui_usuario"></span>
+      </div>
+      <label class="col-sm-1" for="ui_telefono">Telefono</label>
+      <span class="col-sm-3" id="ui_telefono"></span>
+  </div>
+  <!-- <div class="row"> -->
+  <!-- <label class="col-sm-1" for="ui_nombre" >Nombre</label> -->
+  <!-- <div class="col-sm-4"> -->
+  <!-- <span id="ui_nombre"></span> -->
+  <!-- <span id="ui_apellido"></span> -->
+  <!-- </div> -->
+  <!-- </div> -->
+  <div class="row">
+      <label class="col-sm-1" for="ui_nombre" >Nombre</label>
+      <div class="col-sm-3">
+          <span id="ui_nombre"></span>
+          <span id="ui_apellido"></span>
+      </div>
+      <label class="col-sm-1" for="ui_celular">Celular</label>
+      <span class="col-sm-3" id="ui_celular"></span>
+  </div>
+  <div class="row">
+      <label class="col-sm-1" for="ui_email" >Correo</label>
+      <div class="col-sm-4">
+          <span id="ui_email"></span>
+      </div>
+  </div>
   <a href="logout">log out</a>
 </div>
 

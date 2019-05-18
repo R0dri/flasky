@@ -1,3 +1,5 @@
+proyecto: https://github.com/R0dri/flasky
+
 # [Start Bootstrap - Blog Post](https://startbootstrap.com/template-overviews/blog-post/)
 
 [Blog Post](http://startbootstrap.com/template-overviews/blog-post/) is a basic blog post HTML starter template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
@@ -278,23 +280,62 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
   - leyenda
   - ayuda (tipos de notas)
   - notas similares?
+  - 
+
+** Obervaciones
+  - En el campo prioridad al cambiar de prioridad que muestre la leyenda con ddescripcion 
 * API Refernce
 # API Reference
-'/usuario'
+/usuario [GET]
 - muestra usuario.html
 
-'/usuarioInfo'
+/usuarioInfo [POST]
 - recibe json codigo usuario
 - devuelve json resultado select users
 
-'/historial' usrform -> historial.html
+/historial [POST]
 - recibe json codigo usuario, bandera(para cada query)
     - 4 query usuario, llamada servicio
 - devuelve json resultado global
 
-'/about'
+/about [GET]
 - devuelve pagina info about.html
 - nombre manual/ayuda
 
-'/ticket' en vez del test y /llamada
-- devuelve forumlario "llamada"(ahora ticket.html)
+/ticket [GET, POST] 
+en vez del test y /llamada
+- GET devuelve forumlario "llamada"(ahora ticket.html)
+- POST (send: json with *ticket* fields; returns: fail,succes; inserts field in *tickets*)
+
+/actividades [GET, POST, PUT]
+- GET (send: json with *ticket* id; return: json with last activity)
+- POST (send json with activity fields; return: fail,succes; post into db new activity)
+- UPDATE? (PUT) (send: json with *resolution* and *ticket* of ticket; return fail,succes; puts resolution into field of OSCL)
+** Test jsons
+/historial
+- GET
+{"usuario":"rodri","bandera":"tabla"}
+/ticket
+- POST
+{"usuario":"rodri","priority":"2","problemTyp":"A-ASEGURADORA","ProSubType":"A-ASEGURADORA","callType":"CAPACITACION","BPContact":"asdf","subject":"asunto del problema","dscription":"Descripcion del problema detallado en texto de 100 caracteres....","estado":"abierto"}
+/actividades
+- Get
+{"ticket":"4"}
+- POST
+{"ticket":"1","CntctSbjct":"CntctSbjct","details":"details","notes":"notes","recontact":"2019-05-16","begintime":"09:01:51","action":"action"}
+- PUT
+{"resolution":"YA STA SOLUCION"}
+* Actividades - Chat
+  :OCLG:
+  | tabla      | campo      | sap          | flasky         |
+  |------------+------------+--------------+----------------|
+  | oscl       | resolution | resolucionn  |                |
+  | oclg       | id         | na           | llave          |
+  | oclg       | ticket     | na           | relacion oscl  |
+  | oclg       | CntctSbjct | Asunto       | flechitas      |
+  | oclg       | details    | comentarios  | asunto llamada |
+  | oclg       | notes      | comentario   | mensaje        |
+  | oclg       | recontact  | fehca inicio |                |
+  | oclg       | begintime  | hora inicio  |                |
+  | OCLG addon | action     | actividad    |                |
+  :END:

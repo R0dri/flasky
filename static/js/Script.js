@@ -1,13 +1,17 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     // $('.tarjeta_eventos').perfectScrollbar({wheelSpeed: .5});
     let documento = document.URL;
-    if (documento.indexOf("llamada") > -1) {
-        document.querySelector("#formSubmit").addEventListener("click", grabarForm);
+    if (documento.indexOf("ticket") > -1) {
+        let form = document.querySelector("#formSubmit");
+        let button = document.querySelector("#tproblema");
+        form.addEventListener("click", grabarForm);
+        button.addEventListener("change", selectProblemas);
     }
     else if (documento.indexOf("test") > -1) {
     }
-    else if (documento.indexOf("user") > -1) {
+    else if (documento.indexOf("usuario") > -1) {
+        let usr = usuarioInfo();
+        console.log(usr);
     }
     else if (documento.indexOf("about") > -1) {
     }
@@ -19,21 +23,8 @@ $(document).ready(function () {
 
 });
 
-
-document.body.addEventListener("change", function(e) {
-    console.log(e.target);
-    console.log('prueba');
-});
-
-
-// var sesion = {
-//     user: 0,
-//     hTipo: "",
-//     rol: rolSelected
-// };
-
-
 // let grabarForm = () => {
+//######### obtiene datos del ticket.html y los envia para guardar ########
 function grabarForm () {
     let a = document.querySelector("#prioridad").selectedIndex;
     let b = document.querySelector("#problema").selectedIndex;
@@ -52,22 +43,68 @@ function grabarForm () {
     vmv.grabarF(obsesion);
 }
 
+//######### obtener el historial.html ########
 var getHistorico = () => {
     let jsonObj = {
         usuario: document.querySelector("#oUser").innerText,
         bandera: 'tabla'
     };
-    // let jsonObj  ='{"ProSubType":"Addon","createTime":"19 Jan 2019","usuario":"cheeky","priority":"2","problemTyp":"A-ASEGURADORA","callType":"CAPACITACION","BPContact":"nombre variable del usuario solicitante","subject":"asunto del problema","dscription":"Descripcion del problema detallado en texto de 100 caracteres...."}'; 
     vmv.getLlamadas(jsonObj);
-    // vmv.getLlamadasJson(jsonObj);
 }
 
-// let BPContact;
-// let createDate;
-// let BPPhone1;
-// let BPPhone2;
-// let BPCellular;
-// let BPE_Mail;
-// let BPProjCode;
-// let descrptioin;
-// let trgtPath; //aun no estamos usando eso.
+//######### llena el usuario.html ########
+var usuarioInfo = () => {
+    let usuarioDoc = document.querySelector("#oUser").innerText;
+    let param = {"usuario":usuarioDoc};
+    let usuario = getUsuario(param);
+    usuario.then((data) => {
+        document.querySelector("#ui_usuario").innerText = data.username;
+        document.querySelector("#ui_nombre").innerText = data.first_name;
+        document.querySelector("#ui_apellido").innerText = data.last_name;
+        document.querySelector("#ui_telefono").innerText = data.telefono;
+        document.querySelector("#ui_celular").innerText = data.celular;
+        document.querySelector("#ui_email").innerText = data.email;
+    });
+}
+
+//######### llena la lista de problemas en ticket.html ########
+var selectProblemas = () => {
+    let tipo = document.querySelector("#tproblema").value;
+    let select = document.querySelector("#problema");
+
+    switch(tipo){
+    case "SAP": case "SAPHANA":
+	      select.options.length = 0;
+        select.options[select.options.length] = new Option('', '');
+        select.options[select.options.length] = new Option('PROCESO DE COMPRAS',	'S-COMPRAS');
+        select.options[select.options.length] = new Option('PROCESO DE VENTAS',	'S-VENTAS');
+        select.options[select.options.length] = new Option('PROCESOS FINANZAS',	'S-FINANZAS');
+        select.options[select.options.length] = new Option('OTROS PROCESOS',	'S-OTROS');
+        break;
+    case "ADDON":
+	      select.options.length = 0;
+        select.options[select.options.length] = new Option('', '');
+        select.options[select.options.length] = new Option('NOMINA', 'A-NOMINA');
+        select.options[select.options.length] = new Option('PROYECTOS',	'A-PROYECTOS');
+        select.options[select.options.length] = new Option('CLINICA	HISTORIA CLINICA',	'A-HISTORIA');
+        select.options[select.options.length] = new Option('ASEGURADORAS',	'A-ASEGURADORA');
+        select.options[select.options.length] = new Option('CAJA	CUADRE CAJA',	'A-CUADRE');
+        select.options[select.options.length] = new Option('FISCAL	IMPRESOR FISCAL',	'A-IMPRESOR'); 
+        select.options[select.options.length] = new Option('HOSPITALIZACION',	'A-HOSPITALIZACION');
+        select.options[select.options.length] = new Option('INTEGRADORES',	'A-INTEGRADORES');
+        select.options[select.options.length] = new Option('TXT',	'A-TXT');
+        break;
+    case "OTROS":
+	      select.options.length = 0;
+        select.options[select.options.length] = new Option('', '');
+        select.options[select.options.length] = new Option('IVEND',	'O-IVEND');
+        select.options[select.options.length] = new Option('BEAS',	'O-BEAS');
+        select.options[select.options.length] = new Option('HANA Configuration',	'S-HANA');
+        select.options[select.options.length] = new Option('LAYOUTS',	'S-LAYOUTS');
+        break;
+    }
+    // function removeOption(){
+	  //     var select = document.getElementById("dynamic-select");
+	  //     select.options[select.options.length - 1] = null;
+    // }
+}

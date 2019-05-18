@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
+from flask_mail import Mail, Message
 from flask_security.forms import RegisterForm, StringField, Required, LoginForm, PasswordField
 from flask_restful import Resource, Api
 from flask_debugtoolbar import DebugToolbarExtension
@@ -18,10 +19,27 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MYMSSQL'
 app.config['SECURITY_POST_REGISTER_VIEW'] = '/about'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'somesupersecretstring'
-app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['DEBUG_TB_ENABLED'] = False 
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
+
+app.config['SECURITY_SEND_REGISTER_EMAIL'] = True
+app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_LOGIN_WITHOUT_CONFIRMATION'] = True
+app.config['SECURITY_REGISTERABLE'] = True
+app.config['MAIL_SERVER'] = 'smtpout.secureserver.net'
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+app.config['SECURITY_EMAIL_SENDER'] = 'pablo.mendoza@advisorygc.com'
+app.config['MAIL_DEFAULT_SENDER'] = 'pablo.mendoza@advisorygc.com'
+# app.config['SECURITY_EMAIL_SENDER'] = 'rodri.mendoza.t@gmail.com'
+app.config['MAIL_USERNAME'] = 'pablo.mendoza@advisorygc.com'
+# app.config['MAIL_USERNAME'] = 'rodri.mendoza.t@gmail.com'
+app.config['MAIL_PASSWORD'] = 'pablo'
+
+mail = Mail(app)
 api = Api(app)
 toolbar=DebugToolbarExtension(app)
 
@@ -37,6 +55,17 @@ class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
+
+class OCLG(db.Model):
+    # __tablename__ = 'OCLG'
+    id =db.Column(db.Integer(), primary_key=True)
+    ticket = db.Column(db.Integer())
+    CntctSbjct = db.Column(db.String(20))
+    details = db.Column(db.String(50))
+    notes = db.Column(db.String(100))
+    recontact = db.Column(db.DateTime(100))
+    begintime = db.Column(db.DateTime())
+    action = db.Column(db.String(100))
 
 class OSCL(db.Model):
     # __tablename__ = 'OSCL'
@@ -55,7 +84,8 @@ class OSCL(db.Model):
     BPE_Mail = db.Column(db.String(50))
     # empresa = db.Column(db.String(80), unique=True)
     BPProjCode = db.Column(db.String(80))
-    description = db.Column(db.String(8000))
+    dscription = db.Column(db.String(8000))
+    resolution = db.Column(db.String(8000))
     # trgtPath = db.Column()
 
 class User(db.Model, UserMixin):
@@ -100,6 +130,10 @@ security = Security(app, user_datastore,
 def context_processor():
     return dict(hello=True)
 
+@security.mail_context_processor
+def security_mail_processor():
+    return dict(hello="world")
+
 #Create a user to test with
 # @app.before_first_request
 # def create_user():
@@ -107,7 +141,17 @@ def context_processor():
 #     user_datastore.create_user(email='r', password='p')
 #     db.session.commit()
 
-# # Views
+# Views
+@app.route('/sendmail')
+def smail():
+    msg = Message(subject='sujeto', recipients=['yajuzetop@clickmail.info'])
+    var = {
+        'hey':"my name is"
+    }
+    msg.body = render_template('security/email/mail.txt',var=var)
+    mail.send(msg)
+    return 'Sent email'
+
 @app.route('/')
 @login_required
 def home():
@@ -130,7 +174,7 @@ def about():
     return render_template('about.html')
 
 class usuarioInfo(Resource):
-    def get(self):
+    def post(self):
         sn = request.get_json()
         se = db.text("SELECT * FROM [user] WHERE username=:usuario")
         usuario = sn["usuario"]
@@ -151,13 +195,14 @@ class historial(Resource):
             se = db.text("exec historial :usuario, :bandera")
             usuario = sn["usuario"]
             bandera = sn["bandera"]
-            u = db.engine.execute(se, usuario=usuario, bandera=bandera).fetchall()
+            u = db.engine.execute(se, usuario=usuario, bandera=bandera)
             su = [dict(row) for row in u]
-            su = su[0]
+            # su = su[1]
             return jsonify(su)
         except (ValueError, KeyError, TypeError) as error:
-            print (error)
-            return "got an error on post method"
+            # print (error)
+            # return "got an error on post method"
+            return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
             # return {"JSON Format Error."}, status=400, mimetype='application/json'
 
 class ticket(Resource):
@@ -173,18 +218,63 @@ class ticket(Resource):
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
             su = su[0]
-            sas = OSCL(priority=sn["priority"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["empresa"], description=sn["dscription"])
+            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["empresa"], dscription=sn["dscription"])
+            db.session.add(sas)
+            # status = db.session.commit()
+            db.session.commit()
+            return {'Saved call': sn['subject']}, 200
+            # return {'Saved call': status}
+
+        except (ValueError, KeyError, TypeError) as error:
+            # print (error)
+            # return "got an error on post method"
+            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
+            return jsonify({'error':error}), 400
+
+class actividad(Resource):
+    def get(self):
+        sn = request.get_json()
+        se = db.text("SELECT * FROM OCLG WHERE ticket = :ids")
+        ids = sn["ticket"]
+        u = db.engine.execute(se, ids=ids).fetchall()
+        su = [dict(row) for row in u]
+        # su = su[0]
+        return jsonify(su)
+    def post(self):
+        try:
+            sn = request.get_json()
+            sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], details=sn['details'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
             db.session.add(sas)
             db.session.commit()
-            return {'Saved call': sn['subject']}
+            return {'Saved activity': sn['details']}, 200
         except (ValueError, KeyError, TypeError) as error:
-            print (error)
-            return "got an error on post method"
-
+            # print (error)
+            # return "got an error on post method"
+            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
+            return jsonify({'error':error}), 400
+    def put(self):
+        try:
+            sn = request.get_json()
+            se = db.text("UPDATE OSCL SET resolution=:sol, estado='cerrado' WHERE id = :ids")
+            ids = sn["ticket"]
+            sol = sn["resolution"]
+            db.engine.execute(se, sol=sol, ids=ids)
+            # su = [dict(row) for row in u]
+            # su = su[0]
+            # db.session.add(sas)
+            db.session.commit()
+            return {'Set resolution and close ticket id': sn['ticket']}, 200
+        except (ValueError, KeyError, TypeError) as error:
+            # print (error)
+            # return "got an error on post method"
+            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
+            return jsonify({'error':error}), 400
 
 api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')
 api.add_resource(historial, '/historial')
+api.add_resource(actividad, '/actividad')
+
 
 # class query(Resource):
 #     def get(self):
