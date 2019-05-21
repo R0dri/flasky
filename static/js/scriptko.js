@@ -1,9 +1,29 @@
 ﻿//######### Obtiene datos del usuario ########
 let getUsuario = (obj) => {
     return $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json; charset=utf-8",
         url: "usuarioInfo",
+        data: JSON.stringify(obj),
+        dataType: "json",
+    });
+}
+//######### Obtiene las activdades ########
+let getActividades = (obj) => {
+    return $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "actividad",
+        data: JSON.stringify(obj),
+        dataType: "json",
+    });
+}
+//######### Obtiene las activdades ########
+let getLlam = (obj) => {
+    return $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "historial",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -25,29 +45,31 @@ let grabarF = (param) => {
     };
 };
 
-
 //######### knockoutjs auto mapping ########
 function vm() {
     var self = this;
     self.llamadas  = ko.observableArray();
 
+    this.mapHistorial = (datos) => {
+        self.llamadas(datos);
+    }
     //######### Obtiene el historial de llamadas de servicio ########
-    this.getLlamadas = (obsesion) => {
-        let ob2 = obsesion;
-        $.ajax({type: "POST",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                url: "historial",
-                data: ko.toJSON(obsesion),
-                success: function (data) {
-                    self.llamadas(data);
-                }
-               }).then(function(data){
-               }, handleError);
-        function handleError(xhr, status, err){
-            alert(err.valueError + ' status:' + status);
-        };
-    };
+    // this.getLlamadas = (obsesion) => {
+    //     let ob2 = obsesion;
+    //     $.ajax({type: "POST",
+    //             dataType: "json",
+    //             contentType: "application/json; charset=utf-8",
+    //             url: "historial",
+    //             data: ko.toJSON(obsesion),
+    //             success: function (data) {
+    //                 self.llamadas(data);
+    //             }
+    //            }).then(function(data){
+    //            }, handleError);
+    //     function handleError(xhr, status, err){
+    //         alert(err.valueError + ' status:' + status);
+    //     };
+    // };
 
 }
 var vmv = new vm();

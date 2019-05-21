@@ -18,7 +18,8 @@
     else if (documento.indexOf("login") > -1) {
     }
     else {
-        getHistorico();
+        // getHistorico();
+        getHistoricoCOM();
     }
 
 });
@@ -45,11 +46,11 @@ function grabarForm () {
 
 //######### obtener el historial.html ########
 var getHistorico = () => {
-    let jsonObj = {
-        usuario: document.querySelector("#oUser").innerText,
-        bandera: 'tabla'
-    };
-    vmv.getLlamadas(jsonObj);
+    // let jsonObj = {
+    //     usuario: document.querySelector("#oUser").innerText,
+    //     bandera: 'tabla'
+    // };
+    // vmv.getLlamadas(jsonObj);
 }
 
 //######### llena el usuario.html ########
@@ -67,6 +68,38 @@ var usuarioInfo = () => {
     });
 }
 
+//######### obtiene las llamadas y actividades ########
+var getHistoricoCOM = () => {
+    let usuarioDoc = document.querySelector("#oUser").innerText;
+    let jsonObj = {
+        usuario: document.querySelector("#oUser").innerText,
+        bandera: 'tabla'
+    };
+    let param = {"usuario":usuarioDoc};
+
+    let llam = getLlam(jsonObj);
+    let actividades = getActividades(param);
+
+    actividades.then((data) => {
+        return data;
+    }).then((objtemp) => {
+        llam.then((data) => {
+
+            let result = data.map((callb) => {
+
+                let actob = objtemp.filter( (actividad) => {
+                    return actividad.ticket === callb.id;
+                });
+
+                callb.actividad = actob;
+                return callb;
+            }, []);
+            // console.log(result);
+            vmv.mapHistorial(result);
+
+        });
+    });
+}
 //######### llena la lista de problemas en ticket.html ########
 var selectProblemas = () => {
     let tipo = document.querySelector("#tproblema").value;

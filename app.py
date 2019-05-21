@@ -16,6 +16,7 @@ app.config['SECRET_KEY'] = 'super-secret'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MYMSSQL'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:B1Admin@@MSSQLSRV'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECURITY_POST_REGISTER_VIEW'] = '/about'
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = 'somesupersecretstring'
@@ -144,24 +145,41 @@ def security_mail_processor():
 # Views
 @app.route('/sendmail')
 def smail():
-    msg = Message(subject='sujeto', recipients=['yajuzetop@clickmail.info'])
+    msg = Message(subject='sujet', recipients=['defekuz@mrmail.info','rodri.mendoza.t@gmail.com','pablo.mendoza@advisorygc.com'])
     var = {
-        'hey':"my name is"
+        'ticket':"consulta de usuario",
+        'date':"22 de abril de 2019",
+        'usuario':"rodri",
+        'first_name':"cheeky"
     }
-    msg.body = render_template('security/email/mail.txt',var=var)
+    msg.html = render_template('security/email/mail.html',var=var)
     mail.send(msg)
     return 'Sent email'
+
+@app.route('/testmail')
+def tmail():
+    var = {
+        'ticket':"consulta de usuario",
+        'date':"22 de abril de 2019",
+        'usuario':"rodri",
+        'first_name':"cheeky"
+    }
+    headers = {'Content-Type':'text/html'}
+    return make_response(render_template('security/email/mail.txt',var=var),200,headers)
 
 @app.route('/')
 @login_required
 def home():
     return render_template('historial.html')
 
-@app.route('/<usuario>')
+@app.route('/usuario')
 @login_required
-def usuario (usuario):
-    user = User.query.filter_by(username=usuario).first();
-    return render_template('usuario.html',user=user)
+def usuario ():
+    return render_template('usuario.html')
+
+@app.route('/<route>')
+def endless(route):
+    return 'you reached an empyt page, check if your route is correct: /{}'.format(route)
 
 # @app.route('/<username>')
 # @login_required
@@ -199,19 +217,24 @@ class historial(Resource):
             su = [dict(row) for row in u]
             # su = su[1]
             return jsonify(su)
-        except (ValueError, KeyError, TypeError) as error:
-            # print (error)
+        except Exception as error:
+            print (error)
             # return "got an error on post method"
-            return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
+            return jsonify(error.args)
+            # return jsonify(error.args), 400
+        # , status=400
             # return {"JSON Format Error."}, status=400, mimetype='application/json'
 
 class ticket(Resource):
     def get(self):
+        print("loading page ticket")
         headers = {'Content-Type':'text/html'}
         return make_response(render_template('ticket.html'),200,headers)
 
     def post(self):
+        print("entering post")
         try:
+            print("try post data")
             sn = request.get_json()
             se = db.text("SELECT * FROM [user] WHERE username = :ids")
             ids = sn["usuario"]
@@ -222,36 +245,59 @@ class ticket(Resource):
             db.session.add(sas)
             # status = db.session.commit()
             db.session.commit()
-            return {'Saved call': sn['subject']}, 200
+            print("api ran with no errors")
+            return {'Saved call': sn['subject']}
+            # return {'Saved call': sn['subject']}, 200
             # return {'Saved call': status}
 
-        except (ValueError, KeyError, TypeError) as error:
-            # print (error)
+        except Exception as error:
+            print("Catched ERROR on POST @/ticket")
+            print (error)
             # return "got an error on post method"
-            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
-            return jsonify({'error':error}), 400
+            return jsonify({'error':error.args})
+            # return jsonify({'error':error.args}), 400
 
 class actividad(Resource):
-    def get(self):
-        sn = request.get_json()
-        se = db.text("SELECT * FROM OCLG WHERE ticket = :ids")
-        ids = sn["ticket"]
-        u = db.engine.execute(se, ids=ids).fetchall()
-        su = [dict(row) for row in u]
-        # su = su[0]
-        return jsonify(su)
     def post(self):
+        print ("geting in get")
         try:
             sn = request.get_json()
-            sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], details=sn['details'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
-            db.session.add(sas)
-            db.session.commit()
-            return {'Saved activity': sn['details']}, 200
-        except (ValueError, KeyError, TypeError) as error:
-            # print (error)
-            # return "got an error on post method"
-            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
-            return jsonify({'error':error}), 400
+            # se = db.text("SELECT * FROM OCLG WHERE ticket = :ids")
+
+            se = db.text("select a.* " +
+                         "from   OCLG as a " +
+                         "       inner join OSCL as b on a.ticket = b.id " +
+                         "       inner join [user] as c on b.contactCode = c.id " +
+                         "where  c.username = :ids")
+            ids = sn["usuario"]
+
+            u = db.engine.execute(se, ids=ids).fetchall()
+            su = [dict(row) for row in u]
+
+            # print (su)
+            # su = su[0]
+            return jsonify(su)
+            # return jsonify(su), 200
+        except Exception as error:
+            print ("got an error on POST method at /Actividad")
+            print (error)
+            return jsonify(error.args)
+            # return jsonify(error.args), 400
+
+    # def post(self):
+    #     try:
+    #         sn = request.get_json()
+    #         sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], details=sn['details'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
+    #         db.session.add(sas)
+    #         db.session.commit()
+    #         return {'Saved activity': sn['details']}
+    #         # return {'Saved activity': sn['details']}, 200
+    #     except (ValueError, KeyError, TypeError) as error:
+    #         # print (error)
+    #         # return "got an error on post method"
+    #         # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
+    #         return jsonify({'error':error})
+    #         # return jsonify({'error':error}), 400
     def put(self):
         try:
             sn = request.get_json()
@@ -263,12 +309,13 @@ class actividad(Resource):
             # su = su[0]
             # db.session.add(sas)
             db.session.commit()
-            return {'Set resolution and close ticket id': sn['ticket']}, 200
-        except (ValueError, KeyError, TypeError) as error:
-            # print (error)
-            # return "got an error on post method"
-            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
-            return jsonify({'error':error}), 400
+            return {'Set resolution and close ticket id': sn['ticket']}
+            # return {'Set resolution and close ticket id': sn['ticket']}, 200
+        except Exception as error:
+            print ("got an error on POST method at /Actividad")
+            print (error)
+            return jsonify({'error':error.args})
+            # return jsonify({'error':error.args}), 400
 
 api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')

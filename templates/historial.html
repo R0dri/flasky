@@ -34,27 +34,19 @@
                    <div class="row">
                        <div class="col-sm-4"></div>
                        <div class="col-sm-4">
-                           <a data-toggle="collapse" data-bind="attr:{href: '#panel' + id}">ver actividades</a>
+                           <a data-toggle="collapse" data-bind="attr:{href: '#panel' + id}">detalle</a>
                        </div>
                        <div class="col-sm-4"></div>
                    </div>
                    <div class="panel-collapse collapse" data-bind="attr:{id: 'panel' + id}">
-                       <div class="container">
-                           <a class="mr-2" href="#" data-bind="text:usuario"></a>
-                           <p style="margin-top:15px; border-left: 4px solid #dddddd;" class="container small">
-                               For 50 years, WWF has been protecting the future of nature. The world's
-                               leading conservation organization, WWF works in 100 countries
-                               and is supported by 1.2 million members in the United States and
-                               close to 5 million globally.
-                           </p>
-                       </div>
-                       <div class="container">
-                           <a class="mr-2" href="#" data-bind="text:usuario"></a>
-                           <p style="margin-top:15px; border-left: 4px solid #dddddd;" class="container small">
-                               For 50 years, WWF has been protecting the future of nature. The world's
-                               leading conservation organization, WWF works in 100 countries
-                               and is supported by 1.2 million members in the United States and
-                           </p>
+                       <!-- <div data-bind="foreach: {data: llamadas.actividad, as 'actividades'}""> -->
+                       <div data-bind="foreach: actividad">
+                           <div class="container">
+                               <a class="mr-2" href="#" data-bind="text:CntctSbjct"></a>
+                               <p style="margin-top:15px; border-left: 4px solid #dddddd;" data-bind="text:notes" class="container small"> </p>
+                           </div>
+                           <div data-bind="text: $index"></div>
+                           <div data-bind="text: $parent.length()"></div>
                        </div>
                    </div>
                </div>
