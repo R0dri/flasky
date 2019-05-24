@@ -45,8 +45,24 @@
                                <a class="mr-2" href="#" data-bind="text:CntctSbjct"></a>
                                <p style="margin-top:15px; border-left: 4px solid #dddddd;" data-bind="text:notes" class="container small"> </p>
                            </div>
-                           <div data-bind="text: $index"></div>
-                           <div data-bind="text: $data.length()"></div>
+                           <!-- <div data-bind="text: $index"></div> -->
+                           <!-- <div data-bind="text: $parent.actividad.length -1"></div> -->
+                           <!-- <div data-bind="if: $index + 0 === $parent.actividad.length -1"> -->
+                               <!-- <div data-bind="if: $index + 0 === $parent.actividad.length -1"> -->
+                               <!-- comoes  -->
+                               <!-- </div> -->
+                       </div>
+                       <div data-bind="if: flag">
+				                   <div class="container">
+					                     <h6 class="card-header">Comentarios:</h6>
+						                   <form>
+							                     <div class="form-group">
+								                       <textarea data-bind="value:newNotes" class="form-control" rows="4"></textarea>
+							                     </div>
+							                     <!-- <a id="btnActividad" data-bind="click: $parent.grabarAct" style="float:right;margin-right:20px;" href="#" runat-server="false" class="btn btn-secondary">Enviar</a> -->
+							                     <span id="btnActividad" data-bind="click: $root.grabarAct" style="float:right;margin-right:20px;" runat-server="false" class="btn btn-secondary">Enviar</span>
+						                   </form>
+				                   </div>
                        </div>
                    </div>
                </div>
