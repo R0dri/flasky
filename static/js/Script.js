@@ -19,7 +19,9 @@
     }
     else {
         // getHistorico();
+        let button = document.querySelector("btnActividad");
         getHistoricoCOM();
+
     }
 
 });
@@ -77,8 +79,8 @@ var getHistoricoCOM = () => {
     };
     let param = {"usuario":usuarioDoc};
 
-    let llam = getLlam(jsonObj);
     let actividades = getActividades(param);
+    let llam = getLlam(jsonObj);
 
     actividades.then((data) => {
         return data;
@@ -87,16 +89,36 @@ var getHistoricoCOM = () => {
 
             let result = data.map((callb) => {
 
-                let actob = objtemp.filter( (actividad) => {
+                let actob = objtemp.filter((actividad) => {
+                    // actividad.newNotes = '';
                     return actividad.ticket === callb.id;
                 });
 
+                // let mapFunc = (act, e) => {
+                //     let index = e;
+                //     let len = actob.length;
+                //     act.nuevo = usuario;
+                //     actob.length == e+1 && act.CntctSbjct == "SAP" ? act.flag = true : act.flag = false; 
+                //     return act;
+                // };
+                // let usuario = callb.usuario;
+                // actob = actob.map(mapFunc.bind(usuario));
+
+
+                let flag = actob.map((act, e) => {
+                    let index = e;
+                    let len = actob.length;
+                    return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
+                });
+
+                let len = actob.length;
+
+                callb.flag = flag[len-1];
+                callb.newNotes = '';
                 callb.actividad = actob;
                 return callb;
             }, []);
-            // console.log(result);
             vmv.mapHistorial(result);
-
         });
     });
 }

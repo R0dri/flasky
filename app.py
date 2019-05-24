@@ -284,21 +284,24 @@ class actividad(Resource):
             return jsonify(error.args)
             # return jsonify(error.args), 400
 
-    # def post(self):
-    #     try:
-    #         sn = request.get_json()
-    #         sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], details=sn['details'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
-    #         db.session.add(sas)
-    #         db.session.commit()
-    #         return {'Saved activity': sn['details']}
-    #         # return {'Saved activity': sn['details']}, 200
-    #     except (ValueError, KeyError, TypeError) as error:
-    #         # print (error)
-    #         # return "got an error on post method"
-    #         # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
-    #         return jsonify({'error':error})
-    #         # return jsonify({'error':error}), 400
     def put(self):
+        try:
+            sn = request.get_json()
+            # sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], details=sn['details'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
+            # sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
+            sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], notes=sn['notes'])
+            db.session.add(sas)
+            db.session.commit()
+            return jsonify({'result': sn['ticket']})
+            # return "{'Saved activity': 'bien'}"
+            # return {'Saved activity': sn['details']}, 200
+        except (ValueError, KeyError, TypeError) as error:
+            # print (error)
+            # return "got an error on post method"
+            # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
+            return jsonify({'error':error})
+            # return jsonify({'error':error}), 400
+    def update(self):
         try:
             sn = request.get_json()
             se = db.text("UPDATE OSCL SET resolution=:sol, estado='cerrado' WHERE id = :ids")

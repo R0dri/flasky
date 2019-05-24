@@ -48,29 +48,41 @@ let grabarF = (param) => {
 //######### knockoutjs auto mapping ########
 function vm() {
     var self = this;
-    self.llamadas  = ko.observableArray();
+
+    this.llamadas = ko.observableArray();
+    this.actividad = ko.observableArray();
 
     this.mapHistorial = (datos) => {
         self.llamadas(datos);
-    }
-    //######### Obtiene el historial de llamadas de servicio ########
-    // this.getLlamadas = (obsesion) => {
-    //     let ob2 = obsesion;
-    //     $.ajax({type: "POST",
-    //             dataType: "json",
-    //             contentType: "application/json; charset=utf-8",
-    //             url: "historial",
-    //             data: ko.toJSON(obsesion),
-    //             success: function (data) {
-    //                 self.llamadas(data);
-    //             }
-    //            }).then(function(data){
-    //            }, handleError);
-    //     function handleError(xhr, status, err){
-    //         alert(err.valueError + ' status:' + status);
-    //     };
-    // };
+    };
+    self.grabarAct = function (con, children) {
+        let actividad = {
+            CntctSbjct:con.usuario,
+            action:null,
+            begintime:null,
+            details:null,
+            id:null,
+            notes:con.newNotes,
+            recontact:null,
+            ticket:con.id
+        };
+        $.ajax({type: "PUT",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                url: "actividad",
+                data: ko.toJSON(actividad),
+                success: function (data) {
+                    // console.log(data);
+                }
+               }).then(refrescar.bind(this), handleError);
 
+        function refrescar (data) {
+            this.actividad.push(actividad);
+        };
+        function handleError(xhr, status, err){
+            alert(err.valueError + ' status:' + status);
+        };
+    };
 }
 var vmv = new vm();
 ko.applyBindings(vmv);
