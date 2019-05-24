@@ -5,3 +5,5 @@ models.py
 newenv/
 __pycache__/
 app.pyc
+quickstart.sh
+config.json
