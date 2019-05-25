@@ -1,7 +1,5 @@
 env/
 mssql/
-database.py
-models.py
 newenv/
 __pycache__/
 app.pyc
