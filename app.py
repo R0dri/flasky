@@ -5,60 +5,62 @@ from flask_security.forms import RegisterForm, LoginForm, Required, StringField,
 from flask_restful import Resource, Api
 from flask_debugtoolbar import DebugToolbarExtension
 
+
 from database import db, mail, app
-from models import User, Role, roles_users, OCLG, OSCL, db
+from models import User, Role, roles_users, OCLG, OSCL, db, user_datastore
 from apis import ticket, usuarioInfo, historial, actividad
 
 api = Api(app)
 toolbar=DebugToolbarExtension(app)
 
 
-#Set Modification for Security Forms
-class ExtendedLoginForm(LoginForm):
-    # username = StringField('Usuario', [Required()])
-    email = StringField('Correo', [Required()])
-    password = PasswordField('Contrasena', [Required()])
-class ExtendedRegisterForm(RegisterForm):
-    username = StringField('Usuario', [Required()])
-    # email = StringField('Usuario', [Required()])
-    first_name = StringField('Nombres', [Required()])
-    last_name = StringField('Apellidos', [Required()])
-    telefono = StringField('telefono', [Required()])
-    celular = StringField('telefono', [Required()])
-    password = PasswordField('Contrasena', [Required()])
-    password_confirm = PasswordField('Confirmar Contrasena', [Required()])
-
-# Setup Flask-Security
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore,
-                    confirm_register_form=ExtendedRegisterForm,
-                    login_form=ExtendedLoginForm)
+# Create a user to test with
+# @app.before_first_request
+# def create_user():
+#     db.create_all()
+#     user_datastore.create_user(email='r', password='p')
+#     db.session.commit()
 
 # Views
 @app.route('/sendmail')
 def smail():
     msg = Message(subject='sujet', recipients=['defekuz@mrmail.info','rodri.mendoza.t@gmail.com','pablo.mendoza@advisorygc.com'])
     var = {
-        'ticket':"consulta de usuario",
+        'ticket':"Error en cargar datos",
         'date':"22 de abril de 2019",
         'usuario':"rodri",
-        'first_name':"cheeky"
+        'first_name':"Rodrigo"
     }
     msg.html = render_template('security/email/mail.html',var=var)
     mail.connect()
     mail.send(msg)
     return 'Sent email'
 
-@app.route('/testmail')
+@app.route('/testac')
 def tmail():
+    from database import SendMail
     var = {
-        'ticket':"consulta de usuario",
+        'ticket':"Error al cargar datos en el ADDON",
         'date':"22 de abril de 2019",
-        'usuario':"rodri",
-        'first_name':"cheeky"
+        'usuario':"rodrien",
+        'first_name':"Rodrigo",
+        'actividad':"No seas jil, prende tu compu!"
     }
-    headers = {'Content-Type':'text/html'}
-    return make_response(render_template('security/email/mail.txt',var=var),200,headers)
+    ma = SendMail(debug=True,vara=var)
+    return ma.actividad()
+
+@app.route('/testtick')
+def amail():
+    from database import SendMail
+    var = {
+        'ticket':"Error al cargar datos en el ADDON",
+        'date':"22 de abrile de 2019",
+        'usuario':"rodrimen",
+        'first_name':"Rodrigo",
+        'actividad':"No seas jil, prende tu compu!"
+    }
+    ma = SendMail(debug=True,vara=var)
+    return ma.ticket()
 
 @app.route('/')
 @login_required

@@ -23,9 +23,10 @@ class usuarioInfo(Resource):
         return jsonify(su)
 
 class historial(Resource):
-    # def get(self):
-    #     headers = {'Content-Type':'text/html'}
-    #     return make_response(render_template('historial.html'),200,headers)
+    @login_required
+    def get(self):
+        headers = {'Content-Type':'text/html'}
+        return make_response(render_template('historial.html'),200,headers)
 
     def post(self):
         try:
@@ -46,6 +47,7 @@ class historial(Resource):
             # return {"JSON Format Error."}, status=400, mimetype='application/json'
 
 class ticket(Resource):
+    @login_required
     def get(self):
         print("loading page ticket")
         headers = {'Content-Type':'text/html'}
