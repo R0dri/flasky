@@ -23,7 +23,7 @@ source env/bin/activate
 Docker install Reference: https://linoxide.com/linux-how-to/install-docker-ubuntu/
 SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
 
-*  Requerimientos [0/2]
+* Requerimientos [0/2]
    sugerimos un codigo que puede estar conformado por el codigo de SAP y un adicional para 2 o 3 usuarios de la empresa que serian los encargados de levantar tickets. Los demas miembros de la empresa pueden ver el estado de sus solicitudes mediante el codigo generico de la empresa que seria solo de lectura / consulta de los reportes
 
 ** TODO Conectar con base de datos 
@@ -178,6 +178,7 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 *** sudo ufw delete allow 5000 -> para eliminar el puerto 5000 en el firewall
 *** sudo ufw enable 
 *** sudo systemctl restart nginx
+*** sudo systemctl status nginx.service
 ** GUNICORN
 *** gunicorn -w 3 run:app para esto debemos estar en el directorio de la aplicacion .py  
     (app es la vairable de la aplicacion que se encuentra en el app.py)
@@ -211,6 +212,9 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 ** $ git push --delete <remote_name> <branch_name> eliminar branch remota
 ** $ git branch -d <branch_name> eliminar branch local
 ** git branch -> para enlistar los branches existentes y en cual nos encontramos.
+** git diff branch_1..branch_2 / git diff branch_1...branch_2
+   That will produce the diff between the tips of the two branches. 
+   If you'd prefer to find the diff from their common ancestor to test, you can use three dots instead of two:
 ** TODO git commit desde el server error por atender.. 
    :Actividad:
    [master 9bb45a3] configuracion del Flask security
