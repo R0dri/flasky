@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <title>Correo</title> -->
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <p> {{ _('Estimado/a %(nombre)s:', nombre=var.first_name) }} </p>
+        <br/>
+        {% block page_content %}{% endblock %}
+
+        <br/>
+
+        <p> Si necesitas ayuda, visita al <a href='http://agcsap.no-ip.org:5000/contactanos'> Soporte de la pagina web </a> </p>
+        <p> Atentamente, </p>
+        <br/>
+        <p>Soporte tecnico de Addvisory</p>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{% extends "security/email/mail.html" %}
+{% block page_content %}
+<p> {{ _('El %(dia)s se generó un nuevo ticket creado por: %(usuario)s', dia=var.date, usuario=var.usuario) }} </p>
+
+<div>
+    <a href="http://agcsap.no-ip.org:5000/historial"> <h4> {{ var.ticket }} </h4> </a>
+    <!-- <a href="http://localhost:5000/historial"> <h4> {{ var.actividad }} </h4> </a> -->
+</div>
+
+{% endblock %}

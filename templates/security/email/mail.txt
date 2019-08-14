@@ -1,0 +1,20 @@
+<p> {{ _('Estimado/a %(nombre)s:', nombre=var.first_name) }} </p>
+<br/>
+
+<p> {{ _('El %(dia)s se gener una respuesta al ticket "%(ticket)s" creado por:', ticket=var.ticket, dia=var.date) }} </p>
+
+<br/>
+<h5> {{ var.usuario }}</h5>
+
+<br/>
+<p> Si no realizaste esta modificacin o si crees que alguien ha accedido a tu cuenta sin autorizacin, visita la pgina de la cuenta de tu usuario y cambia tu contrasea inmediatamente. </p>
+
+<br/>
+<p> si necesitas ayuda, visita al <a href='agcsap.no-ip.org/contactanos'> Soporte de la pagina web </a> </p>
+
+<br/>
+<p> Atentamente, </p>
+<br/>
+<br/>
+
+<p>Soporte tecnico de Addvisory</p>

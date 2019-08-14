@@ -1,3 +1,5 @@
+proyecto: https://github.com/R0dri/flasky
+
 # [Start Bootstrap - Blog Post](https://startbootstrap.com/template-overviews/blog-post/)
 
 [Blog Post](http://startbootstrap.com/template-overviews/blog-post/) is a basic blog post HTML starter template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
@@ -23,7 +25,9 @@ source env/bin/activate
 Docker install Reference: https://linoxide.com/linux-how-to/install-docker-ubuntu/
 SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
 
-* Requerimientos [0/2]
+* Comandos utiles
+** Reiniciar nginx  kill -HUP <pid>
+*  Requerimientos [0/2]
    sugerimos un codigo que puede estar conformado por el codigo de SAP y un adicional para 2 o 3 usuarios de la empresa que serian los encargados de levantar tickets. Los demas miembros de la empresa pueden ver el estado de sus solicitudes mediante el codigo generico de la empresa que seria solo de lectura / consulta de los reportes
 
 ** TODO Conectar con base de datos 
@@ -235,7 +239,29 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
    :END:
 * MSSQL 
 ** insalar freetds
-   https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+*** mac
+    https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-Mac-OSX
+*** linux
+    https://stackoverflow.com/questions/33341510/how-to-install-freetds-in-linux#33364524
+    - instalar sudo apt-get install unixodbc unixodbc-dev freetds-dev freetds-bin tdsodbc
+    - sudo vim /etc/odbcinst.ini
+    :codigo:
+    #+BEGIN_SRC shell
+    [FreeTDS]
+    Description = v0.91 with protocol v7.2
+    Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+    #+END_SRC
+    :end:
+    - Crear el dns en /etc/odbc.ini
+    :codigo:
+    #+BEGIN_SRC shell
+    [dbserverdsn]
+    Driver = FreeTDS
+    Server = dbserver.domain.com
+    Port = 1433
+    TDS_Version = 7.2
+    #+END_SRC
+    :end:
 ** conectar SQL server con Pyodbc y SQLAlchemy
    https://stackoverflow.com/questions/53753948/connecting-to-sql-server-using-pyodbc-sqlalchemy
 
@@ -258,4 +284,62 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
   - leyenda
   - ayuda (tipos de notas)
   - notas similares?
+  - 
 
+** Obervaciones
+  - En el campo prioridad al cambiar de prioridad que muestre la leyenda con ddescripcion 
+* API Refernce
+# API Reference
+/usuario [GET]
+- muestra usuario.html
+
+/usuarioInfo [POST]
+- recibe json codigo usuario
+- devuelve json resultado select users
+
+/historial [POST]
+- recibe json codigo usuario, bandera(para cada query)
+    - 4 query usuario, llamada servicio
+- devuelve json resultado global
+
+/about [GET]
+- devuelve pagina info about.html
+- nombre manual/ayuda
+
+/ticket [GET, POST] 
+en vez del test y /llamada
+- GET devuelve forumlario "llamada"(ahora ticket.html)
+- POST (send: json with *ticket* fields; returns: fail,succes; inserts field in *tickets*)
+
+/actividades [GET, POST, PUT]
+- GET (send: json with *ticket* id; return: json with last activity)
+- POST (send json with activity fields; return: fail,succes; post into db new activity)
+- UPDATE? (PUT) (send: json with *resolution* and *ticket* of ticket; return fail,succes; puts resolution into field of OSCL)
+** Test jsons
+/historial
+- GET
+{"usuario":"rodri","bandera":"tabla"}
+/ticket
+- POST
+{"usuario":"rodri","priority":"2","problemTyp":"A-ASEGURADORA","ProSubType":"A-ASEGURADORA","callType":"CAPACITACION","BPContact":"asdf","subject":"asunto del problema","dscription":"Descripcion del problema detallado en texto de 100 caracteres....","estado":"abierto"}
+/actividades
+- Get
+{"ticket":"4"}
+- POST
+{"ticket":"1","CntctSbjct":"CntctSbjct","details":"details","notes":"notes","recontact":"2019-05-16","begintime":"09:01:51","action":"action"}
+- PUT
+{"resolution":"YA STA SOLUCION"}
+* Actividades - Chat
+  :OCLG:
+  | tabla      | campo      | sap          | flasky         |
+  |------------+------------+--------------+----------------|
+  | oscl       | resolution | resolucionn  |                |
+  | oclg       | id         | na           | llave          |
+  | oclg       | ticket     | na           | relacion oscl  |
+  | oclg       | CntctSbjct | Asunto       | flechitas      |
+  | oclg       | details    | comentarios  | asunto llamada |
+  | oclg       | notes      | comentario   | mensaje        |
+  | oclg       | recontact  | fehca inicio |                |
+  | oclg       | begintime  | hora inicio  |                |
+  | OCLG addon | action     | actividad    |                |
+  :END:
