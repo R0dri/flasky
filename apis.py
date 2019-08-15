@@ -9,6 +9,7 @@ from collections import namedtuple
 import json
 
 from database import db
+from models import OSCL, OCLG
 
 
 class usuarioInfo(Resource):

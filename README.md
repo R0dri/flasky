@@ -22,12 +22,10 @@ proyecto: https://github.com/R0dri/flasky
 
 source env/bin/activate
 
-Docker install Reference: https://linoxide.com/linux-how-to/install-docker-ubuntu/
-SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
 
 * Comandos utiles
 ** Reiniciar nginx  kill -HUP <pid>
-*  Requerimientos [0/2]
+* Requerimientos [0/2]
    sugerimos un codigo que puede estar conformado por el codigo de SAP y un adicional para 2 o 3 usuarios de la empresa que serian los encargados de levantar tickets. Los demas miembros de la empresa pueden ver el estado de sus solicitudes mediante el codigo generico de la empresa que seria solo de lectura / consulta de los reportes
 
 ** TODO Conectar con base de datos 
@@ -60,6 +58,14 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
 *** TODO Crear tabla de historico de formularios con status.
 
 * Docker commands
+** Install latest version on ubuntu 16
+Docker install Reference: https://linoxide.com/linux-how-to/install-docker-ubuntu/
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+fix locales for system ctl:
+https://askubuntu.com/questions/162391/how-do-i-fix-my-locale-issue#227513
+check with -> locale
+then fill missing:
+https://askubuntu.com/questions/599808/cannot-set-lc-ctype-to-default-locale-no-such-file-or-directory#749780
 ** Start and Enable Service to start on Boot
    $ sudo systemctl start docker
    $ sudo systemctl enable docker
@@ -67,10 +73,12 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
    enabled
 ** Check the status of the service using:
    $ sudo systemctl status docker
-** Iniciar el SQL: 
-   sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=B1Admin'    -p 1433:1433 --name SQL2019    -d mcr.microsoft.com/mssql/server:2019-CTP2.1
-   sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=B1Admin@'    -p 1433:1433 --name SQL2019  -v /home/workbook/dockervolumes/var/opt/mssql  -d mcr.microsoft.com/mssql/server:2019-CTP2.1
-   sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=B1Admin@'    -p 1433:1433 --name SQL2017  -v /home/workbook/dockervolumes/var/opt/mssql  -d mcr.microsoft.com/mssql/server:2017-latest
+   $ dokcer events -Eventos de los contenedores
+   $ docker logs '(container_id)' - Verbose de los containers
+** MS SQL on docker: 
+SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
+
+sudo docker run --restart always -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=B1admin@' -p 1433:1433 --name mssql -v /data/agcsupport/dockervolumes/var/opt/mssql:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2017-latest
 
 * Ubuntu/nginx setup
   https://www.youtube.com/watch?v=goToXTC96Co&list=PLovF0v_9CWzJNX8Ag0KUi78BdSeAw2Kow&index=10&t=498s
@@ -244,20 +252,45 @@ SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-
     :codigo:
     #+BEGIN_SRC shell
     [FreeTDS]
-    Description = v0.91 with protocol v7.2
+    Description = v0.91 with protocol v7.3
     Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+    Setup=/usr/local/x86_64-linux-gnu/odbc/libtdsodbc.so
+    UsageCount=1
     #+END_SRC
+
+    # [FreeTDS]
+    # Description = v0.91 with protocol v7.2
+    # Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
     :end:
     - Crear el dns en /etc/odbc.ini
     :codigo:
     #+BEGIN_SRC shell
-    [dbserverdsn]
+    [MYMSSQL]
+    Description = Test to SQLServer
     Driver = FreeTDS
-    Server = dbserver.domain.com
+    Server = localhost
     Port = 1433
-    TDS_Version = 7.2
+    TDS_Version = 7.3
+    #+END_SRC
+    # [dbserverdsn]
+    # Driver = FreeTDS
+    # #Server = dbserver.domain.com
+    # Server = localhost
+    # Port = 1433
+    # TDS_Version = 7.2
+    :end:
+    - ... y en /etc/freetds/freetds.conf
+    :codigo:
+    #+BEGIN_SRC shell
+    [MYMSSQL]
+    Description = Test to SQLServer
+    Driver = FreeTDS
+    Server = localhost
+    Port = 1433
+    TDS_Version = 7.3
     #+END_SRC
     :end:
+
 ** conectar SQL server con Pyodbc y SQLAlchemy
    https://stackoverflow.com/questions/53753948/connecting-to-sql-server-using-pyodbc-sqlalchemy
 
@@ -339,3 +372,34 @@ en vez del test y /llamada
   | oclg       | begintime  | hora inicio  |                |
   | OCLG addon | action     | actividad    |                |
   :END:
+* T
+- ui -> nuevo ticket
+  - 'Crear nuevo ticket' en vez de llamadas de servicio
+  - alta y muy alta aumentar descripciones/preguntas, archivos adjuntos y validaciones
+  - hana configuration en producto sap hanna
+  - area de problema (configuracion y mas items)
+  - 
+
+- Fecha creacion y solucion
+
+- historial
+  - adjuntar archivo en respuesta
+  - editar respuesta
+  - fecha prevista de cierre
+  - donde esta la pelota
+  - chatbot autoreply
+  - estatus descriptivo (actualizando, notificado)
+  - usuario solicitante
+  - alerta alta
+    - datos de coneccion
+    - persona de contacto 
+  - vista tabla
+  - numerar notas
+  - cantidad tickets abiertos, cerrados etc...
+  - filtros -solo abiertos
+    - alta
+    - agenda
+    - empresa
+  - consultor... ver tickets global
+
+- file server ofline para attachments
