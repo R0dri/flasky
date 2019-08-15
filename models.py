@@ -38,11 +38,13 @@ class User(db.Model, UserMixin):
     celular = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    empresa = db.Column(db.String(255))
+    # empresa = db.Column(db.String(255))
+    CardCode = db.Column(db.Integer) #id del Cliente
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     password = db.Column(db.String(255))
     confirmed_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    origen = db.Column(db.String(255)) #Tabla de origen OHEM ODCA OUSR
     roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
 
 class asign (db.Model):
@@ -50,6 +52,39 @@ class asign (db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     sap_email = db.Column(db.String(100))
     empresa = db.Column(db.String(100))
+
+
+# Clientes
+class OCRD(db.Model):
+    # __tablename__ = 'OCRD'
+    CardCode = db.Column(db.Integer(), primary_key=True)
+    CardName = db.Column(db.Integer())      #Nombre Cliente
+    DfTcnician = db.Column(db.String(20))   #Consultor Asignado principal
+    OwnerCode = db.Column(db.String(50))    #Dueno del proyecto (fijo)
+
+    recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    action = db.Column(db.String(100))     #?
+
+# Proyectos
+class OPMG(db.Model):
+    # __tablename__ = 'OPMG'
+    AbsEntry =db.Column(db.Integer(), primary_key=True)
+    CardCode = db.Column(db.Integer())       #id cliente
+    Estado = db.Column(db.String(20))  #tag AddOn, Productivo, Post Productivo
+    Proyecto = db.Column(db.String(20))      #Primario, nuevo/secundario
+
+
+    endtime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+# Estados de cada proyecto
+class SCLA(db.Model):
+    # __tablename__ = 'OPMG'
+    id = db.Column(db.Integer(), primary_key=True)
+    OSCL = db.Column(db.Integer())
+    Estado   = db.Column(db.String(20))  #tag AddOn, Productivo, Post Productivo
+    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 # Actividades
 class OCLG(db.Model):
@@ -62,6 +97,7 @@ class OCLG(db.Model):
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     action = db.Column(db.String(100))     #?
+
 
 # Tickets
 class OSCL(db.Model):
@@ -82,6 +118,10 @@ class OSCL(db.Model):
     BPProjCode = db.Column(db.String(80))   #empresa?
     dscription = db.Column(db.String(8000))
     resolution = db.Column(db.String(8000))
+
+
+
+
 
 #Set Modification for Security Forms
 class ExtendedLoginForm(LoginForm):
