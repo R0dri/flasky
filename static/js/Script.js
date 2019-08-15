@@ -31,11 +31,11 @@
 function grabarForm () {
     let a = document.querySelector("#prioridad").selectedIndex;
     let b = document.querySelector("#problema").selectedIndex;
-    let c = document.querySelector("#tllamada").selectedIndex;
+    let c = document.querySelector("#tproblema").selectedIndex;
     var obsesion = {
         priority: document.querySelector("#prioridad")[a].value,
         problemTyp: document.querySelector("#problema")[b].value,
-        callType: document.querySelector("#tllamada")[c].value,
+        callType: document.querySelector("#tproblema")[c].value,
         BPContact: document.querySelector("#Usuario").value,
         subject: document.querySelector("#asunto").value,
         usuario: document.querySelector("#oUser").innerText,
@@ -43,7 +43,9 @@ function grabarForm () {
         estado: '',
         dscription: document.querySelector("#dscription").value
     };
-    vmv.grabarF(obsesion);
+    grabarF(obsesion);
+    let grabarBTN = document.querySelector("#formSubmit");
+    // window.location.replace("http://stackoverflow.com");
 }
 
 //######### obtener el historial.html ########
