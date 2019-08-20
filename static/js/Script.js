@@ -2,7 +2,7 @@
     // $('.tarjeta_eventos').perfectScrollbar({wheelSpeed: .5});
     let documento = document.URL;
     if (documento.indexOf("ticket") > -1) {
-        let form = document.querySelector("#formSubmit");
+        let form = document.querySelector("#formSubmit1");
         let button = document.querySelector("#tproblema");
         form.addEventListener("click", grabarForm);
         button.addEventListener("change", selectProblemas);
@@ -43,8 +43,18 @@ function grabarForm () {
         estado: '',
         dscription: document.querySelector("#dscription").value
     };
-    grabarF(obsesion);
-    let grabarBTN = document.querySelector("#formSubmit");
+    if(!obsesion['priority'] == ''
+       & !obsesion['problemTyp'] == ''
+       & !obsesion['callType'] == ''
+       & !obsesion['subject'] == ''
+       & !obsesion['usuario'] == ''
+       & !obsesion['dscription'] == ''
+      )
+    {
+        grabarF(obsesion);
+        window.location.href = "http://agcsap.no-ip.org:4490/";
+    }
+    // let grabarBTN = document.querySelector("#formSubmit");
     // window.location.replace("http://stackoverflow.com");
     // $(location).attr('href', 'http://stackoverflow.com');
 }
