@@ -39,7 +39,7 @@ let grabarF = (param) => {
                 // alert(data);
                 // alert('comoes');
                 // console.log(data);
-                // window.location.href = "http://stackoverflow.com";
+                window.location.href = "http://stackoverflow.com";
                 
             }
            }).then(function(){window.location.href = "http://agcsap.no-ip.org:4490/";});

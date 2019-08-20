@@ -4,7 +4,10 @@
     if (documento.indexOf("ticket") > -1) {
         let form = document.querySelector("#formSubmit1");
         let button = document.querySelector("#tproblema");
-        form.addEventListener("click", grabarForm);
+        form.addEventListener("click", function(o){
+            o.preventDefault();
+            grabarForm();
+        });
         button.addEventListener("change", selectProblemas);
     }
     else if (documento.indexOf("test") > -1) {
