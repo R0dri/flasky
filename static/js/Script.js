@@ -46,6 +46,7 @@ function grabarForm () {
     grabarF(obsesion);
     let grabarBTN = document.querySelector("#formSubmit");
     // window.location.replace("http://stackoverflow.com");
+    // $(location).attr('href', 'http://stackoverflow.com');
 }
 
 //######### obtener el historial.html ########

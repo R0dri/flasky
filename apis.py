@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify, make_response, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 from flask_mail import Mail, Message
@@ -57,19 +57,24 @@ class ticket(Resource):
     def post(self):
         print("entering post")
         try:
-            print("try post data")
+            print("try post data1")
             sn = request.get_json()
             se = db.text("SELECT * FROM [user] WHERE username = :ids")
             ids = sn["usuario"]
+            print(sn)
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
+            print("try post data2")
+            print(su)
             su = su[0]
-            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["empresa"], dscription=sn["dscription"])
+            print(su)
+            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
             db.session.add(sas)
-            # status = db.session.commit()
-            db.session.commit()
+            status = db.session.commit()
+            # db.session.commit()
             print("api ran with no errors")
             return {'Saved call': sn['subject']}
+            # return redirect("http://www.google.com", code=302)
             # return {'Saved call': sn['subject']}, 200
             # return {'Saved call': status}
 
