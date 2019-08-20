@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, make_response
+from flask import render_template, request, jsonify, make_response, redirect
 from flask_security import Security, SQLAlchemyUserDatastore, login_required
 from flask_mail import Message
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
@@ -16,10 +16,18 @@ toolbar=DebugToolbarExtension(app)
 
 # Create a user to test with
 # @app.before_first_request
-# def create_user():
-#     db.create_all()
-#     user_datastore.create_user(email='r', password='p')
-#     db.session.commit()
+@app.route('/startup')
+def create_user():
+    print("CREATING USER")
+    db.create_all()
+    user_datastore.create_user(email='r', password='p')
+    db.session.commit()
+    return redirect('/')
+
+@app.route('/redirect')
+def redi():
+    print('redirecting')
+    return redirect('/',code=302)
 
 # Views
 @app.route('/sendmail')

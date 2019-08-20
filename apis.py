@@ -70,10 +70,12 @@ class ticket(Resource):
             print(su)
             sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
             db.session.add(sas)
+            print("Session Add")
             status = db.session.commit()
+            print("Session Commit")
             # db.session.commit()
             print("api ran with no errors")
-            return {'Saved call': sn['subject']}
+            #return {'Saved call': sn['subject']}
             # return redirect("http://www.google.com", code=302)
             # return {'Saved call': sn['subject']}, 200
             # return {'Saved call': status}

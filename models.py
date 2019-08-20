@@ -63,7 +63,7 @@ class OCRD(db.Model):
     OwnerCode = db.Column(db.String(50))    #Dueno del proyecto (fijo)
 
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    begintime = recontact
     action = db.Column(db.String(100))     #?
 
 # Proyectos
@@ -95,7 +95,7 @@ class OCLG(db.Model):
     details = db.Column(db.String(50))     #asunto
     notes = db.Column(db.String(100))
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    begintime = recontact
     action = db.Column(db.String(100))     #?
 
 
@@ -112,6 +112,7 @@ class OSCL(db.Model):
     contactCode = db.Column(db.String(100)) #username?
     BPContact = db.Column(db.String(100))   #usuario afectado
     createTime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    createDate = createTime
     BPPhone1 = db.Column(db.String(20))     #^
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario
