@@ -39,7 +39,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     # empresa = db.Column(db.String(255))
-    CardCode = db.Column(db.Integer) #id del Cliente
+    CardCode = db.Column(db.String(20)) #id del Cliente
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     password = db.Column(db.String(255))
@@ -57,22 +57,25 @@ class asign (db.Model):
 # Clientes
 class OCRD(db.Model):
     # __tablename__ = 'OCRD'
-    CardCode = db.Column(db.Integer(), primary_key=True)
-    CardName = db.Column(db.Integer())      #Nombre Cliente
+    CardCode = db.Column(db.String(15), primary_key=True)
+    CardName = db.Column(db.String(15))     #Nombre Cliente
     DfTcnician = db.Column(db.String(20))   #Consultor Asignado principal
     OwnerCode = db.Column(db.String(50))    #Dueno del proyecto (fijo)
 
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    begintime = recontact
+    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    # begintime = recontact
     action = db.Column(db.String(100))     #?
 
 # Proyectos
 class OPMG(db.Model):
     # __tablename__ = 'OPMG'
     AbsEntry =db.Column(db.Integer(), primary_key=True)
-    CardCode = db.Column(db.Integer())       #id cliente
+    CardCode = db.Column(db.String(15))       #id cliente
     Estado = db.Column(db.String(20))  #tag AddOn, Productivo, Post Productivo
-    Proyecto = db.Column(db.String(20))      #Primario, nuevo/secundario
+    NAME = db.Column(db.String(20))      #Primario, nuevo/secundario
+    OWNER = db.Column(db.String(20))      #Primario, nuevo/secundario
+
 
 
     endtime = db.Column(db.DateTime(timezone=True), server_default=func.now())
@@ -95,7 +98,8 @@ class OCLG(db.Model):
     details = db.Column(db.String(50))     #asunto
     notes = db.Column(db.String(100))
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    begintime = recontact
+    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    # begintime = recontact
     action = db.Column(db.String(100))     #?
 
 
@@ -112,7 +116,8 @@ class OSCL(db.Model):
     contactCode = db.Column(db.String(100)) #username?
     BPContact = db.Column(db.String(100))   #usuario afectado
     createTime = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    createDate = createTime
+    createDate = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    # createDate = createTime
     BPPhone1 = db.Column(db.String(20))     #^
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario

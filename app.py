@@ -15,14 +15,14 @@ toolbar=DebugToolbarExtension(app)
 
 
 # Create a user to test with
+#@app.route('/startup')
 # @app.before_first_request
-@app.route('/startup')
-def create_user():
-    print("CREATING USER")
-    db.create_all()
-    user_datastore.create_user(email='r', password='p')
-    db.session.commit()
-    return redirect('/')
+# def create_user():
+#     print("CREATING USER")
+#     db.create_all()
+#     user_datastore.create_user(email='r', password='p')
+#     db.session.commit()
+#     return redirect('/')
 
 @app.route('/redirect')
 def redi():

@@ -40,10 +40,14 @@ let grabarF = (param) => {
                 // alert('comoes');
                 // console.log(data);
                 // window.location.href = "http://stackoverflow.com";
-                window.location.href = "/";
+                // window.location.href = "/";
             }
-           }).then(function(){window.location.href = "/";});
+           }).then(function(){
+               // window.location.href = "/";
+               return true;
+           });
 
+    return true;
     // window.location.href = "http://stackoverflow.com";
     // $(location).attr('href', 'http://stackoverflow.com');
 

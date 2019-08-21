@@ -54,8 +54,16 @@ function grabarForm () {
        & !obsesion['dscription'] == ''
       )
     {
-        grabarF(obsesion);
-        window.location.href = "/";
+
+        let opromise = new Promise((resolve, reject) => {
+            if(grabarF(obsesion)){
+                resolve('bien');
+            }
+        });
+
+        opromise.then((mensaje) => {
+            window.location.href = "/";
+        })
     }
     // let grabarBTN = document.querySelector("#formSubmit");
     // window.location.replace("http://stackoverflow.com");
