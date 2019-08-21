@@ -73,10 +73,11 @@ class ticket(Resource):
             status = db.session.commit()
             # db.session.commit()
             print("api ran with no errors")
-            return {'Saved call': sn['subject']}
+            # return {'Saved call': sn['subject']}
             # return redirect("http://www.google.com", code=302)
             # return {'Saved call': sn['subject']}, 200
-            # return {'Saved call': status}
+            return {'Saved call': status}
+            # return(200);
 
         except Exception as error:
             print("Catched ERROR on POST @/ticket")

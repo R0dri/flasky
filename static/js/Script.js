@@ -2,9 +2,12 @@
     // $('.tarjeta_eventos').perfectScrollbar({wheelSpeed: .5});
     let documento = document.URL;
     if (documento.indexOf("ticket") > -1) {
-        let form = document.querySelector("#formSubmit");
+        let form = document.querySelector("#formSubmit1");
         let button = document.querySelector("#tproblema");
-        form.addEventListener("click", grabarForm);
+        form.addEventListener("click", function(o){
+            o.preventDefault();
+            grabarForm();
+        });
         button.addEventListener("change", selectProblemas);
     }
     else if (documento.indexOf("test") > -1) {
@@ -43,8 +46,18 @@ function grabarForm () {
         estado: '',
         dscription: document.querySelector("#dscription").value
     };
-    grabarF(obsesion);
-    let grabarBTN = document.querySelector("#formSubmit");
+    if(!obsesion['priority'] == ''
+       & !obsesion['problemTyp'] == ''
+       & !obsesion['callType'] == ''
+       & !obsesion['subject'] == ''
+       & !obsesion['usuario'] == ''
+       & !obsesion['dscription'] == ''
+      )
+    {
+        grabarF(obsesion);
+        window.location.href = "/";
+    }
+    // let grabarBTN = document.querySelector("#formSubmit");
     // window.location.replace("http://stackoverflow.com");
     // $(location).attr('href', 'http://stackoverflow.com');
 }
