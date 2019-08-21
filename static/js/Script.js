@@ -55,7 +55,7 @@ function grabarForm () {
       )
     {
         grabarF(obsesion);
-        window.location.href = "http://agcsap.no-ip.org:4490/";
+        // window.location.href = "http://agcsap.no-ip.org:4490/";
     }
     // let grabarBTN = document.querySelector("#formSubmit");
     // window.location.replace("http://stackoverflow.com");
