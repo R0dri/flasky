@@ -4,6 +4,7 @@ from flask_mail import Message
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
 from flask_restful import Resource, Api
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_migrate import Migrate
 
 
 from database import db, mail, app
@@ -12,6 +13,7 @@ from apis import ticket, usuarioInfo, historial, actividad
 
 api = Api(app)
 toolbar=DebugToolbarExtension(app)
+migrate = Migrate(app,db)
 
 
 # Create a user to test with

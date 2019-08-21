@@ -5,3 +5,5 @@ __pycache__/
 app.pyc
 quickstart.sh
 config.json
+migrations/
+.models.py.swp

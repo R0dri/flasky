@@ -43,7 +43,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     password = db.Column(db.String(255))
-    confirmed_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    confirmed_at = db.Column(db.DateTime(timezone=True))
+    last_login_at = db.Column(db.DateTime(timezone=True))
+    current_login_at = db.Column(db.DateTime(timezone=True))
+    last_login_ip = db.Column(db.String(20))
+    current_login_ip = db.Column(db.String(20))
+    login_count = db.Column(db.DateTime(timezone=True))
     origen = db.Column(db.String(255)) #Tabla de origen OHEM ODCA OUSR
     roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
 
@@ -65,7 +70,7 @@ class OCRD(db.Model):
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # begintime = recontact
-    action = db.Column(db.String(100))     #?
+    #action = db.Column(db.String(100))     #?
 
 # Proyectos
 class OPMG(db.Model):
@@ -73,10 +78,9 @@ class OPMG(db.Model):
     AbsEntry =db.Column(db.Integer(), primary_key=True)
     CardCode = db.Column(db.String(15))       #id cliente
     Estado = db.Column(db.String(20))  #tag AddOn, Productivo, Post Productivo
-    NAME = db.Column(db.String(20))      #Primario, nuevo/secundario
-    OWNER = db.Column(db.String(20))      #Primario, nuevo/secundario
-
-
+    NAME = db.Column(db.String(20))      #Primario, nuevo/secundario -> antes proyecto
+    OWNER = db.Column(db.String(20))      #consultor
+    # OwnerCode = db.Column(db.String(20))      #Cliente
 
     endtime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
