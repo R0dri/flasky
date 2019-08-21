@@ -43,7 +43,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     password = db.Column(db.String(255))
-    confirmed_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    confirmed_at = db.Column(db.DateTime(timezone=True))
+    last_login_at = db.Column(db.DateTime(timezone=True))
+    current_login_at = db.Column(db.DateTime(timezone=True))
+    last_login_ip = db.Column(db.String(20))
+    current_login_ip = db.Column(db.String(20))
+    login_count = db.Column(db.DateTime(timezone=True))
     origen = db.Column(db.String(255)) #Tabla de origen OHEM ODCA OUSR
     roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
 
@@ -64,7 +69,7 @@ class OCRD(db.Model):
 
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    action = db.Column(db.String(100))     #?
+    #action = db.Column(db.String(100))     #?
 
 # Proyectos
 class OPMG(db.Model):
@@ -73,7 +78,7 @@ class OPMG(db.Model):
     CardCode = db.Column(db.Integer())       #id cliente
     Estado = db.Column(db.String(20))  #tag AddOn, Productivo, Post Productivo
     Proyecto = db.Column(db.String(20))      #Primario, nuevo/secundario
-
+    OwnerCode = db.Column(db.String(20))      #Cliente
 
     endtime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
@@ -112,6 +117,7 @@ class OSCL(db.Model):
     contactCode = db.Column(db.String(100)) #username?
     BPContact = db.Column(db.String(100))   #usuario afectado
     createTime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    createDate = db.Column(db.DateTime(timezone=True), server_default=func.now())
     BPPhone1 = db.Column(db.String(20))     #^
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario
