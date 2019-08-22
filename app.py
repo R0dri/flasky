@@ -94,6 +94,9 @@ def endless(route):
 def about():
     return render_template('about.html')
 
+@app.route('/actividades')
+def actividades():
+    return render_template('actividad.html')
 
 api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')
