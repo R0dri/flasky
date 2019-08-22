@@ -8,7 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from collections import namedtuple
 import json
 
-from database import db
+from database import db, SendMail
 from models import OSCL, OCLG
 
 
@@ -55,36 +55,43 @@ class ticket(Resource):
         return make_response(render_template('ticket.html'),200,headers)
 
     def post(self):
-        print("entering post")
+        print("Posting Ticket")
         try:
-            print("try post data1")
             sn = request.get_json()
             se = db.text("SELECT * FROM [user] WHERE username = :ids")
             ids = sn["usuario"]
-            print(sn)
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
-            print("try post data2")
-            print(su)
             su = su[0]
-            print(su)
             sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
             db.session.add(sas)
-            print("Session Add")
             status = db.session.commit()
-            print("Session Commit")
-            # db.session.commit()
-            print("api ran with no errors")
-            # return {'Saved call': sn['subject']}
+            print('here')
+
+            try:
+                #Send Notification Mail
+                var = {
+                    'ticket':sn['subject'],
+                    'date':"22 de abrile de 2019",
+                    'usuario':sn["usuario"],
+                    'first_name':su["first_name"],
+                }
+                recipient=['teyokan@onemail1.com']
+                print("sending mail to:")
+                print(recipient)
+                ma = SendMail(vara=var,recipient=recipient)
+                print(ma.ticket())
+            except Exception as error:
+                print("Catched ERROR on SendMail @/postticket")
+                print(error)
+
             # return redirect("http://www.google.com", code=302)
             # return {'Saved call': sn['subject']}, 200
             return {'Saved call': status}
-            # return(200);
 
         except Exception as error:
             print("Catched ERROR on POST @/ticket")
             print (error)
-            # return "got an error on post method"
             return jsonify({'error':error.args})
             # return jsonify({'error':error.args}), 400
 
@@ -109,11 +116,10 @@ class actividad(Resource):
 
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
-
-            # print (su)
             # su = su[0]
             return jsonify(su)
             # return jsonify(su), 200
+
         except Exception as error:
             print ("got an error on POST method at /Actividad")
             print (error)
@@ -121,22 +127,58 @@ class actividad(Resource):
             # return jsonify(error.args), 400
 
     def put(self):
+        print("Posting Actividad")
         try:
             sn = request.get_json()
-            # sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], details=sn['details'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
-            # sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], notes=sn['notes'], recontact=sn['recontact'], begintime=sn['begintime'], action=sn['action'])
+
+            se = db.text("SELECT * FROM [user] WHERE username = :ids")
+            ids = sn["CntctSbjct"]
+            u = db.engine.execute(se, ids=ids).fetchall()
+            su = [dict(row) for row in u]
+            su = su[0]
+            print(su)
+            print()
+
+            se = db.text("SELECT * FROM OSCL WHERE id = :ids")
+            ids = sn["ticket"]
+            u = db.engine.execute(se, ids=ids).fetchall()
+            sr = [dict(row) for row in u]
+            sr = sr[0]
+            print(sr)
+
             sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], notes=sn['notes'])
             db.session.add(sas)
             db.session.commit()
+
+            #Send Notification Mail
+            print("Posting Actividad")
+            try:
+                var = {
+                    'ticket':sr['subject'],
+                    'date':"22 de abrile de 2019",
+                    'usuario':su["username"],
+                    'first_name':su["first_name"],
+                }
+                print(var)
+                recipient=['teyokan@onemail1.com']
+                print("sending mail to:")
+                print(recipient)
+                ma = SendMail(vara=var,recipient=recipient)
+                print(ma.actividad())
+            except Exception as error:
+                print("Catched ERROR on SendMail @/postticket")
+                print(error)
+
             return jsonify({'result': sn['ticket']})
             # return "{'Saved activity': 'bien'}"
             # return {'Saved activity': sn['details']}, 200
+
         except (ValueError, KeyError, TypeError) as error:
-            # print (error)
-            # return "got an error on post method"
+            return "got an error on put method @actividad"
             # return jsonify({'valueError':ValueError, 'keyError':KeyError, 'typeError':TypeError})
             return jsonify({'error':error})
             # return jsonify({'error':error}), 400
+
     def update(self):
         try:
             sn = request.get_json()
@@ -144,14 +186,11 @@ class actividad(Resource):
             ids = sn["ticket"]
             sol = sn["resolution"]
             db.engine.execute(se, sol=sol, ids=ids)
-            # su = [dict(row) for row in u]
-            # su = su[0]
-            # db.session.add(sas)
             db.session.commit()
             return {'Set resolution and close ticket id': sn['ticket']}
             # return {'Set resolution and close ticket id': sn['ticket']}, 200
         except Exception as error:
-            print ("got an error on POST method at /Actividad")
+            print ("got an error on POST method @Actividad")
             print (error)
             return jsonify({'error':error.args})
             # return jsonify({'error':error.args}), 400

@@ -35,17 +35,6 @@ class Simple:
 class SendMail:
     def __init__(self,**kwargs):
         self.test = kwargs.get('debug',False)
-        # se = db.text("SELECT * [user] WHERE username=:usuario")
-        # usuario = sn["usuario"]
-        # u = db.engine.execute(se, usuario=usuario).fetchall()
-        # su = [dict(row) for row in u]
-        # su = su[0]
-
-        # se = db.text("SELECT subject FROM OCLG WHERE id=:tid")
-        # usuario = sn["tid"]
-        # t = db.engine.execute(se, usuario=usuario).fetchall()
-        # st = [dict(row) for row in u]
-        # st = su[0]
 
         self.var = {
             'ticket':"subject",
@@ -55,7 +44,11 @@ class SendMail:
         }
 
         self.var = kwargs.get('vara',self.var)
-        self.msg = Message(subject='sujet', recipients=['defekuz@mrmail.info','rodri.mendoza.t@gmail.com','pablo.mendoza@advisorygc.com'])
+
+        self.recipient=['defekuz@mrmail.info','rodri.mendoza.t@gmail.com','pablo.mendoza@advisorygc.com']
+        self.recipient = kwargs.get('recipient',self.recipient)
+        # self.msg = Message(subject='Se ha creado una nueva actividad', recipients=['defekuz@mrmail.info','rodri.mendoza.t@gmail.com','pablo.mendoza@advisorygc.com'])
+        # self.msg = Message(subject='Se ha creado una nueva actividad', recipients=self.recipient)
 
     def teste(self):
         if(self.test):
@@ -63,9 +56,10 @@ class SendMail:
             return "hey - Test Mode Enabled"
         else:
             print("ho - Test Mode Disabled")
-            return "h0 - Test Mode Disabled"
+            return "ho - Test Mode Disabled"
 
     def ticket(self):
+        self.msg = Message(subject='Se ha creado una nueva llamada de servicio', recipients=self.recipient)
         if(self.test):
         #     headers = {'Content-Type':['text/html', 'charset=utf-8']}
         #     return make_response(render_template('security/email/mail.html',var=self.var),200,headers)
@@ -73,12 +67,15 @@ class SendMail:
             res.headers["Content-Type"]="text/html; charset=utf-8"
             return res
         else:
+            print("rendering mail")
+            print(self.msg)
             self.msg.html = render_template('security/email/ticket.html',var=self.var)
             mail.connect()
             mail.send(self.msg)
             return 'Sent email'
 
     def actividad(self):
+        self.msg = Message(subject='Se ha creado una nueva actividad', recipients=self.recipient)
         if(self.test):
         #     headers = {'Content-Type':['text/html', 'charset=utf-8']}
         #     return make_response(render_template('security/email/mail.html',var=self.var),200,headers)

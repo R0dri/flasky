@@ -48,7 +48,7 @@ class User(db.Model, UserMixin):
     current_login_at = db.Column(db.DateTime(timezone=True))
     last_login_ip = db.Column(db.String(20))
     current_login_ip = db.Column(db.String(20))
-    login_count = db.Column(db.DateTime(timezone=True))
+    login_count = db.Column(db.Integer)
     origen = db.Column(db.String(255)) #Tabla de origen OHEM ODCA OUSR
     roles = db.relationship('Role', secondary='roles_users', backref=db.backref('users', lazy='dynamic'))
 
@@ -91,7 +91,7 @@ class SCLA(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     OSCL = db.Column(db.Integer())
     Estado   = db.Column(db.String(20))  #tag AddOn, Productivo, Post Productivo
-    begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    begintime = db.Column(db.DateTime(timezone=False), server_default=func.now())
 
 # Actividades
 class OCLG(db.Model):
@@ -137,16 +137,16 @@ class OSCL(db.Model):
 class ExtendedLoginForm(LoginForm):
     # username = StringField('Usuario', [Required()])
     email = StringField('Correo', [Required()])
-    password = PasswordField('Contrasena', [Required()])
+    password = PasswordField('Contrase&ntilde;a', [Required()])
 class ExtendedRegisterForm(RegisterForm):
     username = StringField('Usuario', [Required()])
     # email = StringField('Usuario', [Required()])
-    first_name = StringField('Nombres', [Required()])
-    last_name = StringField('Apellidos', [Required()])
-    telefono = StringField('telefono', [Required()])
-    celular = StringField('telefono', [Required()])
-    password = PasswordField('Contrasena', [Required()])
-    password_confirm = PasswordField('Confirmar Contrasena', [Required()])
+    first_name = StringField('Nombre', [Required()])
+    last_name = StringField('Apellido', [Required()])
+    telefono = StringField('Tel&eacute;fono', [Required()])
+    celular = StringField('Celular', [Required()])
+    # password = PasswordField('Contrase&ntilde;a', [Required()])
+    # password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)

@@ -16,7 +16,7 @@ toolbar=DebugToolbarExtension(app)
 migrate = Migrate(app,db)
 
 
-# # Create a user to test with
+# Create a user to test with
 # @app.route('/startup')
 # @app.before_first_request
 # def create_user():
