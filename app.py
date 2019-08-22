@@ -1,10 +1,12 @@
 from flask import render_template, request, jsonify, make_response, redirect
-from flask_security import Security, SQLAlchemyUserDatastore, login_required
+from flask_security import Security, SQLAlchemyUserDatastore, login_required, user_registered
 from flask_mail import Message
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
 from flask_restful import Resource, Api
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
+
+from contextlib import contextmanager
 
 
 from database import db, mail, app
@@ -16,8 +18,8 @@ toolbar=DebugToolbarExtension(app)
 migrate = Migrate(app,db)
 
 
+
 # Create a user to test with
-# @app.route('/startup')
 # @app.before_first_request
 # def create_user():
 #     print("CREATING USER")
@@ -25,6 +27,7 @@ migrate = Migrate(app,db)
 #     user_datastore.create_user(email='r', password='p')
 #     db.session.commit()
 #     return redirect('/')
+
 
 @app.route('/redirect')
 def redi():
