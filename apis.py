@@ -95,12 +95,17 @@ class actividad(Resource):
             sn = request.get_json()
             # se = db.text("SELECT * FROM OCLG WHERE ticket = :ids")
 
+            # se = db.text("select a.* " +
+            #              "from   OCLG as a " +
+            #              "       inner join OSCL as b on a.ticket = b.id " +
+            #              "       inner join [user] as c on b.contactCode = c.id " +
+            #              "where  c.username = :ids")
+
+            # ids = sn["usuario"]
             se = db.text("select a.* " +
                          "from   OCLG as a " +
-                         "       inner join OSCL as b on a.ticket = b.id " +
-                         "       inner join [user] as c on b.contactCode = c.id " +
-                         "where  c.username = :ids")
-            ids = sn["usuario"]
+                         "where  a.ticket = :ids")
+            ids = sn["ticket"]
 
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]

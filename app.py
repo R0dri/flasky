@@ -16,8 +16,8 @@ toolbar=DebugToolbarExtension(app)
 migrate = Migrate(app,db)
 
 
-# Create a user to test with
-#@app.route('/startup')
+# # Create a user to test with
+# @app.route('/startup')
 # @app.before_first_request
 # def create_user():
 #     print("CREATING USER")
@@ -91,6 +91,9 @@ def endless(route):
 def about():
     return render_template('about.html')
 
+@app.route('/actividades')
+def actividades():
+    return render_template('actividad.html')
 
 api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')
