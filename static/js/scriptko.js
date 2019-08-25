@@ -62,22 +62,57 @@ let grabarF = (param) => {
 function vm() {
     var self = this;
 
+    self.flag = ko.observable();
+    self.newNotes = ko.observable();
+    self.ticketid = ko.observable();
+    this.pra = ko.observable();
+
     this.llamadas = ko.observableArray();
-    this.actividad = ko.observableArray();
+    this.oactividad = ko.observableArray();
 
     this.mapHistorial = (datos) => {
         self.llamadas(datos);
     };
+
+    this.mapAct = (datos) => {
+        self.oactividad(datos.actividad);
+    };
+    this.setflag = (datos) => {
+        // self.pra('hola');
+        self.flag(datos); 
+        // self.flag(true); 
+    };
+    this.navAct = function(con){
+        let param = con.id;
+        // getAct(param); 
+        // getAct(); 
+
+        
+        window.location.href = "/actividades?tparam=" + param;
+        // let opromise = new Promise((resolve, reject) => {
+        //     document.querySelector("#ticketid").innerText = param;
+            // self.ticketid(param);
+        //             resolve('bien');
+        // });
+
+        // opromise.then((mensaje) => {
+        //     window.location.href = "/actividades";
+        // });
+    }
     self.grabarAct = function (con, children) {
+
+        let ourl = document.URL;
+        let url = new URL(ourl);
+        var vticket = url.searchParams.get("tparam");
         let actividad = {
-            CntctSbjct:con.usuario,
+            CntctSbjct:document.querySelector("#oUser").innerText,
             action:null,
             begintime:null,
             details:null,
             id:null,
-            notes:con.newNotes,
+            notes:self.newNotes(),
             recontact:null,
-            ticket:con.id
+            ticket:vticket
         };
         $.ajax({type: "PUT",
                 dataType: "json",
@@ -90,7 +125,8 @@ function vm() {
                }).then(refrescar.bind(this), handleError);
 
         function refrescar (data) {
-            this.actividad.push(actividad);
+            // this.actividad.push(actividad);
+            getAct(data.result);
         };
         function handleError(xhr, status, err){
             alert(err.valueError + ' status:' + status);

@@ -20,6 +20,17 @@
     }
     else if (documento.indexOf("login") > -1) {
     }
+    else if (documento.indexOf("actividades") > -1) {
+        getAct();
+        // let form = document.querySelector("#formSubmit1");
+        // let button = document.querySelector("#tproblema");
+        // form.addEventListener("click", function(o){
+        //     o.preventDefault();
+        //     grabarForm();
+        // });
+        // button.addEventListener("change", selectProblemas);
+        let button = document.querySelector("btnActividad");
+    }
     else {
         // getHistorico();
         let button = document.querySelector("btnActividad");
@@ -96,56 +107,138 @@ var usuarioInfo = () => {
 
 //######### obtiene las llamadas y actividades ########
 var getHistoricoCOM = () => {
-    let usuarioDoc = document.querySelector("#oUser").innerText;
     let jsonObj = {
         usuario: document.querySelector("#oUser").innerText,
         bandera: 'tabla'
     };
-    let param = {"usuario":usuarioDoc};
-
-    let actividades = getActividades(param);
     let llam = getLlam(jsonObj);
 
-    actividades.then((data) => {
-        return data;
-    }).then((objtemp) => {
-        llam.then((data) => {
-
-            let result = data.map((callb) => {
-
-                let actob = objtemp.filter((actividad) => {
-                    // actividad.newNotes = '';
-                    return actividad.ticket === callb.id;
-                });
-
-                // let mapFunc = (act, e) => {
-                //     let index = e;
-                //     let len = actob.length;
-                //     act.nuevo = usuario;
-                //     actob.length == e+1 && act.CntctSbjct == "SAP" ? act.flag = true : act.flag = false; 
-                //     return act;
-                // };
-                // let usuario = callb.usuario;
-                // actob = actob.map(mapFunc.bind(usuario));
-
-
-                let flag = actob.map((act, e) => {
-                    let index = e;
-                    let len = actob.length;
-                    return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
-                });
-
-                let len = actob.length;
-
-                callb.flag = flag[len-1];
-                callb.newNotes = '';
-                callb.actividad = actob;
-                return callb;
-            }, []);
-            vmv.mapHistorial(result);
-        });
+    llam.then((data) => {
+        // vmv.mapHistorial(result);
+        vmv.mapHistorial(data);
     });
 }
+// var getAct = (vticket) => {
+var getAct = () => {
+    // let vticket = document.querySelector("#ticketid").innerText;
+    let ourl = this.document.URL;
+    let url = new URL(ourl);
+    var vticket = url.searchParams.get("tparam");
+    // let usuarioDoc = document.querySelector("#oUser").innerText;
+    let param = {"ticket":vticket};
+    let actividades = getActividades(param);
+
+    let llamada = new Promise((resolve, reject) => {
+    //     if(window.location.href = "/actividades"){
+    //         resolve('bien');
+    //     }
+    // });
+
+        actividades.then((data) => {
+
+            let newOb = [];
+            newOb.newNotes = '';
+            newOb.actividad = data;
+            vmv.mapAct(newOb);
+
+            return data;
+        }).then((actob) => {
+
+            let curUser = document.querySelector("#oUser").innerText; 
+
+            let flag = actob.map((act, e) => {
+                let index = e;
+                let len = actob.length;
+                // act.flag == "P
+                // return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
+                return actob.length == e+1 && act.CntctSbjct != curUser ? true : false;
+            });
+
+            let len = actob.length;
+
+            let callb = [];
+            callb.flag = flag[len-1];
+            callb.newNotes = '';
+            vmv.setflag(callb.flag);
+            resolve('bien');
+            return(actob);
+        });
+    });
+
+    llamada.then(llamar.bind('', param));
+
+    function llamar (parametro, msg){
+        let jsonObj = {
+            usuario: parametro.ticket,
+            bandera: 'especifico'
+        };
+        let llam = getLlam(jsonObj);
+
+        llam.then((data) => {
+            let datos = data[0];
+            console.log(datos);
+            document.querySelector("#CntctSbjct").innerText = datos.usuario;
+            document.querySelector("#subject").innerText = datos.subject;
+            document.querySelector("#descripcion").innerText = datos.dscription;
+            document.querySelector("#id").innerText = datos.id;
+
+            // vmv.mapHistorial(result);
+            // vmv.mapHistorial(data);
+        });    
+    }
+}
+//######### obtiene las llamadas y actividades ########
+// var getHistoricoCOM_ant = () => {
+//     let usuarioDoc = document.querySelector("#oUser").innerText;
+//     let jsonObj = {
+//         usuario: document.querySelector("#oUser").innerText,
+//         bandera: 'tabla'
+//     };
+//     let param = {"usuario":usuarioDoc};
+
+//     let actividades = getActividades(param);
+//     let llam = getLlam(jsonObj);
+
+//     actividades.then((data) => {
+//         return data;
+//     }).then((objtemp) => {
+//         llam.then((data) => {
+
+//             let result = data.map((callb) => {
+
+//                 let actob = objtemp.filter((actividad) => {
+//                     // actividad.newNotes = '';
+//                     return actividad.ticket === callb.id;
+//                 });
+
+//                 // let mapFunc = (act, e) => {
+//                 //     let index = e;
+//                 //     let len = actob.length;
+//                 //     act.nuevo = usuario;
+//                 //     actob.length == e+1 && act.CntctSbjct == "SAP" ? act.flag = true : act.flag = false; 
+//                 //     return act;
+//                 // };
+//                 // let usuario = callb.usuario;
+//                 // actob = actob.map(mapFunc.bind(usuario));
+
+
+//                 let flag = actob.map((act, e) => {
+//                     let index = e;
+//                     let len = actob.length;
+//                     return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
+//                 });
+
+//                 let len = actob.length;
+
+//                 callb.flag = flag[len-1];
+//                 callb.newNotes = '';
+//                 callb.actividad = actob;
+//                 return callb;
+//             }, []);
+//             vmv.mapHistorial(result);
+//         });
+//     });
+// }
 //######### llena la lista de problemas en ticket.html ########
 var selectProblemas = () => {
     let tipo = document.querySelector("#tproblema").value;
