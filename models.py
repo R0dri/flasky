@@ -41,7 +41,7 @@ class User(db.Model, UserMixin):
     # empresa = db.Column(db.String(255))
     CardCode = db.Column(db.String(20)) #id del Cliente
     password = db.Column(db.String(255))
-    active = db.Column(db.Boolean())
+    active = db.Column(db.Boolean(), nullable=False)
     password = db.Column(db.String(255))
     confirmed_at = db.Column(db.DateTime(timezone=True))
     last_login_at = db.Column(db.DateTime(timezone=True))
@@ -131,8 +131,6 @@ class OSCL(db.Model):
 
 
 
-
-
 #Set Modification for Security Forms
 class ExtendedLoginForm(LoginForm):
     # username = StringField('Usuario', [Required()])
@@ -153,3 +151,24 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore,
                     confirm_register_form=ExtendedRegisterForm,
                     login_form=ExtendedLoginForm)
+
+
+# from flask_login import usser_logged_in as logged
+# @contextmanager
+# def captured_templates(app):
+#     recorded = []
+#     def record(sender, template, context, **extra):
+#         recorded.append((template, context))
+
+#     logged.connect(record, app)
+#     try:
+#         yield recorded
+#     finally:
+#         user_registered.disconnect(record, app)
+
+
+# from flask_login import user_logged_in as logged
+
+# @logged.connect_via(app)
+# def stalker(app,**kwargs):
+#    sender.logger.info('user logged in')
