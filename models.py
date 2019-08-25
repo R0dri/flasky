@@ -41,10 +41,10 @@ class User(db.Model, UserMixin):
     celular = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    # empresa = db.Column(db.String(255))
+    # empresa = db.Column(db.String(254))
     CardCode = db.Column(db.String(20)) #id del Cliente
     password = db.Column(db.String(255))
-    active = db.Column(db.Boolean(), server_default=expression.false(), nullable=False)
+    active = db.Column(db.Boolean(), nullable=False)
     password = db.Column(db.String(255))
     confirmed_at = db.Column(db.DateTime(timezone=True))
     last_login_at = db.Column(db.DateTime(timezone=True))
@@ -142,14 +142,15 @@ class ExtendedLoginForm(LoginForm):
     email = StringField('Correo', [Required()])
     password = PasswordField('Contrase&ntilde;a', [Required()])
 class ExtendedRegisterForm(RegisterForm):
-    username = StringField('Usuario', [Required()])
+    username = StringField('username', [Required()])
     # email = StringField('Usuario', [Required()])
     first_name = StringField('Nombre', [Required()])
     last_name = StringField('Apellido', [Required()])
+    CardCode = StringField('Empresa', [Required()])
     telefono = StringField('Tel&eacute;fono', [Required()])
     celular = StringField('Celular', [Required()])
-    # password = PasswordField('Contrase&ntilde;a', [Required()])
-    # password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
+    password = PasswordField('Contrase&ntilde;a', [Required()])
+    password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -159,13 +160,13 @@ security = Security(app, user_datastore,
 
 
 
-@contextmanager
-def captured_templates(app):
-    recorded = []
-    def record(sender, template, context, **extra):
-        recorded.append((template, context))
-    user_registered.connect(record, app)
-    try:
-        yield recorded
-    finally:
-        user_registered.disconnect(record, app)
+# @contextmanager
+# def captured_templates(app):
+#     recorded = []
+#     def record(sender, template, context, **extra):
+#         recorded.append((template, context))
+#     user_registered.connect(record, app)
+#     try:
+#         yield recorded
+#     finally:
+#         user_registered.disconnect(record, app)

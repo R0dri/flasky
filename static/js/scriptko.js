@@ -91,7 +91,7 @@ function vm() {
         window.location.href = "/actividades?tparam=" + param;
         // let opromise = new Promise((resolve, reject) => {
         //     document.querySelector("#ticketid").innerText = param;
-        //     // self.ticketid(param);
+            // self.ticketid(param);
         //             resolve('bien');
         // });
 
@@ -100,6 +100,10 @@ function vm() {
         // });
     }
     self.grabarAct = function (con, children) {
+
+        let ourl = document.URL;
+        let url = new URL(ourl);
+        var vticket = url.searchParams.get("tparam");
         let actividad = {
             CntctSbjct:document.querySelector("#oUser").innerText,
             action:null,
@@ -108,7 +112,7 @@ function vm() {
             id:null,
             notes:self.newNotes(),
             recontact:null,
-            ticket:self.ticketid()
+            ticket:vticket
         };
         $.ajax({type: "PUT",
                 dataType: "json",

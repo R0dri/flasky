@@ -22,6 +22,14 @@
     }
     else if (documento.indexOf("actividades") > -1) {
         getAct();
+        // let form = document.querySelector("#formSubmit1");
+        // let button = document.querySelector("#tproblema");
+        // form.addEventListener("click", function(o){
+        //     o.preventDefault();
+        //     grabarForm();
+        // });
+        // button.addEventListener("change", selectProblemas);
+        let button = document.querySelector("btnActividad");
     }
     else {
         // getHistorico();

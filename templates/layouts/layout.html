@@ -46,7 +46,7 @@
 					</li>
 					<li class="nav-item">
 						{% if current_user.is_authenticated %}
-							<a class="nav-link" id="oUser" href="usuario">{{ current_user.username }}</a>
+						<a class="nav-link" id="oUser" href="usuario">{{ current_user.username }} - {{ current_user.CardCode }}</a>
 						{% else %}
 							<a class="nav-link" href="login">Login</a>
 						{% endif %}
@@ -59,10 +59,10 @@
 		</div>
 	</nav>
 
-  <!-- <div class="oContainer"> -->
+  <div class="py-5">
 	    {% block page_content %}{% endblock %}
       <!-- {% block sidebar %}{% endblock %} -->
-  <!-- </div> -->
+  </div>
 	<!-- Footer -->
   <footer class="py-1 bg-dark fixed-bottom">
 	    <div class="container">
