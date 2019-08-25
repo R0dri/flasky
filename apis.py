@@ -137,7 +137,7 @@ class actividad(Resource):
             su = [dict(row) for row in u]
             su = su[0]
             print(su)
-            print()
+            print(sn)
 
             se = db.text("SELECT * FROM OSCL WHERE id = :ids")
             ids = sn["ticket"]
