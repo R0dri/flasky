@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+
     // $('.tarjeta_eventos').perfectScrollbar({wheelSpeed: .5});
     let documento = document.URL;
     if (documento.indexOf("ticket") > -1) {
@@ -22,14 +26,6 @@
     }
     else if (documento.indexOf("actividades") > -1) {
         getAct();
-        // let form = document.querySelector("#formSubmit1");
-        // let button = document.querySelector("#tproblema");
-        // form.addEventListener("click", function(o){
-        //     o.preventDefault();
-        //     grabarForm();
-        // });
-        // button.addEventListener("change", selectProblemas);
-        let button = document.querySelector("btnActividad");
     }
     else {
         // getHistorico();
@@ -115,7 +111,25 @@ var getHistoricoCOM = () => {
 
     llam.then((data) => {
         // vmv.mapHistorial(result);
-        vmv.mapHistorial(data);
+        data.sort(function(a, b){return a.priority-b.priority});
+        let newData = data.map((dat, e) => {
+            switch (dat.priority){
+            case 1:
+                dat.priority = 'Muy Alta';
+                break;
+            case 2:
+                dat.priority = 'Alta';
+                break;
+            case 3:
+                dat.priority = 'Media';
+                break;
+            case 4:
+                dat.priority = 'Baja';
+                break;
+            }
+            return dat;
+        });
+        vmv.mapHistorial(newData);
     });
 }
 // var getAct = (vticket) => {
@@ -155,9 +169,14 @@ var getAct = () => {
             });
 
             let len = actob.length;
-
+            
             let callb = [];
-            callb.flag = flag[len-1];
+            if (len == 0){
+                callb.flag = true;    
+            }else {
+                callb.flag = flag[len-1];
+            }
+
             callb.newNotes = '';
             vmv.setflag(callb.flag);
             resolve('bien');
