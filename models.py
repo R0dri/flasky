@@ -4,10 +4,13 @@ from flask_security.forms import RegisterForm, LoginForm, Required, StringField,
 from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Table
 from flask_security import UserMixin, RoleMixin
 from flask_security import Security, SQLAlchemyUserDatastore, login_required
+from flask_security import user_registered
+
+from contextlib import contextmanager
 
 from database import db, app
 
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, expression
 
 
 # time_created = Column(DateTime(timezone=True), server_default=func.now())
@@ -38,10 +41,10 @@ class User(db.Model, UserMixin):
     celular = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    # empresa = db.Column(db.String(255))
+    # empresa = db.Column(db.String(254))
     CardCode = db.Column(db.String(20)) #id del Cliente
     password = db.Column(db.String(255))
-    active = db.Column(db.Boolean())
+    active = db.Column(db.Boolean(), nullable=False)
     password = db.Column(db.String(255))
     confirmed_at = db.Column(db.DateTime(timezone=True))
     last_login_at = db.Column(db.DateTime(timezone=True))
@@ -131,25 +134,25 @@ class OSCL(db.Model):
 
 
 
-
-
 #Set Modification for Security Forms
 class ExtendedLoginForm(LoginForm):
     # username = StringField('Usuario', [Required()])
     email = StringField('Correo', [Required()])
     password = PasswordField('Contrase&ntilde;a', [Required()])
 class ExtendedRegisterForm(RegisterForm):
-    username = StringField('Usuario', [Required()])
+    username = StringField('username', [Required()])
     # email = StringField('Usuario', [Required()])
     first_name = StringField('Nombre', [Required()])
     last_name = StringField('Apellido', [Required()])
+    CardCode = StringField('Empresa', [Required()])
     telefono = StringField('Tel&eacute;fono', [Required()])
     celular = StringField('Celular', [Required()])
-    # password = PasswordField('Contrase&ntilde;a', [Required()])
-    # password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
+    password = PasswordField('Contrase&ntilde;a', [Required()])
+    password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore,
                     confirm_register_form=ExtendedRegisterForm,
                     login_form=ExtendedLoginForm)
+

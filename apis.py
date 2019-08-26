@@ -97,7 +97,7 @@ class ticket(Resource):
 
 class actividad(Resource):
     def post(self):
-        print ("geting in get")
+        print ("geting in post @actividad")
         try:
             sn = request.get_json()
             # se = db.text("SELECT * FROM OCLG WHERE ticket = :ids")
@@ -127,7 +127,7 @@ class actividad(Resource):
             # return jsonify(error.args), 400
 
     def put(self):
-        print("Posting Actividad")
+        print("Puting Actividad")
         try:
             sn = request.get_json()
 
