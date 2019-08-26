@@ -1,10 +1,10 @@
 {% extends "security/email/mail.html" %}
 {% block page_content %}
 
-<p> {{ _('El %(dia)s se generó una respuesta al ticket "%(ticket)s" creado por: %(usuario)s', ticket=var.ticket, dia=var.date, usuario=var.usuario) }} </p>
+<p> {{ _('El %(dia)s', dia=var.date ) }} se gener&oacute; {{ _('una respuesta al ticket "%(ticket)s" creado por: %(usuario)s', ticket=var.ticket, usuario=var.usuario) }} </p>
 
 <div>
-    <a href="http://agcsap.no-ip.org:5000/historial"> <h4> {{ var.actividad }} </h4> </a>
+    <a href="http://agctickets.hopto.org"> Ir a la actividad </a>
     <!-- <a href="http://localhost:5000/historial"> <h4> {{ var.actividad }} </h4> </a> -->
 </div>
 

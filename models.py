@@ -144,7 +144,7 @@ class ExtendedRegisterForm(RegisterForm):
     # email = StringField('Usuario', [Required()])
     first_name = StringField('Nombre', [Required()])
     last_name = StringField('Apellido', [Required()])
-    CardCode = StringField('Empresa', [Required()])
+    CardCode = StringField('C&oacute;digo Empresa', [Required()])
     telefono = StringField('Tel&eacute;fono', [Required()])
     celular = StringField('Celular', [Required()])
     password = PasswordField('Contrase&ntilde;a', [Required()])

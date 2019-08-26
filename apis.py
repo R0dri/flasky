@@ -11,6 +11,8 @@ import json
 from database import db, SendMail
 from models import OSCL, OCLG
 
+import datetime
+
 
 class usuarioInfo(Resource):
     def post(self):
@@ -70,13 +72,42 @@ class ticket(Resource):
 
             try:
                 #Send Notification Mail
+                t = datetime.date.today()
+                # t = d.day +" del "+t.month
+                d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
+
                 var = {
                     'ticket':sn['subject'],
-                    'date':"22 de abrile de 2019",
+                    'date':d,
                     'usuario':sn["usuario"],
                     'first_name':su["first_name"],
                 }
-                recipient=['teyokan@onemail1.com']
+                print(var)
+
+                sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call")
+                ids = sn["usuario"]
+                call = sn["callType"]
+                u = db.engine.execute(sm, ids=ids, call=call).fetchall()
+                su = [dict(row) for row in u]
+                # su = su["email"]
+                print()
+                print()
+                s1= su[0]
+                s1= s1["email"]
+                print(s1)
+                try:
+                    s2=su[1]
+                    s2= s2["email"]
+                    print(s2)
+                    recipient=[s1,s2]
+                    print()
+                    print(recipient)
+                    print()
+                except:
+                    print("no second destinatary")
+                    recipient=[s1]
+
+
                 print("sending mail to:")
                 print(recipient)
                 ma = SendMail(vara=var,recipient=recipient)
@@ -137,7 +168,7 @@ class actividad(Resource):
             su = [dict(row) for row in u]
             su = su[0]
             print(su)
-            print(sn)
+            print()
 
             se = db.text("SELECT * FROM OSCL WHERE id = :ids")
             ids = sn["ticket"]
@@ -150,23 +181,50 @@ class actividad(Resource):
             db.session.add(sas)
             db.session.commit()
 
-            #Send Notification Mail
-            print("Posting Actividad")
+            # Send Notification Mail
             try:
+                #Send Notification Mail
+                t = datetime.date.today()
+                d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
                 var = {
                     'ticket':sr['subject'],
-                    'date':"22 de abrile de 2019",
+                    'date':d,
                     'usuario':su["username"],
-                    'first_name':su["first_name"],
+                    'first_name':su["first_name"]
                 }
                 print(var)
-                recipient=['teyokan@onemail1.com']
+
+                sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call UNION select c.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE d.username = :ids")
+                ids = su["username"]
+                call = sr["callType"]
+                print(call)
+                print(ids)
+                u = db.engine.execute(sm, ids=ids, call=call).fetchall()
+                su = [dict(row) for row in u]
+                # su = su["email"]
+                print()
+                print(su)
+                s1= su[0]
+                s1= s1["email"]
+                print(s1)
+                try:
+                    s2=su[1]
+                    s2= s2["email"]
+                    print(s2)
+                    recipient=[s1,s2]
+                    print()
+                    print(recipient)
+                    print()
+                except:
+                    print("no second destinatary")
+                    recipient=[s1]
+
                 print("sending mail to:")
                 print(recipient)
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.actividad())
             except Exception as error:
-                print("Catched ERROR on SendMail @/postticket")
+                print("Catched ERROR on SendMail @/putActivity")
                 print(error)
 
             return jsonify({'result': sn['ticket']})

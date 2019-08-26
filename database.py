@@ -83,6 +83,8 @@ class SendMail:
             res.headers["Content-Type"]="text/html; charset=utf-8"
             return res
         else:
+            print("rendering mail")
+            print(self.msg)
             self.msg.html = render_template('security/email/actividad.html',var=self.var)
             mail.connect()
             mail.send(self.msg)
