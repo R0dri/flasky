@@ -140,7 +140,7 @@ class ExtendedLoginForm(LoginForm):
     email = StringField('Correo', [Required()])
     password = PasswordField('Contrase&ntilde;a', [Required()])
 class ExtendedRegisterForm(RegisterForm):
-    username = StringField('username', [Required()])
+    username = StringField('Usuario', [Required()])
     # email = StringField('Usuario', [Required()])
     first_name = StringField('Nombre', [Required()])
     last_name = StringField('Apellido', [Required()])
