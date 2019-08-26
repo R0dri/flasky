@@ -2,25 +2,26 @@
 {% include "security/_messages.html" %}
 {% extends "layouts/layout.html" %}
 {% block page_content %}
-
+<div class="jumbotron justify-content-center">
 <div class="container">
-<h1>{{ _('Register') }}</h1>
+<h1 class="display-4">Registro de Usuarios</h1>
 <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
-  {{ register_user_form.hidden_tag() }}
+	{{ register_user_form.hidden_tag() }}
 
-  {{ render_field_with_errors(register_user_form.username) }}
-  {{ render_field_with_errors(register_user_form.email) }}
-  {{ render_field_with_errors(register_user_form.CardCode) }}
-  {{ render_field_with_errors(register_user_form.telefono) }}
-  {{ render_field_with_errors(register_user_form.celular) }}
-  {{ render_field_with_errors(register_user_form.first_name) }}
-  {{ render_field_with_errors(register_user_form.last_name) }}
-  {{ render_field_with_errors(register_user_form.password) }}
-  {% if register_user_form.password_confirm %}
-    {{ render_field_with_errors(register_user_form.password_confirm) }}
-  {% endif %}
+	{{ render_field_with_errors(register_user_form.username) }}
+	{{ render_field_with_errors(register_user_form.email) }}
+	{{ render_field_with_errors(register_user_form.CardCode) }}
+	{{ render_field_with_errors(register_user_form.telefono) }}
+	{{ render_field_with_errors(register_user_form.celular) }}
+	{{ render_field_with_errors(register_user_form.first_name) }}
+	{{ render_field_with_errors(register_user_form.last_name) }}
+	{{ render_field_with_errors(register_user_form.password) }}
+	{% if register_user_form.password_confirm %}
+		{{ render_field_with_errors(register_user_form.password_confirm) }}
+	{% endif %}
 
-  {{ render_field(register_user_form.submit) }}
+	{{ render_field(register_user_form.submit) }}
 </form>
+</div>
 </div>
 {% endblock %}

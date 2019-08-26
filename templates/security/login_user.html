@@ -3,17 +3,20 @@
 
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 {% include "security/_messages.html" %}
-<div class="container">
-  <h1>{{ _('Login') }}</h1>
-  <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
-      {{ login_user_form.hidden_tag() }}
-      {{ render_field_with_errors(login_user_form.email) }}
-      {{ render_field_with_errors(login_user_form.password) }}
-      {{ render_field_with_errors(login_user_form.remember) }}
-      {{ render_field(login_user_form.next) }}
-      {{ render_field(login_user_form.submit) }}
-  </form>
-  <a href="register">Registrar Nuevo Usuario</a>
+
+<div class="jumbotron justify-content-center">
+    <div class="container">
+        <h1 class="display-4">Login de Usuarios</h1>
+        <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+            {{ login_user_form.hidden_tag() }}
+            {{ render_field_with_errors(login_user_form.email) }}
+            {{ render_field_with_errors(login_user_form.password) }}
+            {{ render_field_with_errors(login_user_form.remember) }}
+            {{ render_field(login_user_form.next) }}
+            {{ render_field(login_user_form.submit) }}
+        </form>
+        <a href="register">Registrar Nuevo Usuario</a>
+    </div>
 </div>
 
 {% endblock %}

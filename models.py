@@ -139,15 +139,16 @@ class ExtendedLoginForm(LoginForm):
     # username = StringField('Usuario', [Required()])
     email = StringField('Correo', [Required()])
     password = PasswordField('Contrase&ntilde;a', [Required()])
+
 class ExtendedRegisterForm(RegisterForm):
-    username = StringField('username', [Required()])
+    username =           StringField('Usuario', [Required()])
     # email = StringField('Usuario', [Required()])
-    first_name = StringField('Nombre', [Required()])
-    last_name = StringField('Apellido', [Required()])
-    CardCode = StringField('Empresa', [Required()])
-    telefono = StringField('Tel&eacute;fono', [Required()])
-    celular = StringField('Celular', [Required()])
-    password = PasswordField('Contrase&ntilde;a', [Required()])
+    first_name =         StringField('Nombre', [Required()])
+    last_name =          StringField('Apellido', [Required()])
+    CardCode =           StringField('Empresa', [Required()])
+    telefono =           StringField('Tel&eacute;fono', [Required()])
+    celular =            StringField('Celular', [Required()])
+    password =         PasswordField('Contrase&ntilde;a', [Required()])
     password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
 
 # Setup Flask-Security
