@@ -1,13 +1,85 @@
 {% extends "layouts/layout.html" %}
 {% block page_content %}
 
-<!-- Page Content -->
-<div class="container">
 
-		<div class="row">
+<!-- Page Content -->
+    <div class="container" >
+
+        <div class="wrapper">
+	  <!-- Side bar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="blanco">Herramientas</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <p style="margin-left:5px;">Filtros</p>
+            <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Prioridad</a>
+                <!-- <ul class="collapse lisk-unstyled" id="homeSubmenu"> -->
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="" class="blanco">Muy Alta</a>
+                    </li>
+                    <li>
+                        <a href="#" class="blanco">Alta</a>
+                    </li>
+                    <li>
+                        <a href="#" class="blanco">Media</a>
+                    </li>
+                    <li>
+                        <a href="#" class="blanco">Baja</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Estado</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="" class="blanco">Abierto</a>
+                    </li>
+                    <li>
+                        <a href="" class="blanco">Cliente</a>
+                    </li>
+                    <li>
+                        <a href="" class="blanco">AGC</a>
+                    </li>
+                    <li>
+                        <a href="" class="blanco">SAP</a>
+                    </li>
+                    <li>
+                        <a href="" class="blanco">Todos</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- <li> -->
+            <!-- <a href="#">About</a> -->
+            <!-- </li> -->
+            <!-- <li> -->
+            <!-- <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a> -->
+            <!-- <ul class="collapse list-unstyled" id="pageSubmenu"> -->
+            <!-- <li> -->
+            <!-- <a href="#">Page 1</a> -->
+            <!-- </li> -->
+            <!-- <li> -->
+            <!-- <a href="#">Page 2</a> -->
+            <!-- </li> -->
+            <!-- <li> -->
+            <!-- <a href="#">Page 3</a> -->
+            <!-- </li> -->
+            <!-- </ul> -->
+            <!-- </li> -->
+            <!-- <li> -->
+            <!-- <a href="#">Portfolio</a> -->
+            <!-- </li> -->
+            <!-- <li> -->
+            <!-- <a href="#">Contact</a> -->
+            <!-- </li> -->
+        </ul>
+    </nav>
+		<div class="row" style="margin-left:10px;" id="content">
 
 			  <!-- Post Content Column -->
-			  <div class="col-lg-8">
+			  <div>
 
 				    <!-- Title -->
 				    <h1 class="mt-4">Soporte</h1>
@@ -21,35 +93,45 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Ticket</th>
-                        <th>Descripcion</th>
-                        <th>Prioridad</th>
-                        <th>Creado</th>
-                        <th>Actualizado</th>
-                        <th></th>
+                        <th colspan="2">No.</th>
+                        <th colspan="2">Ticket</th>
+                        <th colspan="2">Descripcion</th>
+                        <th colspan="2">Prioridad</th>
+                        <th colspan="2">Creado</th>
+                        <th colspan="2">Estado</th>
+                        <th colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody  data-bind="foreach: llamadas"> 
                     <tr style="border-bottom:none;border-top:none;">
-                        <td>
+                        <td colspan="2">
                             <span class="article-title" data-bind="text:id"></span>
                         </td>
-                        <td style="min-width:150px;">
+                        <!-- <td style="min-width:150px;" colspan="2"> -->
+                        <td colspan="2">
                             <span class="article-title" data-bind="text:subject"></span>
                         </td>
-                        <td style="min-width:250px;">
+                        <!-- <td style="min-width:250px;" colspan="2"> -->
+                        <td colspan="2">
                             <p class="article-content" data-bind="text: dscription"></p>
                         </td>
-                        <td>
+                        <td colspan="2">
                             <span class="article-title" data-bind="text:priority"></span>
                         </td>
-                        <td style="min-width:150px;">
-                            <small class="text-muted" data-bind="text:createTime"></small>
+                        <!-- <td style="min-width:150px;" colspan="2"> -->
+                        <td colspan="2">
+                            <small class="text-muted" data-bind="text:moment(createTime).locale('es').calendar()"></small>
                         </td>
-                        <td>
+                        <td colspan="1" style="margin:0;padding=0;width=7px;">
+                            <i data-bind="visible: estado == 'AGC'" class="dot1"></i>
+                            <i data-bind="visible: estado == 'Cliente'" class="dot2"></i>
+                            <i data-bind="visible: estado == 'SAP'" class="dot1"></i>
+                            <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i>
                         </td>
-                        <td>
+                        <td colspan="1">
+                            <span data-bind="text:estado" class="text-muted"> sap </span> 
+                        </td>
+                        <td colspan="2">
                             <a href="#" data-bind="click:$parent.navAct">Actividades</a>
                         </td>
                     </tr>
@@ -117,10 +199,10 @@
                        <!-- </div><!--  --> 
 
 			      <!-- <hr> -->
-	          <div class="col-md-5 oContainer">
-                {% include "layouts/sidebar_cus.html" %}
-            </div>
+	          <!-- <div class="col-md-5 oContainer"> -->
+            <!-- </div> -->
       </div>
+    </div>
   </div>
 {% endblock %}
 

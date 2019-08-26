@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+
     // $('.tarjeta_eventos').perfectScrollbar({wheelSpeed: .5});
     let documento = document.URL;
     if (documento.indexOf("ticket") > -1) {
@@ -22,14 +26,6 @@
     }
     else if (documento.indexOf("actividades") > -1) {
         getAct();
-        // let form = document.querySelector("#formSubmit1");
-        // let button = document.querySelector("#tproblema");
-        // form.addEventListener("click", function(o){
-        //     o.preventDefault();
-        //     grabarForm();
-        // });
-        // button.addEventListener("change", selectProblemas);
-        let button = document.querySelector("btnActividad");
     }
     else {
         // getHistorico();
@@ -115,7 +111,25 @@ var getHistoricoCOM = () => {
 
     llam.then((data) => {
         // vmv.mapHistorial(result);
-        vmv.mapHistorial(data);
+        data.sort(function(a, b){return a.priority-b.priority});
+        let newData = data.map((dat, e) => {
+            switch (dat.priority){
+            case 1:
+                dat.priority = 'Muy Alta';
+                break;
+            case 2:
+                dat.priority = 'Alta';
+                break;
+            case 3:
+                dat.priority = 'Media';
+                break;
+            case 4:
+                dat.priority = 'Baja';
+                break;
+            }
+            return dat;
+        });
+        vmv.mapHistorial(newData);
     });
 }
 // var getAct = (vticket) => {
@@ -155,9 +169,14 @@ var getAct = () => {
             });
 
             let len = actob.length;
-
+            
             let callb = [];
-            callb.flag = flag[len-1];
+            if (len == 0){
+                callb.flag = true;    
+            }else {
+                callb.flag = flag[len-1];
+            }
+
             callb.newNotes = '';
             vmv.setflag(callb.flag);
             resolve('bien');
@@ -251,7 +270,8 @@ var selectProblemas = () => {
         select.options[select.options.length] = new Option('PROCESO DE COMPRAS',	'S-COMPRAS');
         select.options[select.options.length] = new Option('PROCESO DE VENTAS',	'S-VENTAS');
         select.options[select.options.length] = new Option('PROCESOS FINANZAS',	'S-FINANZAS');
-        select.options[select.options.length] = new Option('OTROS PROCESOS',	'S-OTROS');
+        select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
+        select.options[select.options.length] = new Option('OTROS',	'S-OTROS');
         break;
     case "ADDON":
 	      select.options.length = 0;
@@ -264,7 +284,10 @@ var selectProblemas = () => {
         select.options[select.options.length] = new Option('FISCAL	IMPRESOR FISCAL',	'A-IMPRESOR'); 
         select.options[select.options.length] = new Option('HOSPITALIZACION',	'A-HOSPITALIZACION');
         select.options[select.options.length] = new Option('INTEGRADORES',	'A-INTEGRADORES');
+        select.options[select.options.length] = new Option('GESTION',	'A-GESTION');
         select.options[select.options.length] = new Option('TXT',	'A-TXT');
+        select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
+        select.options[select.options.length] = new Option('OTROS',	'S-OTROS');
         break;
     case "OTROS":
 	      select.options.length = 0;
@@ -273,6 +296,9 @@ var selectProblemas = () => {
         select.options[select.options.length] = new Option('BEAS',	'O-BEAS');
         select.options[select.options.length] = new Option('HANA Configuration',	'S-HANA');
         select.options[select.options.length] = new Option('LAYOUTS',	'S-LAYOUTS');
+        select.options[select.options.length] = new Option('CRM FOR OUTLOOK',	'S-OUTLOOK');
+        select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
+        select.options[select.options.length] = new Option('OTROS',	'S-OTROS');
         break;
     }
     // function removeOption(){
