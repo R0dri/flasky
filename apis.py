@@ -296,5 +296,3 @@ class actividad(Resource):
 #         # db.session.commit()
 #         return jsonify(su)
 #         # return sn["query"]
-
-# api.add_resource(query, '/usuario')
