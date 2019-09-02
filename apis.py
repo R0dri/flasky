@@ -93,23 +93,10 @@ class ticket(Resource):
                 # su = su["email"]
                 print()
                 print()
-                s1= su[0]
-                s1= s1["email"]
-                print(s1)
-                try:
-                    s2=su[1]
-                    s2= s2["email"]
-                    print(s2)
-                    recipient=[s1,s2]
-                    print()
-                    print(recipient)
-                    print()
-                except:
-                    print("no second destinatary")
-                    recipient=[s1]
-
-
                 print("sending mail to:")
+                recipient = list(range(0,len(su)))
+                for i in range(0,len(su)):
+	                recipient[i] = su[i]['email']
                 print(recipient)
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.ticket())
@@ -202,31 +189,13 @@ class actividad(Resource):
                 print(ids)
                 u = db.engine.execute(sm, ids=ids, call=call).fetchall()
                 su = [dict(row) for row in u]
-                # su = su["email"]
 
-                print()
-                print(su)
-                s1= su[0]
-                s1= s1["email"]
-                print(s1)
-                try:
-                    s2=su[1]
-                    s2= s2["email"]
-                    print(s2)
-                    recipient=[s1,s2]
-                    print()
-                    print(recipient)
-                    print()
-                except:
-                    print("no second destinatary")
-                    recipient=[s1]
-
-                # recipient = su
                 print("sending mail to:")
                 recipient = list(range(0,len(su)))
                 for i in range(0,len(su)):
 	                recipient[i] = su[i]['email']
                 print(recipient)
+
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.actividad())
             except Exception as error:
