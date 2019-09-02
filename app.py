@@ -11,7 +11,7 @@ from contextlib import contextmanager
 
 from database import db, mail, app
 from models import User, Role, roles_users, OCLG, OSCL, db, user_datastore
-from apis import ticket, usuarioInfo, historial, actividad
+from apis import ticket, usuarioInfo, historial, actividad, archivo
 
 api = Api(app)
 toolbar=DebugToolbarExtension(app)
@@ -24,56 +24,26 @@ migrate = Migrate(app,db)
 # def create_user():
 #     print("CREATING USER")
 #     db.create_all()
-#     user_datastore.create_user(email='r', password='p')
+# #     user_datastore.create_user(email='r', password='p')
 #     db.session.commit()
 #     return redirect('/')
 
+@app.route('/rebuild')
+def rebuild():
+    try:
+        print('create all missing at db')
+        db.create_all()
+        db.session.commit()
+        return redirect('/')
+    except Exception as error:
+        print('got error @rebuilding db')
+        print (error)
+        return error
 
 @app.route('/redirect')
 def redi():
     print('redirecting')
     return redirect('/',code=302)
-
-# Views
-@app.route('/sendmail')
-def smail():
-    msg = Message(subject='sujet', recipients=['defekuz@mrmail.info','rodri.mendoza.t@gmail.com','pablo.mendoza@advisorygc.com'])
-    var = {
-        'ticket':"Error en cargar datos",
-        'date':"22 de abril de 2019",
-        'usuario':"rodri",
-        'first_name':"Rodrigo"
-    }
-    msg.html = render_template('security/email/mail.html',var=var)
-    mail.connect()
-    mail.send(msg)
-    return 'Sent email'
-
-@app.route('/testac')
-def tmail():
-    from database import SendMail
-    var = {
-        'ticket':"Error al cargar datos en el ADDON",
-        'date':"22 de abril de 2019",
-        'usuario':"rodrien",
-        'first_name':"Rodrigo",
-        'actividad':"No seas jil, prende tu compu!"
-    }
-    ma = SendMail(debug=True,vara=var)
-    return ma.actividad()
-
-@app.route('/testtick')
-def amail():
-    from database import SendMail
-    var = {
-        'ticket':"Error al cargar datos en el ADDON",
-        'date':"22 de abrile de 2019",
-        'usuario':"rodrimen",
-        'first_name':"Rodrigo",
-        'actividad':"No seas jil, prende tu compu!"
-    }
-    ma = SendMail(debug=True,vara=var)
-    return ma.ticket()
 
 @app.route('/')
 @login_required
@@ -102,6 +72,7 @@ api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')
 api.add_resource(historial, '/historial')
 api.add_resource(actividad, '/actividad')
+api.add_resource(archivo, '/archivo')
 
 
 if __name__ == '__main__':

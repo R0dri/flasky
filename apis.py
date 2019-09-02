@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, make_response, redirect
+from flask import Flask, render_template, request, jsonify, make_response, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 from flask_mail import Mail, Message
@@ -12,6 +12,7 @@ from database import db, SendMail
 from models import OSCL, OCLG
 
 import datetime
+
 
 
 class usuarioInfo(Resource):
@@ -202,6 +203,7 @@ class actividad(Resource):
                 u = db.engine.execute(sm, ids=ids, call=call).fetchall()
                 su = [dict(row) for row in u]
                 # su = su["email"]
+
                 print()
                 print(su)
                 s1= su[0]
@@ -219,7 +221,11 @@ class actividad(Resource):
                     print("no second destinatary")
                     recipient=[s1]
 
+                # recipient = su
                 print("sending mail to:")
+                recipient = list(range(0,len(su)))
+                for i in range(0,len(su)):
+	                recipient[i] = su[i]['email']
                 print(recipient)
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.actividad())
@@ -252,6 +258,56 @@ class actividad(Resource):
             print (error)
             return jsonify({'error':error.args})
             # return jsonify({'error':error.args}), 400
+
+
+class archivo(Resource):
+    def get(self):
+        print('hey')
+        try:
+            sn = request.get_json()
+            return send_file('files/'+sn['filename'], as_attachment=True)
+        except Exception as e:
+            print('error')
+            print(e)
+            return 'error'
+
+    def post(self):
+        print("saving attachment")
+        if 'inputFile' in request.files:
+            print('got it')
+            file = request.files['inputFile']
+            file.filename = '141_'+file.filename
+            # filename = files.save(request.files['inputFile'])
+            print (filename)
+            return filename
+        else:
+            try:
+                print('Got no file, data sent:')
+                print (request.files)
+                print('Raw data as text')
+                print (request.get_data(as_text=True))
+                return 'No file was sent'
+            except Exception as error:
+                print('ERROR')
+                print (error)
+                return error
+
+class validar():
+    def empresa(f):
+        def wrapper():
+            if(False):
+                return f()
+            else:
+                return 'void'
+            return wrapper
+
+    def usuario(f):
+        def wrapper():
+            if(False):
+                return f()
+            else:
+                return 'void'
+            return wrapper
 
 
 # class query(Resource):
