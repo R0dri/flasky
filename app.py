@@ -10,8 +10,9 @@ from contextlib import contextmanager
 
 
 from database import db, mail, app
-from models import User, Role, roles_users, OCLG, OSCL, db, user_datastore
-from apis import ticket, usuarioInfo, historial, actividad, archivo
+# from models import User, Role, roles_users, OCLG, OSCL, db, user_datastore
+from models import db, user_datastore
+from apis import ticket, usuarioInfo, historial, actividad, archivo, prueba
 
 api = Api(app)
 toolbar=DebugToolbarExtension(app)
@@ -21,18 +22,20 @@ migrate = Migrate(app,db)
 
 # Create a user to test with
 # @app.before_first_request
-# def create_user():
-#     print("CREATING USER")
-#     db.create_all()
-# #     user_datastore.create_user(email='r', password='p')
-#     db.session.commit()
-#     return redirect('/')
+def create_user():
+    print("CREATING USER")
+    db.create_all()
+    user_datastore.create_user(email='r', password='p')
+    db.session.commit()
+    return redirect('/')
+
 
 @app.route('/rebuild')
 def rebuild():
     try:
         print('create all missing at db')
         db.create_all()
+        # user_datastore.create_user(email='r', password='p')
         db.session.commit()
         return redirect('/')
     except Exception as error:
@@ -73,6 +76,8 @@ api.add_resource(usuarioInfo, '/usuarioInfo')
 api.add_resource(historial, '/historial')
 api.add_resource(actividad, '/actividad')
 api.add_resource(archivo, '/archivo')
+
+api.add_resource(prueba, '/prueba')
 
 
 if __name__ == '__main__':

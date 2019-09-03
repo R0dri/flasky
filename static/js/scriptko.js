@@ -8,6 +8,7 @@ let getUsuario = (obj) => {
         dataType: "json",
     });
 }
+
 //######### Obtiene las activdades ########
 let getActividades = (obj) => {
     return $.ajax({
@@ -18,7 +19,8 @@ let getActividades = (obj) => {
         dataType: "json",
     });
 }
-//######### Obtiene las activdades ########
+
+//######### Obtiene los tickets ########
 let getLlam = (obj) => {
     return $.ajax({
         type: "POST",
@@ -28,6 +30,7 @@ let getLlam = (obj) => {
         dataType: "json",
     });
 }
+
 //######### Graba los datos del formulario ########
 let grabarF = (param) => {
     $.ajax({type: "POST",
@@ -36,28 +39,35 @@ let grabarF = (param) => {
             url: "ticket",
             data: ko.toJSON(param),
             success: function (data) {
-                // alert(data);
-                // alert('comoes');
-                // console.log(data);
-                // window.location.href = "http://stackoverflow.com";
-                // window.location.href = "/";
+
             }
            }).then(function(){
-               // window.location.href = "/";
                return true;
            });
 
     return true;
-    // window.location.href = "http://stackoverflow.com";
-    // $(location).attr('href', 'http://stackoverflow.com');
-
-           // }).then(function(data){
-    //        }, handleError);
-    // function handleError(xhr, status, err){
-    //     alert(err.error + ' - ' + xhr + status);
-    // };
 };
 
+//######### Graba los datos del formulario ########
+let getCargar = (archivo) => {
+    var formData = new FormData();
+    formData.append('inputFile', archivo.files[0].Name);
+
+    $.ajax({
+        type:'POST',
+        url:'archivo',
+        processData: false,
+        contentType: false,
+        async: false,
+        cache: false,
+        data : formData,
+        success: function(response){
+            console.log(response);
+
+        }
+    });
+    return true;
+};
 //######### knockoutjs auto mapping ########
 function vm() {
     var self = this;
@@ -82,28 +92,19 @@ function vm() {
         self.flag(datos); 
         // self.flag(true); 
     };
+
+    // Navega a la activiadd
     this.navAct = function(con){
         let param = con.id;
-        // getAct(param); 
-        // getAct(); 
 
-        
         window.location.href = "/actividades?tparam=" + param;
-        // let opromise = new Promise((resolve, reject) => {
-        //     document.querySelector("#ticketid").innerText = param;
-            // self.ticketid(param);
-        //             resolve('bien');
-        // });
-
-        // opromise.then((mensaje) => {
-        //     window.location.href = "/actividades";
-        // });
     }
-    self.grabarAct = function (con, children) {
 
+    self.grabarAct = function (con, children) {
         let ourl = document.URL;
         let url = new URL(ourl);
         var vticket = url.searchParams.get("tparam");
+
         let actividad = {
             CntctSbjct:document.querySelector("#oUser").innerText,
             action:null,
@@ -114,6 +115,7 @@ function vm() {
             recontact:null,
             ticket:vticket
         };
+
         $.ajax({type: "PUT",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
@@ -131,7 +133,10 @@ function vm() {
         function handleError(xhr, status, err){
             alert(err.valueError + ' status:' + status);
         };
+
     };
+
+
 }
 var vmv = new vm();
 ko.applyBindings(vmv);
