@@ -2,11 +2,15 @@ from flask import Flask, render_template, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 
+from flask_uploads import UploadSet, configure_uploads, patch_request_class, AllExcept, AUDIO, SCRIPTS, EXECUTABLES, DATA, TestingFileStorage
+
+
 
 # Create app and import configurations
 app = Flask(__name__)
 app.config.from_json('config.json')
 
+app.config['UPLOADS_DEFAULT_DEST'] = 'files'
 # # Test Overrides
 # app.config['DEBUG'] = True
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
@@ -18,6 +22,9 @@ app.config.from_json('config.json')
 #Create database and mail connection objects
 db = SQLAlchemy(app)
 mail = Mail(app)
+files = UploadSet('files', AllExcept(AUDIO + SCRIPTS + EXECUTABLES + DATA))
+configure_uploads(app,files)
+patch_request_class(app,size=16777216)
 
 
 class Simple:
