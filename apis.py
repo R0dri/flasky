@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, jsonify, make_response, redirect
+from flask import Flask, render_template, request, jsonify, make_response, redirect, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
+from flask_login import current_user
 from flask_mail import Mail, Message
 from flask_security.forms import RegisterForm, StringField, Required, LoginForm, PasswordField
 from flask_restful import Resource, Api
@@ -12,6 +13,52 @@ from database import db, SendMail
 from models import OSCL, OCLG
 
 import datetime
+from functools import wraps
+
+class validar():
+    def empresa(f):
+        def wrapper(*args, **kwargs):
+            try:
+                se = db.text("select OSCL.id from[user] INNER JOIN OSCL on[user].CardCode=oscl.BPProjCode WHERE[user].id=:ids and LEFT([user] .CardCode,1)='C' UNION select OSCL.id from[user] INNER JOIN OSCL on LEFT([user].CardCode,1)='P' where [user].id=:ids")
+                ids = current_user.get_id()
+                print(ids)
+                sn = request.get_json()
+                print(sn['ticket'])
+                # ids = sn["CntctSbjct"]
+                u = db.engine.execute(se, ids=ids).fetchall()
+                su = [dict(row) for row in u]
+                # su = su[0]
+                print(su)
+
+                # recipient = list(range(0,len(su)))
+                for i in range(0,len(su)):
+                    if su[i]['id'] == int(sn['ticket']):
+                        print('GOTCHA')
+                        return f(*args, **kwargs)
+                    print(su[i]['id'])
+                return 'you cannot acces this page'
+	            #     recipient[i] = su[i]['email']
+                # print(recipient)
+
+            except Exception as error:
+                print(error)
+                return 'User has no tickets'
+        return wrapper
+
+    def usuario(f):
+        def wrapper():
+            if(False):
+                return f()
+            else:
+                return 'void'
+        return wrapper
+
+    def simple(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            print('hey')
+            return f(*args, **kwargs)
+        return wrapper
 
 
 class usuarioInfo(Resource):
@@ -124,23 +171,10 @@ class ticket(Resource):
                 # su = su["email"]
                 print()
                 print()
-                s1= su[0]
-                s1= s1["email"]
-                print(s1)
-                try:
-                    s2=su[1]
-                    s2= s2["email"]
-                    print(s2)
-                    recipient=[s1,s2]
-                    print()
-                    print(recipient)
-                    print()
-                except:
-                    print("no second destinatary")
-                    recipient=[s1]
-
-
                 print("sending mail to:")
+                recipient = list(range(0,len(su)))
+                for i in range(0,len(su)):
+	                recipient[i] = su[i]['email']
                 print(recipient)
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.ticket())
@@ -159,6 +193,7 @@ class ticket(Resource):
             # return jsonify({'error':error.args}), 400
 
 class actividad(Resource):
+    @validar.empresa
     def post(self):
         print ("geting in post @actividad")
         try:
@@ -233,26 +268,13 @@ class actividad(Resource):
                 print(ids)
                 u = db.engine.execute(sm, ids=ids, call=call).fetchall()
                 su = [dict(row) for row in u]
-                # su = su["email"]
-                print()
-                print(su)
-                s1= su[0]
-                s1= s1["email"]
-                print(s1)
-                try:
-                    s2=su[1]
-                    s2= s2["email"]
-                    print(s2)
-                    recipient=[s1,s2]
-                    print()
-                    print(recipient)
-                    print()
-                except:
-                    print("no second destinatary")
-                    recipient=[s1]
 
                 print("sending mail to:")
+                recipient = list(range(0,len(su)))
+                for i in range(0,len(su)):
+	                recipient[i] = su[i]['email']
                 print(recipient)
+
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.actividad())
             except Exception as error:
@@ -285,6 +307,59 @@ class actividad(Resource):
             return jsonify({'error':error.args})
             # return jsonify({'error':error.args}), 400
 
+
+class archivo(Resource):
+    def get(self):
+        print('hey')
+        try:
+            sn = request.get_json()
+            return send_file('files/'+sn['filename'], as_attachment=True)
+        except Exception as e:
+            print('error')
+            print(e)
+            return 'error'
+
+    def post(self):
+        print("saving attachment")
+        if 'inputFile' in request.files:
+            print('got it')
+            print (request.files)
+            file = request.files['inputFile']
+            st=('T'+str(66).zfill(3)+str(a).zfill(4)).zfill(10)
+            file.filename = '141_'+file.filename
+            # filename = files.save(request.files['inputFile'])
+            print (file.filename)
+            print (file.__dir__())
+            return file.filename
+        else:
+            try:
+                print('Got no file, data sent:')
+                print (request.files)
+                print('__dir__()')
+                print (request.__dir__())
+                print('__dir__()')
+                print (request.files.__dir__())
+                print('Raw data as text')
+                print (request.get_data(as_text=True))
+                return 'No file was sent'
+            except Exception as error:
+                print('ERROR')
+                print (error)
+                return error
+
+
+
+# @validar.simple
+class prueba(Resource):
+    @validar.empresa
+    def get(self):
+        # sn = request.get_json()
+        print ('hello world')
+        # print(sn)
+        # return {'hello world':sn['dato']}
+        return 'hello world'
+    def post(self):
+        
 
 # class query(Resource):
 #     def get(self):
@@ -328,5 +403,3 @@ class actividad(Resource):
 #         # db.session.commit()
 #         return jsonify(su)
 #         # return sn["query"]
-
-# api.add_resource(query, '/usuario')

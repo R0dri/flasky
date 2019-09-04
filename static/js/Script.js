@@ -3,26 +3,37 @@
         $('#sidebar').toggleClass('active');
     });
 
-    // $('.tarjeta_eventos').perfectScrollbar({wheelSpeed: .5});
     let documento = document.URL;
+
     if (documento.indexOf("ticket") > -1) {
         let form = document.querySelector("#formSubmit1");
+        let botonArchivo = document.querySelector("#archivo");
         let button = document.querySelector("#tproblema");
+
         form.addEventListener("click", function(o){
             o.preventDefault();
             grabarForm();
         });
         button.addEventListener("change", selectProblemas);
+
+        botonArchivo.addEventListener("change", () => {
+            var i = $(this).prev('label').clone();
+            var file = document.querySelector("#archivo").files[0].name;
+            $(this).prev('label').text(file);
+        });
     }
     else if (documento.indexOf("test") > -1) {
+
     }
     else if (documento.indexOf("usuario") > -1) {
         let usr = usuarioInfo();
         console.log(usr);
     }
     else if (documento.indexOf("about") > -1) {
+
     }
     else if (documento.indexOf("login") > -1) {
+
     }
     else if (documento.indexOf("actividades") > -1) {
         getAct();
@@ -31,12 +42,10 @@
         // getHistorico();
         let button = document.querySelector("btnActividad");
         getHistoricoCOM();
-
     }
 
 });
 
-// let grabarForm = () => {
 //######### obtiene datos del ticket.html y los envia para guardar ########
 function grabarForm () {
     let a = document.querySelector("#prioridad").selectedIndex;
@@ -69,21 +78,18 @@ function grabarForm () {
         });
 
         opromise.then((mensaje) => {
+            let archivo = document.querySelector("#archivo");
+            archivo.map((param, e) => {
+                if(getCargar(param[e]) && param.length == e){
+                    resolve('bien');
+                };
+            });
+        });
+
+        opromise.then((mensaje) => {
             window.location.href = "/";
         })
     }
-    // let grabarBTN = document.querySelector("#formSubmit");
-    // window.location.replace("http://stackoverflow.com");
-    // $(location).attr('href', 'http://stackoverflow.com');
-}
-
-//######### obtener el historial.html ########
-var getHistorico = () => {
-    // let jsonObj = {
-    //     usuario: document.querySelector("#oUser").innerText,
-    //     bandera: 'tabla'
-    // };
-    // vmv.getLlamadas(jsonObj);
 }
 
 //######### llena el usuario.html ########
@@ -101,7 +107,7 @@ var usuarioInfo = () => {
     });
 }
 
-//######### obtiene las llamadas y actividades ########
+//######### obtiene los tickets ########
 var getHistoricoCOM = () => {
     let jsonObj = {
         usuario: document.querySelector("#oUser").innerText,
@@ -132,7 +138,8 @@ var getHistoricoCOM = () => {
         vmv.mapHistorial(newData);
     });
 }
-// var getAct = (vticket) => {
+
+// Obtiene las activiades
 var getAct = () => {
     // let vticket = document.querySelector("#ticketid").innerText;
     let ourl = this.document.URL;
@@ -143,10 +150,6 @@ var getAct = () => {
     let actividades = getActividades(param);
 
     let llamada = new Promise((resolve, reject) => {
-    //     if(window.location.href = "/actividades"){
-    //         resolve('bien');
-    //     }
-    // });
 
         actividades.then((data) => {
 
@@ -158,7 +161,7 @@ var getAct = () => {
             return data;
         }).then((actob) => {
 
-            let curUser = document.querySelector("#oUser").innerText; 
+            let curUser = document.querySelector("#oUser").innerText;
 
             let flag = actob.map((act, e) => {
                 let index = e;
@@ -169,10 +172,10 @@ var getAct = () => {
             });
 
             let len = actob.length;
-            
             let callb = [];
+
             if (len == 0){
-                callb.flag = true;    
+                callb.flag = true;
             }else {
                 callb.flag = flag[len-1];
             }
@@ -182,6 +185,7 @@ var getAct = () => {
             resolve('bien');
             return(actob);
         });
+
     });
 
     llamada.then(llamar.bind('', param));
@@ -203,7 +207,7 @@ var getAct = () => {
 
             // vmv.mapHistorial(result);
             // vmv.mapHistorial(data);
-        });    
+        });
     }
 }
 //######### obtiene las llamadas y actividades ########
