@@ -1,0 +1,70 @@
+{% extends "layouts/layout.html" %}
+{% block page_content %}
+
+
+<!-- Page Content -->
+<div class="container" >
+    <div class="wrapper">
+	      <!-- Side bar -->
+		    <div class="row" style="margin-left:10px;" id="content">
+			      <!-- Post Content Column -->
+			      <div>
+				        <!-- Title -->
+				        <h1 class="mt-4">Activar Usuarios</h1>
+				        <!-- Author -->
+				        <p class="lead">
+					          por
+					          <a href="#">Addviosry GC</a>
+				        </p>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th colspan="2">No.</th>
+                            <th colspan="2">Usuario</th>
+                            <th colspan="2">Correo</th>
+                            <th colspan="2">CardCode</th>
+                            <th colspan="2">Confirmado</th>
+                            <th colspan="2">Activo</th>
+                            <th colspan="2"></th>
+                        </tr>
+                    </thead>
+                    <tbody  data-bind="foreach: llamadas">
+                        <tr style="border-bottom:none;border-top:none;">
+                            <td colspan="2">
+                                <span class="article-title" data-bind="text:id"></span>
+                            </td>
+                            <!-- <td style="min-width:150px;" colspan="2"> -->
+                            <td colspan="2">
+                                <span class="article-title" data-bind="text:subject"></span>
+                            </td>
+                            <!-- <td style="min-width:250px;" colspan="2"> -->
+                            <td colspan="2">
+                                <p class="article-content" data-bind="text:dscription"></p>
+                            </td>
+                            <td colspan="2">
+                                <span class="article-title" data-bind="text:priority"></span>
+                            </td>
+                            <!-- <td style="min-width:150px;" colspan="2"> -->
+                            <td colspan="2">
+                                <small class="text-muted" data-bind="text:moment(createTime).locale('es').calendar()"></small>
+                            </td>
+                            <td colspan="1" style="margin:0;padding=0;width=7px;">
+                                <i data-bind="visible: estado == 'AGC'" class="dot1"></i>
+                                <i data-bind="visible: estado == 'Cliente'" class="dot2"></i>
+                                <i data-bind="visible: estado == 'SAP'" class="dot1"></i>
+                                <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i>
+                            </td>
+                            <td colspan="1">
+                                <span data-bind="text:estado" class="text-muted"> sap </span> 
+                            </td>
+                            <td colspan="2">
+                                <a href="#" data-bind="click:$parent.navAct">Actividades</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
