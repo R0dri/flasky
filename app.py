@@ -11,7 +11,7 @@ from contextlib import contextmanager
 
 from database import db, mail, app
 from models import User, Role, roles_users, OCLG, OSCL, db, user_datastore
-from apis import ticket, usuarioInfo, historial, actividad
+from apis import ticket, usuarioInfo, historial, actividad, activate
 
 api = Api(app)
 toolbar=DebugToolbarExtension(app)
@@ -33,6 +33,7 @@ migrate = Migrate(app,db)
 def redi():
     print('redirecting')
     return redirect('/',code=302)
+
 
 # Views
 @app.route('/sendmail')
@@ -102,6 +103,7 @@ api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')
 api.add_resource(historial, '/historial')
 api.add_resource(actividad, '/actividad')
+api.add_resource(activate, '/activate')
 
 
 if __name__ == '__main__':

@@ -132,6 +132,13 @@ class OSCL(db.Model):
     dscription = db.Column(db.String(8000))
     resolution = db.Column(db.String(8000))
 
+class AT(db.Model):
+    # __tablename__ = 'ATCH'
+    id = db.Column(db.HashColumn(10), primary_key=True)
+    ext = db.Column(db.string(5))
+    subject = db.Column(db.String(100))
+    ticket = db.Column(db.Integer())
+    activdad = db.Column(db.Integer())
 
 
 #Set Modification for Security Forms

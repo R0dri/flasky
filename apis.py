@@ -25,6 +25,38 @@ class usuarioInfo(Resource):
         su["password"] = '' 
         return jsonify(su)
 
+class activate(Resource):
+    def get(self):
+        headers = {'Content-Type':'text/html'}
+        return make_response(render_template('activation.html'),200,headers)
+    def post(self):
+        try:
+            se = db.text("SELECT * FROM [user]")
+            u = db.engine.execute(se)
+            su = [dict(row) for row in u]
+            # su = su[1]
+            # return {'Saved call': status}
+            return(jsonify(su))
+        except Exception as error:
+            print (error)
+            # return "got an error on post method"
+            return jsonify(error.args)
+    def put(self):
+        try:
+            sn = request.get_json()
+            se = db.text("UPDATE [user] SET active=:active WHERE id=:ids")
+            ids = sn["usuario"]
+            active = sn["active"]
+            result = db.engine.execute(se, ids=ids, active=active)
+            status = db.session.commit()
+            # return jsonify({'result': [dict(row) for row in result]})
+            # return {'status': 'updated user'}
+            return {'status': status}
+        except Exception as error:
+            print (error)
+            # return "got an error on post method"
+            return jsonify(error.args)
+
 class historial(Resource):
     @login_required
     def get(self):
