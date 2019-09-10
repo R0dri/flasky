@@ -1,7 +1,10 @@
-﻿$(document).ready(function () {
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
+﻿// $(document).ready(function () {
+// $(window).load(function () {
+    // window.onLoad = function () {
+window.addEventListener('load', function() { 
+                            // $('#sidebarCollapse').on('click', function () {
+                            //     $('#sidebar').toggleClass('active');
+                            // });
 
     let documento = document.URL;
 
@@ -33,18 +36,28 @@
 
     }
     else if (documento.indexOf("login") > -1) {
-
+        // let btnLogin = document.querySelector("#archivo");
+        // btnLogin.addEventListener("click", function(o){
+            // let  wh
+        // }
     }
-    else if (documento.indexOf("actividades") > -1) {
+    else if (documento.indexOf("actividad") > -1) {
+        let btnArchivo = document.querySelector("#enviarbtn");
+        btnArchivo.addEventListener("click", function(o){
+            Dropzone.autoDiscover = false;
+            var myDropzone = Dropzone.forElement(".dropzone");
+            myDropzone.processQueue();
+        });
         getAct();
     }
-    else {
-        // getHistorico();
+    else if (documento.indexOf("historial") > -1) {
         let button = document.querySelector("btnActividad");
         getHistoricoCOM();
     }
+    else {
+    }
 
-});
+}, false);
 
 //######### obtiene datos del ticket.html y los envia para guardar ########
 function grabarForm () {
@@ -106,6 +119,10 @@ var usuarioInfo = () => {
         document.querySelector("#ui_email").innerText = data.email;
     });
 }
+
+// var usario = () => {
+//     return document.querySelector("#oUser").innerText;
+// }
 
 //######### obtiene los tickets ########
 var getHistoricoCOM = () => {
@@ -192,14 +209,14 @@ var getAct = () => {
 
     function llamar (parametro, msg){
         let jsonObj = {
-            usuario: parametro.ticket,
+            ids: parametro.ticket,
             bandera: 'especifico'
         };
         let llam = getLlam(jsonObj);
 
         llam.then((data) => {
             let datos = data[0];
-            console.log(datos);
+            // console.log(datos);
             document.querySelector("#CntctSbjct").innerText = datos.usuario;
             document.querySelector("#subject").innerText = datos.subject;
             document.querySelector("#descripcion").innerText = datos.dscription;

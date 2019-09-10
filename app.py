@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, make_response, redirect
+from flask import render_template, request, jsonify, make_response, redirect, send_from_directory
 from flask_security import Security, SQLAlchemyUserDatastore, login_required, user_registered
 from flask_mail import Message
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
@@ -18,7 +18,13 @@ api = Api(app)
 toolbar=DebugToolbarExtension(app)
 migrate = Migrate(app,db)
 
+@app.route('/partials/<path:path>')
+def send_part(path):
+    return send_from_directory('partials', path)
 
+@app.route('/assets/<path:path>')
+def send_ass(path):
+    return send_from_directory('assets', path)
 
 # Create a user to test with
 # @app.before_first_request
@@ -52,7 +58,8 @@ def redi():
 @app.route('/')
 @login_required
 def home():
-    return render_template('historial.html')
+    # return render_template('html/pages-historial.html')
+    return redirect('historial')
 
 @app.route('/usuario')
 @login_required
@@ -61,16 +68,19 @@ def usuario ():
 
 @app.route('/<route>')
 def endless(route):
-    return 'you reached an empyt page, check if your route is correct: /{}'.format(route)
+    #return 'you reached an empyt page, check if your route is correct: /{}'.format(route)
+    # return send_from_directory('templates/html', route)
+    return render_template('html/'+route)
 
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/actividades')
-def actividades():
-    return render_template('actividad.html')
+
+@app.route('/template')
+def template():
+    return render_template('/html/index.html')
 
 api.add_resource(ticket, '/ticket')
 api.add_resource(usuarioInfo, '/usuarioInfo')

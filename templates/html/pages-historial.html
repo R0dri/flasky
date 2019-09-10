@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Hyper - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- inline style to handle loading of various element-->
+        <style>body.loading {visibility: hidden;}</style>
+        <link href="static/css/style.css" rel="stylesheet">
+
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+	      <!-- <link href="static/css/main.css" rel="stylesheet"> -->
+        <script src="static/js/knockout-3.3.0.js"></script>
+        <script src="static/js/knockout.mapping-2.4.1.js"></script>
+
+        <!-- App css -->
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="main-style-container" />
+
+    </head>
+
+    <body class="loading">
+        <div id="detached-topbar-placeholder"> </div>
+        <!-- Begin page -->
+        <div class="wrapper">
+
+            <div id="vertical-sidebar-placeholder"></div>
+            <div id="detached-sidebar-placeholder"></div>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <div id="vertical-topbar-placeholder"></div>
+                    <div id="horizontal-topbar-placeholder"></div>
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                                            <li class="breadcrumb-item active">Starter</li>
+                                        </ol>
+                                    </div>
+                                    <h4 class="page-title">Soporte</h4>
+
+                                    <div >
+                                        <div class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+                                           aria-expanded="false">
+                                            <span class="account-user-avatar"> 
+                                                <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                                            </span>
+                                            <span>
+                                                <!-- <span class="account-user-name">Dominic Keller</span> -->
+				                                        {% if current_user.is_authenticated %}
+				                                        <span class="account-user-name" id="oUser" >{{ current_user.username }}</span>
+				                                        {% else %}
+				                                        <span class="account-user-name" href="login">Login</span>
+				                                        {% endif %}
+                                                <span class="account-position">Founder</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+                        <!-- end page title --> 
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+<!-- Page Content -->
+    <div class="container" >
+
+        <div class="wrapper">
+		<div class="row" style="margin-left:10px;" id="content">
+
+			  <!-- Post Content Column -->
+			  <div>
+
+				    <!-- Author -->
+				    <p class="lead">
+					      por
+					      <a href="#">Addviosry GC</a>
+				    </p>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th colspan="2">No.</th>
+                        <th colspan="2">Ticket</th>
+                        <th colspan="2">Descripcion</th>
+                        <th colspan="2">Prioridad</th>
+                        <th colspan="2">Creado</th>
+                        <th colspan="2">Estado</th>
+                        <th colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody  data-bind="foreach: llamadas"> 
+                    <tr style="border-bottom:none;border-top:none;">
+                        <td colspan="2">
+                            <span class="article-title" data-bind="text:id"></span>
+                        </td>
+                        <!-- <td style="min-width:150px;" colspan="2"> -->
+                        <td colspan="2">
+                            <span class="article-title" data-bind="text:subject"></span>
+                        </td>
+                        <!-- <td style="min-width:250px;" colspan="2"> -->
+                        <td colspan="2">
+                            <p class="article-content" data-bind="text: dscription"></p>
+                        </td>
+                        <td colspan="2">
+                            <span class="article-title" data-bind="text:priority"></span>
+                        </td>
+                        <!-- <td style="min-width:150px;" colspan="2"> -->
+                        <td colspan="2">
+                            <small class="text-muted" data-bind="text:moment(createTime).locale('es').calendar()"></small>
+                        </td>
+                        <td colspan="1" style="margin:0;padding=0;width=7px;">
+                            <i data-bind="visible: estado == 'AGC'" class="dot1"></i>
+                            <i data-bind="visible: estado == 'Cliente'" class="dot2"></i>
+                            <i data-bind="visible: estado == 'SAP'" class="dot1"></i>
+                            <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i>
+                        </td>
+                        <td colspan="1">
+                            <span data-bind="text:estado" class="text-muted"> sap </span> 
+                        </td>
+                        <td colspan="2">
+                            <a href="#" data-bind="click:$parent.navAct">Actividades</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+      </div>
+    </div>
+    {% include "html/partials/footer.html" %}
+  </div>
+                {% include "html/partials/footer.html" %}
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        {% include "html/partials/right-sidebar.html" %}
+
+
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+
+    </body>
+    <script src="static/jquery/jquery.min.js"></script>
+    <script src="static/js/scriptko.js"></script>
+    <script type="module" src="static/js/Script.js"></script>
+</html>
