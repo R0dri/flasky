@@ -42,6 +42,12 @@ window.addEventListener('load', function() {
         // }
     }
     else if (documento.indexOf("actividad") > -1) {
+        let btnArchivo = document.querySelector("#enviarbtn");
+        btnArchivo.addEventListener("click", function(o){
+            Dropzone.autoDiscover = false;
+            var myDropzone = Dropzone.forElement(".dropzone");
+            myDropzone.processQueue();
+        });
         getAct();
     }
     else if (documento.indexOf("historial") > -1) {
