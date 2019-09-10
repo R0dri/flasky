@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, backref
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
-from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Table, Text
 from flask_security import UserMixin, RoleMixin
 from flask_security import Security, SQLAlchemyUserDatastore, login_required
 from flask_security import user_registered
@@ -103,7 +103,7 @@ class OCLG(db.Model):
     ticket = db.Column(db.Integer())       #ticket_id
     CntctSbjct = db.Column(db.String(20))  #user_id
     details = db.Column(db.String(50))     #asunto
-    notes = db.Column(db.String(100))
+    notes = db.Column(db.Text())
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # begintime = recontact
@@ -132,19 +132,10 @@ class OSCL(db.Model):
     dscription = db.Column(db.String(8000))
     resolution = db.Column(db.String(8000))
 
-class AT(db.Model):
-    # __tablename__ = 'ATCH'
-    id = db.Column(db.HashColumn(10), primary_key=True)
-    ext = db.Column(db.string(5))
-    subject = db.Column(db.String(100))
-    ticket = db.Column(db.Integer())
-    activdad = db.Column(db.Integer())
-
-
 class ATCH(db.Model):
     # __tablename__ = 'ATCH'
-    id = db.Column(db.HashColumn(10), primary_key=True)
-    ext = db.Column(db.string(5))
+    id = db.Column(db.String(10), primary_key=True)
+    ext = db.Column(db.String(5))
     subject = db.Column(db.String(100))
     ticket = db.Column(db.Integer())
     activdad = db.Column(db.Integer())

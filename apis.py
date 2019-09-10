@@ -359,7 +359,7 @@ class prueba(Resource):
         # return {'hello world':sn['dato']}
         return 'hello world'
     def post(self):
-        
+        return 'hello world'
 
 # class query(Resource):
 #     def get(self):
