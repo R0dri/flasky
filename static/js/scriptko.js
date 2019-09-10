@@ -97,13 +97,16 @@ function vm() {
     this.navAct = function(con){
         let param = con.id;
 
-        window.location.href = "/actividades?tparam=" + param;
+        // window.location.href = "/actividades?tparam=" + param;
+        window.location.href = "/actividad?tparam=" + param;
     }
 
     self.grabarAct = function (con, children) {
         let ourl = document.URL;
         let url = new URL(ourl);
         var vticket = url.searchParams.get("tparam");
+
+        self.flag(false);
 
         let actividad = {
             CntctSbjct:document.querySelector("#oUser").innerText,
