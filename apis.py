@@ -108,17 +108,27 @@ class historial(Resource):
     @login_required
     def get(self):
         headers = {'Content-Type':'text/html'}
-        return make_response(render_template('historial.html'),200,headers)
+        return make_response(render_template('html/pages-historial.html'),200,headers)
 
     def post(self):
+        print("sent")
         try:
             sn = request.get_json()
-            se = db.text("exec historial :usuario, :bandera")
-            usuario = sn["usuario"]
+            # usuario = sn["usuario"]
+            print(sn)
             bandera = sn["bandera"]
+            if bandera == 'especifico':
+                usuario = sn['ids']
+            else:
+                usuario = current_user.get_id()
+            print(usuario)
+            se = db.text("exec historial :usuario, :bandera")
             u = db.engine.execute(se, usuario=usuario, bandera=bandera)
             su = [dict(row) for row in u]
+            print("Data from query:")
+            print(su)
             # su = su[1]
+            print("sent")
             return jsonify(su)
         except Exception as error:
             print (error)
@@ -144,7 +154,7 @@ class ticket(Resource):
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
             su = su[0]
-            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
+            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
             db.session.add(sas)
             status = db.session.commit()
             print('here')
@@ -193,7 +203,11 @@ class ticket(Resource):
             # return jsonify({'error':error.args}), 400
 
 class actividad(Resource):
-    @validar.empresa
+    # @validar.empresa
+    @login_required
+    def get(self):
+        headers = {'Content-Type':'text/html'}
+        return make_response(render_template('html/app-actividad.html'),200,headers)
     def post(self):
         print ("geting in post @actividad")
         try:
@@ -321,11 +335,11 @@ class archivo(Resource):
 
     def post(self):
         print("saving attachment")
-        if 'inputFile' in request.files:
+        if 'file' in request.files:
             print('got it')
             print (request.files)
-            file = request.files['inputFile']
-            st=('T'+str(66).zfill(3)+str(a).zfill(4)).zfill(10)
+            file = request.files['file']
+            # st=('T'+str(66).zfill(3)+str(1).zfill(4)).zfill(10)
             file.filename = '141_'+file.filename
             # filename = files.save(request.files['inputFile'])
             print (file.filename)
@@ -359,7 +373,7 @@ class prueba(Resource):
         # return {'hello world':sn['dato']}
         return 'hello world'
     def post(self):
-        return 'hello world'
+        return "prueba post"
 
 # class query(Resource):
 #     def get(self):

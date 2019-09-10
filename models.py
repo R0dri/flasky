@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import ArrowType
 from sqlalchemy.orm import relationship, backref
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
 from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Table, Text
@@ -11,6 +12,7 @@ from contextlib import contextmanager
 from database import db, app
 
 from sqlalchemy.sql import func, expression
+import arrow
 
 
 # time_created = Column(DateTime(timezone=True), server_default=func.now())
@@ -122,9 +124,9 @@ class OSCL(db.Model):
     callType = db.Column(db.String(100))    #?
     contactCode = db.Column(db.String(100)) #username?
     BPContact = db.Column(db.String(100))   #usuario afectado
+    # createTime = db.Column(db.DateTime(), server_default=func.now())
     createTime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     createDate = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    # createDate = createTime
     BPPhone1 = db.Column(db.String(20))     #^
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario

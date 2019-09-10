@@ -79,6 +79,13 @@ https://askubuntu.com/questions/599808/cannot-set-lc-ctype-to-default-locale-no-
 SQL 2019 on Docker Reference: https://www.sqlshack.com/sql-server-2019-on-linux-with-a-docker-container-on-ubuntu/
 
 sudo docker run --restart always -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=B1admin@' -p 1433:1433 --name mssql -v /data/agcsupport/dockervolumes/var/opt/mssql:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2017-latest
+*** fix timezone locale
+docker exec -ti [cont] /bin/bash
+$ apt-get update
+$ apt-get install tzdata
+$ dpkg-reconfigure tzdata
+- 2   #America
+- 132 #Santo Domingo
 
 * Ubuntu/nginx setup
   https://www.youtube.com/watch?v=goToXTC96Co&list=PLovF0v_9CWzJNX8Ag0KUi78BdSeAw2Kow&index=10&t=498s
