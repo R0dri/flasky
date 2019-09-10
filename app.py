@@ -37,7 +37,8 @@ def rebuild():
         db.create_all()
         # user_datastore.create_user(email='r', password='p')
         db.session.commit()
-        return redirect('/')
+        # return redirect('/')
+        return ('rebuilt')
     except Exception as error:
         print('got error @rebuilding db')
         print (error)

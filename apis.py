@@ -111,6 +111,7 @@ class historial(Resource):
         return make_response(render_template('historial.html'),200,headers)
 
     def post(self):
+        print("sent")
         try:
             sn = request.get_json()
             se = db.text("exec historial :usuario, :bandera")
@@ -119,6 +120,7 @@ class historial(Resource):
             u = db.engine.execute(se, usuario=usuario, bandera=bandera)
             su = [dict(row) for row in u]
             # su = su[1]
+            print("sent")
             return jsonify(su)
         except Exception as error:
             print (error)
@@ -144,7 +146,7 @@ class ticket(Resource):
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
             su = su[0]
-            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
+            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
             db.session.add(sas)
             status = db.session.commit()
             print('here')
@@ -321,11 +323,11 @@ class archivo(Resource):
 
     def post(self):
         print("saving attachment")
-        if 'inputFile' in request.files:
+        if 'file' in request.files:
             print('got it')
             print (request.files)
             file = request.files['inputFile']
-            st=('T'+str(66).zfill(3)+str(a).zfill(4)).zfill(10)
+            # st=('T'+str(66).zfill(3)+str(a).zfill(4)).zfill(10)
             file.filename = '141_'+file.filename
             # filename = files.save(request.files['inputFile'])
             print (file.filename)
@@ -359,7 +361,7 @@ class prueba(Resource):
         # return {'hello world':sn['dato']}
         return 'hello world'
     def post(self):
-        
+	    return 'hey'
 
 # class query(Resource):
 #     def get(self):
