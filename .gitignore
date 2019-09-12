@@ -8,3 +8,4 @@ config.json
 migrations/
 .models.py.swp
 files/
+qstart.sh
