@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import ArrowType
 from sqlalchemy.orm import relationship, backref
 from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
-from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Boolean, DateTime, Column, Integer, String, ForeignKey, Table, Text
 from flask_security import UserMixin, RoleMixin
 from flask_security import Security, SQLAlchemyUserDatastore, login_required
 from flask_security import user_registered
@@ -11,6 +12,7 @@ from contextlib import contextmanager
 from database import db, app
 
 from sqlalchemy.sql import func, expression
+import arrow
 
 
 # time_created = Column(DateTime(timezone=True), server_default=func.now())
@@ -103,7 +105,7 @@ class OCLG(db.Model):
     ticket = db.Column(db.Integer())       #ticket_id
     CntctSbjct = db.Column(db.String(20))  #user_id
     details = db.Column(db.String(50))     #asunto
-    notes = db.Column(db.String(100))
+    notes = db.Column(db.Text())
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # begintime = recontact
@@ -122,9 +124,9 @@ class OSCL(db.Model):
     callType = db.Column(db.String(100))    #?
     contactCode = db.Column(db.String(100)) #username?
     BPContact = db.Column(db.String(100))   #usuario afectado
+    # createTime = db.Column(db.DateTime(), server_default=func.now())
     createTime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     createDate = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    # createDate = createTime
     BPPhone1 = db.Column(db.String(20))     #^
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario

@@ -116,6 +116,7 @@ class historial(Resource):
         return make_response(render_template('html/pages-historial.html'),200,headers)
 
     def post(self):
+        print("sent")
         try:
             sn = request.get_json()
             # usuario = sn["usuario"]
@@ -134,6 +135,7 @@ class historial(Resource):
             print("Data from query:")
             print(su)
             # su = su[1]
+            print("sent")
             return jsonify(su)
         except Exception as error:
             print (error)
@@ -159,7 +161,7 @@ class ticket(Resource):
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
             su = su[0]
-            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], createTime=su["confirmed_at"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
+            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
             db.session.add(sas)
             status = db.session.commit()
             print('here')
