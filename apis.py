@@ -10,10 +10,15 @@ from collections import namedtuple
 import json
 
 from database import db, SendMail
-from models import OSCL, OCLG
+from models import OSCL, OCLG, ATCH
 
 import datetime
 from functools import wraps
+import os.path
+
+
+
+
 
 class validar():
     def empresa(f):
@@ -117,11 +122,13 @@ class historial(Resource):
             print(sn)
             bandera = sn["bandera"]
             if bandera == 'especifico':
+                print(bandera)
                 usuario = sn['ids']
             else:
                 usuario = current_user.get_id()
             print(usuario)
             se = db.text("exec historial :usuario, :bandera")
+            print(se)
             u = db.engine.execute(se, usuario=usuario, bandera=bandera)
             su = [dict(row) for row in u]
             print("Data from query:")
@@ -206,6 +213,7 @@ class actividad(Resource):
     def get(self):
         headers = {'Content-Type':'text/html'}
         return make_response(render_template('html/app-actividad.html'),200,headers)
+
     def post(self):
         print ("geting in post @actividad")
         try:
@@ -219,13 +227,20 @@ class actividad(Resource):
             #              "where  c.username = :ids")
 
             # ids = sn["usuario"]
-            se = db.text("select a.* " +
+            se = db.text("select case when left(b.CardCode, 1) = 'P' then 'Addvisory' else b.username end as usuario, " +
+                         "       a.*, 'oculto' as estado " +
                          "from   OCLG as a " +
+                         "       inner join [user] as b on a.CntctSbjct = b.username " +
                          "where  a.ticket = :ids")
             ids = sn["ticket"]
+            print("TICKET: ")
+            print(ids)
 
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
+
+            print("Resultado Query: ")
+            print(su)
             # su = su[0]
             return jsonify(su)
             # return jsonify(su), 200
@@ -240,7 +255,7 @@ class actividad(Resource):
         print("Puting Actividad")
         try:
             sn = request.get_json()
-
+            print(sn)
             se = db.text("SELECT * FROM [user] WHERE username = :ids")
             ids = sn["CntctSbjct"]
             u = db.engine.execute(se, ids=ids).fetchall()
@@ -303,15 +318,21 @@ class actividad(Resource):
             return jsonify({'error':error})
             # return jsonify({'error':error}), 400
 
-    def update(self):
+    def patch(self):
         try:
             sn = request.get_json()
-            se = db.text("UPDATE OSCL SET resolution=:sol, estado='cerrado' WHERE id = :ids")
-            ids = sn["ticket"]
-            sol = sn["resolution"]
-            db.engine.execute(se, sol=sol, ids=ids)
-            db.session.commit()
-            return {'Set resolution and close ticket id': sn['ticket']}
+            tick = sn["ticket"]
+            act = sn["actividad"]
+            est = sn["estado"]
+            se = db.text("UPDATE OSCL SET resolution=:act, estado=:est WHERE id = :tick")
+            db.engine.execute(se, act=act, tick=tick, est=est)
+            se = db.text("UPDATE OCLG SET action=0 WHERE ticket = :tick")
+            db.engine.execute(se, tick=tick)
+            if est=='cerrado':
+                se = db.text("UPDATE OCLG SET action=1 WHERE id = :act")
+                db.engine.execute(se, act=act)
+            status = db.session.commit()
+            return {'status': status}
             # return {'Set resolution and close ticket id': sn['ticket']}, 200
         except Exception as error:
             print ("got an error on POST method @Actividad")
@@ -321,28 +342,63 @@ class actividad(Resource):
 
 
 class archivo(Resource):
-    def get(self):
-        print('hey')
-        try:
-            sn = request.get_json()
-            return send_file('files/'+sn['filename'], as_attachment=True)
-        except Exception as e:
-            print('error')
-            print(e)
-            return 'error'
+    def get(self, action=None, *args, **kwargs):
+        if action == 'list':
+            tick = request.args.get('ticket')
+            se = db.text("SELECT * FROM ATCH WHERE ticket=:tick ")
+            u = db.engine.execute(se, tick=tick).fetchall()
+            su = [dict(row) for row in u]
+            # su = su[0]
+            # return {tick:act}
+            return jsonify(su)
+        else:
+            print('hey')
+            try:
+                filename  = request.args.get('filename')
+                # se = db.text("SELECT diskname FROM ATCH WHERE ticket=:tick AND actividad=:act ")
+                se = db.text("SELECT diskname FROM ATCH WHERE filename=:filename ")
+                u = db.engine.execute(se, filename=filename).fetchall()
+                su = [dict(row) for row in u]
+                su = su[0]
+                # return {tick:act}
+                # return su
+                return send_file('files/'+su['diskname'], as_attachment=True)
+            except Exception as e:
+               print('error')
+               print(e)
+               return 'error'
 
     def post(self):
         print("saving attachment")
         if 'file' in request.files:
-            print('got it')
-            print (request.files)
-            file = request.files['file']
-            # st=('T'+str(66).zfill(3)+str(1).zfill(4)).zfill(10)
-            file.filename = '141_'+file.filename
-            # filename = files.save(request.files['inputFile'])
-            print (file.filename)
-            print (file.__dir__())
-            return file.filename
+            print('Got file!')
+            tick = request.args.get('ticket')
+            act  = request.args.get('actividad')
+            print('tick')
+            print(tick)
+            print('act')
+            print(act)
+            fil = request.files['file']
+            filename = fil.filename
+            print(filename)
+            ext=filename[filename.find('.')+1:len(filename)]
+
+            i=1
+            fil.filename  = 'TI'+str(tick).zfill(6)+'AC'+str(act).zfill(6)+'AT'+str(i).zfill(2)
+            print(fil.filename)
+            while(os.path.exists('files/'+fil.filename)):
+                i+=1
+                fil.filename  = 'TI'+str(tick).zfill(6)+'AC'+str(act).zfill(6)+'AT'+str(i).zfill(2)
+                print(fil.filename)
+            diskname = fil.filename
+
+            fil.save('files/'+diskname)
+
+            sas = ATCH(diskname=diskname, filename=filename, ext=ext, ticket=tick, actividad=act)
+            db.session.add(sas)
+            status = db.session.commit()
+            print(status)
+            return {'status':status}
         else:
             try:
                 print('Got no file, data sent:')

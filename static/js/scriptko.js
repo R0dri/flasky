@@ -75,6 +75,9 @@ function vm() {
     self.flag = ko.observable();
     self.newNotes = ko.observable();
     self.ticketid = ko.observable();
+    self.disableDetails = ko.observable();
+    self.enableDetails = ko.observable();
+    self.estadollam = ko.observable();
     this.pra = ko.observable();
 
     this.llamadas = ko.observableArray();
@@ -87,6 +90,9 @@ function vm() {
     this.mapAct = (datos) => {
         self.oactividad(datos.actividad);
     };
+    this.setEstado = (datos) => {
+        self.estadollam(datos); 
+    }
     this.setflag = (datos) => {
         // self.pra('hola');
         self.flag(datos); 
@@ -100,6 +106,47 @@ function vm() {
         // window.location.href = "/actividades?tparam=" + param;
         window.location.href = "/actividad?tparam=" + param;
     }
+
+    self.marcar = function (con, element) {
+        let estado = con.action ? 'cerrado' : 'abierto';
+        let actividad = {
+            ticket:con.ticket,
+            estado:estado,
+            actividad:con.id
+        };
+        $.ajax({type: "PATCH",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                url: "actividad",
+                data: ko.toJSON(actividad),
+                success: function (data) {
+                    // console.log(data);
+                }
+               }).then(refrescar.bind(this));
+
+        function refrescar (data) {
+            // this.actividad.push(actividad);
+            // getAct(data.result);
+        };
+    };
+
+    // self.detailsEnabled = ko.observable(false);
+
+    self.enableDetails = function(con, element) {
+        // this.detailsEnabled(true);
+        // return con.detailsEnabled = 1;
+        // con.estado('visible');
+        con.estado = 'visible';
+        // alert('comoes');
+    };
+
+    self.disableDetails = function(con, element) {
+        // this.detailsEnabled(false);
+        // con.estado('oculto');
+        con.estado = 'oculto';
+        // con.detailsEnabled(false);
+        // return con.detailsEnabled = 0;
+    };
 
     self.grabarAct = function (con, children) {
         let ourl = document.URL;
@@ -130,9 +177,14 @@ function vm() {
                }).then(refrescar.bind(this), handleError);
 
         function refrescar (data) {
-            // this.actividad.push(actividad);
-            getAct(data.result);
+            let opromise = new Promise((resolve, reject) => {
+                if(getAct(data.result)){
+                    resolve('bien');
+                }
+            });
+            opromise.then(oUpload());
         };
+
         function handleError(xhr, status, err){
             alert(err.valueError + ' status:' + status);
         };

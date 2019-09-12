@@ -12,6 +12,7 @@
         <!-- inline style to handle loading of various element-->
         <style>body.loading {visibility: hidden;}</style>
         <link href="static/css/style.css" rel="stylesheet">
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
 
         <!-- App css -->
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
@@ -36,29 +37,13 @@
             <div class="content-page">
                 <div class="content">
 
-                    <div id="vertical-topbar-placeholder"></div>
+                    {% include "html/partials/topbar.html" %}
+                    <!-- <div id="vertical-topbar-placeholder"></div> -->
                     <div id="horizontal-topbar-placeholder"></div>
 
                     <!-- Start Content-->
                     <div class="container-fluid">
                         
-                        <div >
-                            <div class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                                 aria-expanded="false">
-                                <span class="account-user-avatar"> 
-                                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
-                                </span>
-                                <span>
-                                    <!-- <span class="account-user-name">Dominic Keller</span> -->
-				                            {% if current_user.is_authenticated %}
-				                            <span class="account-user-name" id="oUser" >{{ current_user.username }}</span>
-				                            {% else %}
-				                            <span class="account-user-name" href="login">Login</span>
-				                            {% endif %}
-                                    <span class="account-position">Founder</span>
-                                </span>
-                            </div>
-                        </div>
                         <!-- start page title -->
                         <div class="row">
                             <div class="col-12">
@@ -103,18 +88,14 @@
                                             <span> #</span>
                                             <span id="id"></span>
                                         </h3>
-                                        <div class="badge badge-secondary mb-3">En curso</div>
+                                        <div id="actAbierto" class="badge badge-success mb-3">En curso</div>
+                                        <div id="actCerrado" class="badge badge-secondary mb-3" >Cerrado</div>
 
                                         <h5>Descripcion:</h5>
 
                                         <p class="text-muted mb-2" id="descripcion">
                                         </p>
 
-                                        <!-- <p class="text-muted mb-4"> -->
-                                        <!-- Voluptates, illo, iste itaque voluptas corrupti ratione reprehenderit magni similique? Tempore, quos delectus asperiores -->
-                                        <!-- libero voluptas quod perferendis! Voluptate, quod illo rerum? Lorem ipsum dolor sit amet. With supporting text below -->
-                                        <!-- as a natural lead-in to additional contenposuere erat a ante. -->
-                                        <!-- </p> -->
 
                                         <div class="row">
                                             <div class="col-md-4">
@@ -137,11 +118,11 @@
                                             </div>
                                         </div>
 
-                                        <div>
+                                        <!-- <div> -->
                                             <!-- <h5>Team Members:</h5> -->
                                             <!-- <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme" class="d-inline-block"> -->
                                             <!-- <img src="assets/images/users/avatar-6.jpg" class="rounded-circle img-thumbnail avatar-sm" alt="friend"> -->
-                                            <!-- </a><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --> -->
+                                            <!-- </a> -->
     
                                             <!-- <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="Michael Zenaty" class="d-inline-block"> -->
                                             <!-- <img src="assets/images/users/avatar-7.jpg" class="rounded-circle img-thumbnail avatar-sm" alt="friend"> -->
@@ -162,7 +143,7 @@
                                             <!-- <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="" data-original-title="James Anderson" class="d-inline-block"> -->
                                             <!-- <img src="assets/images/users/avatar-3.jpg" class="rounded-circle img-thumbnail avatar-sm" alt="friend"> -->
                                             <!-- </a> -->
-                                        </div>
+                                        <!-- </div> -->
 
                                     </div> <!-- end card-body-->
                                     
@@ -170,13 +151,65 @@
 
                                 <div class="card">
                                     <div class="card-body">
+
+                                        <div class="media mt-2">
+
+                                            <img class="mr-3 avatar-sm rounded-circle" src="assets/images/users/avatar-3.jpg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h5 id="penUltima" class="mt-0">
+                                                    <span id="penUltima">
+                                                    </span>
+                                                    <small class="mt-0" id="penultimaRecontact">comoes</small>
+                                                    <!-- <small class="text-muted"># <span data-bind="text:id"></span></small> -->
+                                                </h5>
+                                                
+                                                <span id="penultimaText"></span>
+                                                <br/>
+                                                <p> </p>
+
+                                                <div id="penUltimaR" class="alert alert-success" role="alert" style="display:none">
+                                                    <i class="dripicons-checkmark mr-2"></i> Esta respuesta ha sido marcada como <strong>correcta</strong>.
+                                                </div>
+
+                                                <div class="media mt-3">
+                                                    <a class="pr-3" href="#">
+                                                        <img src="assets/images/users/avatar-4.jpg" class="avatar-sm rounded-circle" alt="Generic placeholder image">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h5 id="Ultima" class="mt-0"></h5>
+                                                        <span id="ultimaText"></span>
+                                                        <br/>
+                                                        <p> </p>
+
+                                                        <div id="ultimaR" class="alert alert-success" role="alert" style="display:none">
+                                                            <i class="dripicons-checkmark mr-2"></i> Esta respuesta ha sido marcada como <strong>correcta</strong>.
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div id="respuestaR" class="media mt-3" style="display:none">
+                                                    <a class="pr-3" href="#">
+                                                        <!-- <img src="assets/images/users/avatar-4.jpg" class="avatar-sm rounded-circle" alt="Generic placeholder image"> -->
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h5 id="Respuesta" class="mt-0"></h5>
+                                                        <span id="respuestaText"></span>
+                                                        <br/>
+                                                        <p> </p>
+                                                        <div class="alert alert-success" role="alert">
+                                                            <i class="dripicons-checkmark mr-2"></i> Esta respuesta ha sido marcada como <strong>correcta</strong>.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <h4 class="mt-0 mb-3">Actividades (258)</h4>
 
                                         <textarea data-bind="visible: flag, value:newNotes" class="form-control form-control-light mb-2" placeholder="Write message" id="example-textarea" rows="3"></textarea>
-                                        <!-- <textarea data-bind="if: flag" class="form-control form-control-light mb-2" placeholder="Write message" id="example-textarea" rows="3"></textarea> -->
-
                                         <div class="text-right">
-                                                <div class="btn-group mb-2">
+                                            <div class="btn-group mb-2">
                                                     <button type="button" class="btn btn-link btn-sm text-muted font-18"><i data-bind="visible: flag" class="dripicons-paperclip"></i></button>
                                                 </div>
                                                 <div class="btn-group mb-2 ml-2">
@@ -191,8 +224,8 @@
                                                         <code>data-plugin='dropzone'</code> to have file upload widget with drag and drop support in your
                                                         <code>form</code> element.
                                                     </p>
-                                                    
-                                                    <form action="/archivo" method="post" class="dropzone dz-clickable" id="myAwesomeDropzone"
+                                                    <!-- <form action="/archivo" method="post" class="dropzone dz-clickable" id="myAwesomeDropzone" -->
+                                                    <form action="/archivo"  method="post" class="dropzone dz-clickable" id="myAwesomeDropzone"
                                                           data-plugin="dropzone" data-previews-container="#file-previews"
                                                           data-upload-preview-template="#uploadPreviewTemplate">
                                                         <div class="dz-message needsclick">
@@ -206,36 +239,50 @@
                                                 </div>
                                             </div>
                                             <div class="d-none" id="uploadPreviewTemplate"><div class="card mt-1 mb-0 shadow-none border border-light"><div class="p-2"><div class="row align-items-center"><div class="col-auto"><img data-dz-thumbnail="" class="avatar-sm rounded bg-light" alt=""></div><div class="col pl-0"><a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name=""></a><p class="mb-0" data-dz-size=""></p></div><div class="col-auto"><a href="" class="btn btn-link btn-lg text-muted" data-dz-remove=""><i class="dripicons-cross"></i></a></div></div></div></div></div>
-                                            <button type="button" id="enviarbtn" class="btn btn-primary btn-sm">Enviar archivo</button> 
-                                            <h5>Ultima Actividad:</h5>
-                                            
+                                            <!-- <button type="button" id="enviarbtn" class="btn btn-primary btn-sm">Enviar archivo</button>  -->
+                                            <!-- <h5>Ultima Actividad:</h5> -->
                                             <p class="text-muted mb-2" id="ultimoC">
                                             </p>
 
-                                            <br/>
+                                            <div class="text-center mt-2">
+                                                <a href="#historial" data-toggle="collapse" class="text-danger">Ver Actividaes</a>
+                                            </div>
+
                                             <div class="media mt-2">
-                                                <!-- <img class="mr-3 avatar-sm rounded-circle" src="assets/images/users/avatar-3.jpg" alt="Generic placeholder image"> -->
                                                 <div class="mr-3 avatar-sm rounded-circle"></div>
                                                 <div class="media-body">
-
-                                                    <div data-bind="foreach: oactividad">
-                                                        <div class="container">
-                                                            <h5 class="mt-0" data-bind="text:CntctSbjct"></h5>
-                                                            <p style="margin-top:15px; border-left: 4px solid #dddddd;" data-bind="text:notes" class="container small"> </p>
+                                                    <div class="panel-collapse collapse" id="historial">
+                                                        <div id="actividades" data-bind="foreach: oactividad">
+                                                            <div data-bind="attr:{id:id}" class="container" data-bind="event: { mouseover: $parent.enableDetails, mouseout: $parent.disableDetails }">
+                                                                <!-- <div class="container" "> -->
+                                                                <h5 class="mb-2">
+                                                                    <span data-bind="text:usuario">
+                                                                    </span>
+                                                                    <small class="mt-0" data-bind="text:moment(recontact).locale('es').calendar()"></small>
+                                                                    <small class="text-muted"># <span data-bind="text:id"></span></small>
+                                                                </h5>
+                                                                <!-- <div class="mb-2 ml-2"> -->
+                                                                    <!-- <input type="checkbox" data-bind="onchange: $root.marcar, attr:{id: 'switch' + id}, checked:action" data-switch="success"> -->
+                                                                    <!-- <label data-bind="attr:{for: 'switch' + id}" data-on-label="Yes" data-off-label="No" class="mb-0 d-block"></label> -->
+                                                                <!-- </div> -->
+                                                                <p style="margin-top:15px; border-left: 4px solid #dddddd;" data-bind="text:notes" class="container small"> </p>
+                                                                <div class="custom-control custom-checkbox" data-bind="style: { display: estado == 'oculto' ? 'inline' : 'none' }">
+                                                                    <!-- <div class="custom-control custom-checkbox" > -->
+                                                                    <input type="checkbox" data-bind="event:{change:$root.marcar}, attr:{id: 'switch' + id}, checked:action" class="custom-control-input" kl_vkbd_parsed="true">
+                                                                    <label class="custom-control-label"  data-bind="attr:{for: 'switch' + id}">Marcar respuesta</label>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="text-center mt-2">
-                                                <a href="javascript:void(0);" class="text-danger">Ver Actividaes</a>
-                                            </div>
+                                            
                                     </div> <!-- end card-body-->
                                 </div>
                                 <!-- end card-->
                             </div> <!-- end col -->
 
-                            <div class="col-md-4">
+                            <!-- <div class="col-md-4"> -->
                                 <!-- <div class="card"> -->
                                 <!-- <div class="card-body"> -->
                                 <!-- <h5 class="card-title mb-3">Progreso</h5> -->
@@ -321,7 +368,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <!-- </div> -->
                         <!-- end row -->
 
                     </div> <!-- container -->

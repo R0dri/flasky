@@ -129,13 +129,16 @@
             <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                 aria-expanded="false">
                 <span class="account-user-avatar"> 
-                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                    <img src="../assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
                 </span>
                 <span>
-                    <a class="account-user-name" id="oUser" href="usuario">cheeky</a>
-                    <span class="account-position">Cliente</span>
-                    <!-- <span class="account-user-name">Dominic Keller</span> -->
-                    <!-- <span class="account-position">Founder</span> -->
+				            {% if current_user.is_authenticated %}
+				            <span class="account-user-name" id="oUser" >{{ current_user.username }}</span>
+				            {% else %}
+				            <span class="account-user-name" href="login">Login</span>
+				            {% endif %}
+                    <span class="account-position">{{ current_user.first_name }}</span>
+                </span>
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">

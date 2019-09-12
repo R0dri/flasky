@@ -132,22 +132,15 @@ class OSCL(db.Model):
     dscription = db.Column(db.String(8000))
     resolution = db.Column(db.String(8000))
 
-class AT(db.Model):
-    # __tablename__ = 'ATCH'
-    id = db.Column(db.HashColumn(10), primary_key=True)
-    ext = db.Column(db.string(5))
-    subject = db.Column(db.String(100))
-    ticket = db.Column(db.Integer())
-    activdad = db.Column(db.Integer())
-
-
 class ATCH(db.Model):
     # __tablename__ = 'ATCH'
-    id = db.Column(db.String(10), primary_key=True)
+    # id = db.Column(db.Integer(), primary_key=True)
+    diskname = db.Column(db.String(20), primary_key=True)
     ext = db.Column(db.String(5))
-    subject = db.Column(db.String(100))
+    # diskname = db.Column(db.String(20))
+    filename = db.Column(db.String(100))
     ticket = db.Column(db.Integer())
-    activdad = db.Column(db.Integer())
+    actividad = db.Column(db.Integer())
 
 #Set Modification for Security Forms
 class ExtendedLoginForm(LoginForm):

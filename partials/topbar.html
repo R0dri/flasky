@@ -132,6 +132,17 @@
                     <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
                 </span>
                 <span>
+                    <!-- <span class="account-user-name">Dominic Keller</span> -->
+                    <!-- <span class="account-position">Founder</span> -->
+                    <span>
+                        <!-- <span class="account-user-name">Dominic Keller</span> -->
+				                {% if current_user.is_authenticated %}
+				                <span class="account-user-name" id="oUser" >{{ current_user.username }}</span>
+				                {% else %}
+				                <span class="account-user-name" href="login">Login</span>
+				                {% endif %}
+                        <span class="account-position">Founder</span>
+                    </span>
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -170,6 +181,12 @@
                     <span>Logout</span>
                 </a>
 
+                <!-- item-->
+                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <i class="mdi mdi-logout mr-1"></i>
+                </a>
+
+                {{ current_user.username }}
             </div>
         </li>
 

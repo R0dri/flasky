@@ -39,7 +39,8 @@
             <div class="content-page">
                 <div class="content">
 
-                    <div id="vertical-topbar-placeholder"></div>
+                    {% include "html/partials/topbar.html" %}
+                    <!-- <div id="vertical-topbar-placeholder"></div> -->
                     <div id="horizontal-topbar-placeholder"></div>
 
                     <!-- Start Content-->
@@ -58,23 +59,6 @@
                                     </div>
                                     <h4 class="page-title">Soporte</h4>
 
-                                    <div >
-                                        <div class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                                           aria-expanded="false">
-                                            <span class="account-user-avatar"> 
-                                                <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
-                                            </span>
-                                            <span>
-                                                <!-- <span class="account-user-name">Dominic Keller</span> -->
-				                                        {% if current_user.is_authenticated %}
-				                                        <span class="account-user-name" id="oUser" >{{ current_user.username }}</span>
-				                                        {% else %}
-				                                        <span class="account-user-name" href="login">Login</span>
-				                                        {% endif %}
-                                                <span class="account-position">Founder</span>
-                                            </span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>     
@@ -112,7 +96,7 @@
                     </tr>
                 </thead>
                 <tbody  data-bind="foreach: llamadas"> 
-                    <tr style="border-bottom:none;border-top:none;">
+                    <tr style="border-bottom:none;border-top:none;" data-bind="click:$parent.navAct">
                         <td colspan="2">
                             <span class="article-title" data-bind="text:id"></span>
                         </td>
@@ -140,9 +124,9 @@
                         <td colspan="1">
                             <span data-bind="text:estado" class="text-muted"> sap </span> 
                         </td>
-                        <td colspan="2">
-                            <a href="#" data-bind="click:$parent.navAct">Actividades</a>
-                        </td>
+                        <!-- <td colspan="2">
+                             <a href="#" data-bind="click:$parent.navAct">Actividades</a>
+                             </td> -->
                     </tr>
                 </tbody>
             </table>

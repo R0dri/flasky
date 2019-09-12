@@ -43,11 +43,13 @@ window.addEventListener('load', function() {
     }
     else if (documento.indexOf("actividad") > -1) {
         let btnArchivo = document.querySelector("#enviarbtn");
-        btnArchivo.addEventListener("click", function(o){
-            Dropzone.autoDiscover = false;
-            var myDropzone = Dropzone.forElement(".dropzone");
-            myDropzone.processQueue();
-        });
+
+        // let mydr = document.querySelector("#myAwesomeDropzone");
+        // mydr.setAttribute('action', '/archivo?ticket=8&actividad=12');
+
+        // btnArchivo.addEventListener("click", function(o){
+
+        // });
         getAct();
     }
     else if (documento.indexOf("historial") > -1) {
@@ -157,13 +159,14 @@ var getHistoricoCOM = () => {
 }
 
 // Obtiene las activiades
-var getAct = () => {
+ var getAct = () => {
     // let vticket = document.querySelector("#ticketid").innerText;
     let ourl = this.document.URL;
     let url = new URL(ourl);
     var vticket = url.searchParams.get("tparam");
     // let usuarioDoc = document.querySelector("#oUser").innerText;
     let param = {"ticket":vticket};
+    console.log(param.ticket);
     let actividades = getActividades(param);
 
     let llamada = new Promise((resolve, reject) => {
@@ -185,6 +188,38 @@ var getAct = () => {
                 let len = actob.length;
                 // act.flag == "P
                 // return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
+                if(e == len -2){
+                    let usuario = document.querySelector("#penUltima");
+                    let texto = document.querySelector("#penultimaText");
+                    let fecha = document.querySelector("#penultimaRecontact");
+                    let mensaje = document.querySelector("#penUltimaR")
+
+                    actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+
+                    usuario.innerText = actob[e].CntctSbjct;
+                    texto.innerText = actob[e].notes;
+                    fecha.innerText = moment(actob[e].recontact).locale('es').calendar();
+                }
+                if(e == len -1){
+                    let usuario = document.querySelector("#Ultima");
+                    let texto = document.querySelector("#ultimaText");
+                    let mensaje = document.querySelector("#ultimaR")
+
+                    actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+
+                    usuario.innerText = actob[e].CntctSbjct;
+                    texto.innerText = actob[e].notes;
+                }
+                if((e != len -2 || e != len -1) && actob[e].action == 1){
+                    let usuario = document.querySelector("#Respuesta");
+                    let texto = document.querySelector("#respuestaText");
+                    let mensaje = document.querySelector("#respuestaR");
+
+                    actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+
+                    usuario.innerText = actob[e].CntctSbjct;
+                    texto.innerText = actob[e].notes;
+                }
                 return actob.length == e+1 && act.CntctSbjct != curUser ? true : false;
             });
 
@@ -221,12 +256,57 @@ var getAct = () => {
             document.querySelector("#subject").innerText = datos.subject;
             document.querySelector("#descripcion").innerText = datos.dscription;
             document.querySelector("#id").innerText = datos.id;
-
+            if(datos.estado == 'cerrado'){
+                document.querySelector("#actAbierto").style.display = 'none';
+                document.querySelector("#actCerrado").style.display = 'inline';
+            }else{
+                document.querySelector("#actAbierto").style.display = 'inline';
+                document.querySelector("#actCerrado").style.display = 'none';
+            }
+            // vmv.setEstado(datos.estado);
             // vmv.mapHistorial(result);
             // vmv.mapHistorial(data);
         });
     }
 }
+//sube los los archivos
+var oUpload = () =>{
+
+    Dropzone.autoDiscover = false;
+    var myDropzone = Dropzone.forElement(".dropzone");
+
+    let ourl = document.URL;
+    let url = new URL(ourl);
+    let vticket = url.searchParams.get("tparam");
+
+    let param = {"ticket":vticket};
+    let actividades = getActividades(param);
+
+    var idactid;
+    let actid = actividades.then((data) => {
+        let nuevoac = data.map((obj, e) => {
+            if(data.length == e +1){
+                return obj.id;
+            }
+        });
+        // console.log(nuevoac);
+        idactid = nuevoac[nuevoac.length -1];
+        myDropzone.options['url'] =  '/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
+
+        myDropzone.processQueue();
+        return nuevoac[nuevoac.length -1];
+    });
+    // let lastact = actividades.length -1;
+    // let actividad = actividades[lastact].id;
+    // actividades((oob) => { console.log(oob);});
+    // console.log('no. actividad: ' +  actividad);
+     
+    // let elementos = document.querySelector("#actividades").children;
+    // let actividad = elementos[0] ? elementos[elementos.length-1].id + 1 : 1;
+
+}
+
+
 //######### obtiene las llamadas y actividades ########
 // var getHistoricoCOM_ant = () => {
 //     let usuarioDoc = document.querySelector("#oUser").innerText;
