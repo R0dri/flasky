@@ -30,6 +30,26 @@ let getLlam = (obj) => {
         dataType: "json",
     });
 }
+//######### Descarga atachments ########
+let getLista = (param) => {
+    return $.ajax({type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        url: "archivo/lista",
+        data: ko.toJSON(param),
+        dataType: "json",
+    });
+};
+//######### Descarga atachments ########
+let getAtach = (obj) => {
+    return $.ajax({type: "POST",
+                   dataType: "json",
+                   contentType: "application/json; charset=utf-8",
+                   url: "archivo",
+                   data: JSON.stringify(obj),
+                   dataType: "json",
+                  });
+};
 
 //######### Graba los datos del formulario ########
 let grabarF = (param) => {
@@ -82,6 +102,7 @@ function vm() {
 
     this.llamadas = ko.observableArray();
     this.oactividad = ko.observableArray();
+    this.oarchivo = ko.observableArray();
 
     this.mapHistorial = (datos) => {
         self.llamadas(datos);
@@ -89,6 +110,9 @@ function vm() {
 
     this.mapAct = (datos) => {
         self.oactividad(datos.actividad);
+    };
+    this.mapAtach = (datos) => {
+        self.oarchivo(datos.archivo);
     };
     this.setEstado = (datos) => {
         self.estadollam(datos); 
@@ -125,38 +149,6 @@ function vm() {
                }).then(refrescar.bind(this));
 
         function refrescar (data) {
-            // this.actividad.push(actividad);
-            // getAct(data.result);
-        };
-    };
-
-    // self.detailsEnabled = ko.observable(false);
-
-    self.enableDetails = function(con, element) {
-        // this.detailsEnabled(true);
-        // return con.detailsEnabled = 1;
-        // con.estado('visible');
-        con.estado = 'visible';
-        // alert('comoes');
-    };
-
-    self.disableDetails = function(con, element) {
-        // this.detailsEnabled(false);
-        // con.estado('oculto');
-        con.estado = 'oculto';
-        // con.detailsEnabled(false);
-        // return con.detailsEnabled = 0;
-    };
-
-    self.grabarAct = function (con, children) {
-        let ourl = document.URL;
-        let url = new URL(ourl);
-        var vticket = url.searchParams.get("tparam");
-
-        self.flag(false);
-
-        let actividad = {
-            CntctSbjct:document.querySelector("#oUser").innerText,
             action:null,
             begintime:null,
             details:null,

@@ -168,17 +168,26 @@ var getHistoricoCOM = () => {
     let param = {"ticket":vticket};
     console.log(param.ticket);
     let actividades = getActividades(param);
+    let archivos = getAtach(param);
 
     let llamada = new Promise((resolve, reject) => {
+        archivos.then((data) => {
+            let neOb = [];
+            neOb.newNotes = '';
+            neOb.archivo = data;
+            vmv.mapAct(newOb);
+
+            return data;
+        })
 
         actividades.then((data) => {
-
             let newOb = [];
             newOb.newNotes = '';
             newOb.actividad = data;
             vmv.mapAct(newOb);
 
             return data;
+
         }).then((actob) => {
 
             let curUser = document.querySelector("#oUser").innerText;

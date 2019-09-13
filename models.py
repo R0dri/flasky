@@ -12,7 +12,6 @@ from contextlib import contextmanager
 from database import db, app
 
 from sqlalchemy.sql import func, expression
-import arrow
 
 
 # time_created = Column(DateTime(timezone=True), server_default=func.now())
@@ -131,8 +130,8 @@ class OSCL(db.Model):
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario
     BPProjCode = db.Column(db.String(80))   #empresa?
-    dscription = db.Column(db.String(8000))
-    resolution = db.Column(db.String(8000))
+    dscription = db.Column(db.Text())
+    resolution = db.Column(db.Integer())
 
 class ATCH(db.Model):
     # __tablename__ = 'ATCH'
