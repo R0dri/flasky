@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Hyper - Responsive Bootstrap 4 Admin Dashboard</title>
+        <title>HelpDesk - Responsive Bootstrap 4 Admin Dashboard</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -50,9 +50,8 @@
                                 <div class="page-title-box">
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Projects</a></li>
-                                            <li class="breadcrumb-item active">Project Details</li>
+                                            <li class="breadcrumb-item"><a href="/historial">Historial</a></li>
+                                            <li class="breadcrumb-item active">Actividades</li>
                                         </ol>
                                     </div>
                                     <h4 class="page-title">Detalles del Ticket</h4>
@@ -207,7 +206,78 @@
 
                                         <h4 class="mt-0 mb-3">Actividades (258)</h4>
 
+                                        <!-- <div class="Squire-UI">
+                                             <div class="menu" contenteditable="false">
+                                             <div class="group">
+                                             <div data-action="bold" class="item"><i class="fa fa-bold"></i></div>
+                                             <div data-action="italic" class="item"><i class="fa fa-italic"></i></div>
+                                             <div data-action="underline" class="item"><i class="fa fa-underline"></i></div>
+                                             <div id="selectFont" data-action="selectFont" class="item drop-target">
+                                             <i class="fa fa-font"></i>
+                                             </div>
+                                             </div>
+                                             <div class="group">
+                                             <div id="makeLink" data-action="makeLink" class="item drop-target drop-enabled drop-element-attached-top drop-element-attached-center drop-target-attached-bottom drop-target-attached-center"><i class="fa fa-link"></i></div>
+                                             <div data-action="makeOrderedList" class="item"><i class="fa fa-list"></i></div>
+                                             <div id="insertImage" data-action="insertImage" class="item drop-target">
+                                             <i class="fa fa-picture-o"></i>
+                                             </div>
+                                             <div data-action="increaseQuoteLevel" class="item"><i class="fa fa-quote-right"></i></div>
+                                             </div>
+                                             
+                                             <div class="group">
+                                             <div data-action="makeHeading" class="item"><i class="fa fa-header"></i></div>
+                                             <div data-action="alignLeft" class="item"><i class="fa fa-align-left"></i></div>
+                                             <div data-action="alignCenter" class="item"><i class="fa fa-align-center"></i></div>
+                                             <div data-action="alignRight" class="item"><i class="fa fa-align-right"></i></div>
+                                             </div>
+                                             
+                                             <div class="group">
+                                             <div data-action="undo" class="item"><i class="fa fa-undo"></i></div>
+                                             <div data-action="redo" class="item"><i class="fa fa-undo flip"></i></div>
+                                             </div>
+                                             </div>
+                                             <div class="templates hidden">
+                                             <div id="drop-font">
+                                             <strong>Change Font</strong>
+                                             <i class="fa fa-chevron-up quit"></i><br>
+                                             Text Size: 
+                                             <select id="textSelector">
+                                             <option data-size="12">Small</option>
+                                             <option data-size="24">Medium</option>
+                                             <option data-size="30">Large</option>
+                                             </select>
+                                             <br>        Font: 
+                                             <select id="fontSelect">
+                                             <option data-fonts="georgia">Georgia</option>
+                                             <option data-fonts="arial">Arial</option>
+                                             <option data-fonts="helvetica, arial">Helvetica</option>
+                                             <option data-fonts="menlo, consolas, courier new, monospace">Monospace</option>
+                                             <option data-fonts="\" times="" new="" roman\",="" times"="">Times New Roman</option>
+                                             <option data-fonts="tahoma, sans-serif">Tahoma</option>
+                                             <option data-fonts="\" trebuchet="" ms\""="">Trebuchet MS</option>
+                                             <option data-fonts="verdana">Verdana</option>
+                                             </select><br>
+                                             
+                                             <div class="btn submitFont">Apply</div>
+                                             </div>
+                                             <div id="drop-link">
+                                             <strong>Insert Link</strong>
+                                             <i class="fa fa-chevron-up quit"></i>
+                                             <input placeholder="Link URL" type="text" id="url">
+                                             <div class="btn submitLink">Insert</div>
+                                             </div>
+                                             <div id="drop-image">
+                                             <strong>Insert Image</strong>
+                                             <i class="fa fa-chevron-up quit"></i>
+                                             <input placeholder="Image URL" type="text" id="imageUrl">
+                                             <div class="btn sumbitImageURL">Insert</div>
+                                             </div>
+                                             </div>
+                                             </div>
+                                        -->
                                         <textarea data-bind="visible: flag, value:newNotes" class="form-control form-control-light mb-2" placeholder="Write message" id="example-textarea" rows="3"></textarea>
+                                        <!-- <iframe src="templates/document.html" data-bind="visible: flag, value:newNotes"  id="example-textarea"></iframe> -->
                                         <div class="text-right">
                                             <div class="btn-group mb-2">
                                                     <button type="button" class="btn btn-link btn-sm text-muted font-18"><i data-bind="visible: flag" class="dripicons-paperclip"></i></button>
@@ -297,29 +367,30 @@
                                     <div class="card-body">
                                         <h5 class="card-title mb-3">Archivos</h5>
 
-                                        <div class="card mb-1 shadow-none border">
-                                            <div class="p-2">
-                                                <div class="row align-items-center">
-                                                    <div class="col-auto">
-                                                        <div class="avatar-sm">
-                                                            <span class="avatar-title rounded">
-                                                                .ZIP
-                                                            </span>
+                                        <div id="archivos" data-bind="foreach: oarchivo">
+                                            <div data-bind="attr:{id:id}" class="card mb-1 shadow-none border">
+                                                <div class="p-2">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="avatar-sm">
+                                                                <span data-bind="text:ext" class="avatar-title rounded">
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col pl-0">
-                                                        <a href="javascript:void(0);" class="text-muted font-weight-bold">Hyper-admin-design.zip</a>
-                                                        <p class="mb-0">2.3 MB</p>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <!-- Button -->
-                                                        <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
-                                                            <i class="dripicons-download"></i>
-                                                        </a>
+                                                        <div class="col pl-0">
+                                                            <a href="javascript:void(0);" class="text-muted font-weight-bold" data-bind="text:filename"></a>
+                                                            <p class="mb-0">2.3 MB</p>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <!-- Button -->
+                                                            <a href="javascript:void(0);" class="btn btn-link btn-lg text-muted">
+                                                                <i class="dripicons-download"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> 
 
                                         <div class="card mb-1 shadow-none border">
                                             <div class="p-2">

@@ -345,11 +345,14 @@ class actividad(Resource):
 
 class archivo(Resource):
     def get(self, action=None, *args, **kwargs):
-        if action == 'list':
+        if action == 'lista':
             tick = request.args.get('ticket')
-            se = db.text("SELECT * FROM ATCH WHERE ticket=:tick ")
+            se = db.text("SELECT filename, ext FROM ATCH WHERE ticket=:tick ")
             u = db.engine.execute(se, tick=tick).fetchall()
             su = [dict(row) for row in u]
+            print('LISTA DE ARCHIVOS')
+            print(tick)
+            print(su)
             # su = su[0]
             # return {tick:act}
             return jsonify(su)
@@ -370,7 +373,7 @@ class archivo(Resource):
                print(e)
                return 'error'
 
-    def post(self):
+    def post(self, action=None, *args, **kwargs):
         print("saving attachment")
         if 'file' in request.files:
             print('Got file!')

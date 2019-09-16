@@ -1,4 +1,5 @@
-﻿// $(document).ready(function () {
+﻿var listaGlobal;
+// $(document).ready(function () {
 // $(window).load(function () {
     // window.onLoad = function () {
 window.addEventListener('load', function() { 
@@ -53,6 +54,94 @@ window.addEventListener('load', function() {
         getAct();
     }
     else if (documento.indexOf("historial") > -1) {
+
+        let muyAlta = document.querySelector("#muyAlta");
+        muyAlta.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.Priority.toLowerCase().indexOf('muy alta') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let alta = document.querySelector("#alta");
+        alta.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.Priority.toLowerCase().indexOf('alta') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+        let media = document.querySelector("#media");
+        media.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.Priority.toLowerCase().indexOf('media') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let baja = document.querySelector("#baja");
+        baja.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.Priority.toLowerCase().indexOf('baja') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let abierto = document.querySelector("#abierto");
+        abierto.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.CntctSbjct.toLowerCase().indexOf('abierto') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let cerrado = document.querySelector("#cerrado");
+        cerrado.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.CntctSbjct.toLowerCase().indexOf('cerrado') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let cliente = document.querySelector("#cliente");
+        cliente.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.CntctSbjct.toLowerCase().indexOf('cliente') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let agc = document.querySelector("#agc");
+        agc.addEventListener("click", () => {
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.CntctSbjct.toLowerCase().indexOf('agc') !== -1;
+            });
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let todos = document.querySelector("#todos");
+        todos.addEventListener("click", () => {
+            vmv.mapHistorial(found_tickets);
+        });
+
+        let buscador = document.querySelector("#buscador");
+        buscador.addEventListener("keyup", () => {
+            let filtro = document.querySelector("#buscador");
+
+            let found_tickets = $.grep(listaGlobal, function(v) {
+                return v.CntctSbjct.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1
+                    || v.estado.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || v.callType.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || v.BPContact.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || v.dscription.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || v.id.toString().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || v.priority.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || moment(v.createTime).locale('es').calendar().toString().indexOf(filtro.value.toLowerCase())  !== -1 
+                    || v.subject.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 ;
+            });
+
+            vmv.mapHistorial(found_tickets);
+        });
+
         let button = document.querySelector("btnActividad");
         getHistoricoCOM();
     }
@@ -60,6 +149,30 @@ window.addEventListener('load', function() {
     }
 
 }, false);
+
+var filtrar = () => {
+    let inbuscador = document.querySelector("#buscador");
+    alert(inbuscador.value);
+        // var dataC = d3.selectAll(".dataC");
+        // //Filtra seleccion
+        // var found_names = $.grep(clientList, function(v) {
+        //     return v.CardCode.toLowerCase().indexOf(filtro.toLowerCase()) !== -1
+        //         || v.CardName.toLowerCase().indexOf(filtro.toLowerCase()) !== -1 ;
+        // });
+        // //Ordena seleccion
+        // found_names.sort(SortByName);
+        // //Ejecuta
+        // filtro.length  > 0 ? dibClientes(found_names) : dataC.selectAll("div").remove();
+        // //funcion para ordenar
+        // function SortByName(a, b){
+        //     var aName = a.CardName.toLowerCase();
+        //     var bName = b.CardName.toLowerCase(); 
+        //     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+        // }
+}
+//######### Busqueda de clientes ############
+
+
 
 //######### obtiene datos del ticket.html y los envia para guardar ########
 function grabarForm () {
@@ -154,6 +267,7 @@ var getHistoricoCOM = () => {
             }
             return dat;
         });
+        listaGlobal = newData;
         vmv.mapHistorial(newData);
     });
 }
@@ -166,16 +280,16 @@ var getHistoricoCOM = () => {
     var vticket = url.searchParams.get("tparam");
     // let usuarioDoc = document.querySelector("#oUser").innerText;
     let param = {"ticket":vticket};
-    console.log(param.ticket);
     let actividades = getActividades(param);
-    let archivos = getAtach(param);
+
+    let archivos = getLista(param.ticket);
 
     let llamada = new Promise((resolve, reject) => {
         archivos.then((data) => {
             let neOb = [];
             neOb.newNotes = '';
             neOb.archivo = data;
-            vmv.mapAct(newOb);
+            vmv.mapArchivo(neOb);
 
             return data;
         })

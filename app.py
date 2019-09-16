@@ -87,7 +87,7 @@ api.add_resource(usuarioInfo, '/usuarioInfo')
 api.add_resource(historial, '/historial')
 api.add_resource(actividad, '/actividad')
 api.add_resource(activate, '/activate')
-api.add_resource(archivo, '/archivo/',
+api.add_resource(archivo, '/archivo',
                  '/archivo/<action>/')
 
 api.add_resource(prueba, '/prueba')
