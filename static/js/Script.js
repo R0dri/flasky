@@ -7,6 +7,11 @@ window.addEventListener('load', function() {
                             //     $('#sidebar').toggleClass('active');
                             // });
 
+    // !function ($) {
+    //     $.App.activateLightSidebarTheme();
+    // };
+    $('#light-check').prop('checked', true);
+
     let documento = document.URL;
 
     if (documento.indexOf("ticket") > -1) {

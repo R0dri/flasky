@@ -26058,8 +26058,9 @@ function ($) {
         // showing the sidebar on load if user is visiting the page first time only
         if (window.sessionStorage) {
             var alreadyVisited = sessionStorage.getItem("_HYPER_VISITED_");
-            if (!alreadyVisited) {
-                $.RightBar.toggleRightSideBar();
+              if (!alreadyVisited) {
+                // $.RightBar.toggleRightSideBar();
+                $.LayoutThemeApp.activateLightSidebarTheme();
                 sessionStorage.setItem("_HYPER_VISITED_", true);
             }
         }
