@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Hyper - Responsive Bootstrap 4 Admin Dashboard</title>
+        <title>Addvisory GC - Helpdesk</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -13,7 +13,8 @@
         <style>body.loading {visibility: hidden;}</style>
         <link href="static/css/style.css" rel="stylesheet">
 
-        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+        <!-- <script src="http://momentjs.com/downloads/moment.min.js"></script> -->
+        <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 	      <!-- <link href="static/css/main.css" rel="stylesheet"> -->
         <script src="static/js/knockout-3.3.0.js"></script>
         <script src="static/js/knockout.mapping-2.4.1.js"></script>
@@ -86,47 +87,58 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th colspan="2">No.</th>
-                        <th colspan="2">Ticket</th>
-                        <th colspan="2">Descripcion</th>
-                        <th colspan="2">Prioridad</th>
-                        <th colspan="2">Creado</th>
-                        <th colspan="2">Estado</th>
-                        <th colspan="2"></th>
+                        <th>No.</th>
+                        <th>Ticket</th>
+                        <th>Usuario</th>
+                        <th>Prioridad</th>
+                        <th>Creado</th>
+                        <th>Estado</th>
+                        <th></th>
                     </tr>
                 </thead>
-                <tbody  data-bind="foreach: llamadas"> 
-                    <tr style="border-bottom:none;border-top:none;" data-bind="click:$parent.navAct">
-                        <td colspan="2">
-                            <span class="article-title" data-bind="text:id"></span>
+                <tbody  data-bind="foreach: llamadas">
+                    <tr style="border-bottom:none;border-top:none;margin:0;padding:0;" data-bind="click:$parent.navAct">
+                        <td style="vertical-align:middle;margin:0;padding-top:5;padding-bottom:0;" rowspan="2">
+                            <span style="margin-bottom:4px;vertical-align:middle;margin:0;padding:0;" class="article-title" data-bind="text:id"></span>
                         </td>
                         <!-- <td style="min-width:150px;" colspan="2"> -->
-                        <td colspan="2">
-                            <span class="article-title" data-bind="text:subject"></span>
+                        <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                            <strong  style="vertical-align:bottom;margin:0;padding:0;" class="article-title" data-bind="text:subject"></strong>
                         </td>
                         <!-- <td style="min-width:250px;" colspan="2"> -->
-                        <td colspan="2">
-                            <p class="article-content" data-bind="text: dscription"></p>
+                        <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                            <p  style="vertical-align:bottom;margin:0;padding:0;" class="article-content" data-bind="text: CntctSbjct"></p>
                         </td>
-                        <td colspan="2">
-                            <span class="article-title" data-bind="text:priority"></span>
+                        <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                            <span  style="vertical-align:bottom;margin:0;padding:0;" class="article-title" data-bind="text:priority"></span>
                         </td>
                         <!-- <td style="min-width:150px;" colspan="2"> -->
-                        <td colspan="2">
-                            <small class="text-muted" data-bind="text:moment(createTime).locale('es').calendar()"></small>
+                        <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                            <!-- <small  style="vertical-align:bottom;margin:0;padding:0;" class="text-muted" data-bind="text:moment(createTime).localeData('es').calendar()"></small> -->
+                            <small  style="vertical-align:bottom;margin:0;padding:0;" class="text-muted" data-bind="text:moment(createTime).calendar()"></small>
                         </td>
-                        <td colspan="1" style="margin:0;padding=0;width=7px;">
+                        <!-- <td rowspan="2" style="margin:0;padding:0;width=7px;vertical-align:middle;"> -->
+                        <!-- <i data-bind="visible: estado == 'AGC'" class="dot1"></i> -->
+                        <!-- <i data-bind="visible: estado == 'Cliente'" class="dot2"></i> -->
+                        <!-- <i data-bind="visible: estado == 'SAP'" class="dot1"></i> -->
+                        <!-- <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i> -->
+                        <!-- </td> -->
+                        <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
                             <i data-bind="visible: estado == 'AGC'" class="dot1"></i>
                             <i data-bind="visible: estado == 'Cliente'" class="dot2"></i>
                             <i data-bind="visible: estado == 'SAP'" class="dot1"></i>
                             <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i>
-                        </td>
-                        <td colspan="1">
-                            <span data-bind="text:estado" class="text-muted"> sap </span> 
+                            <span  style="vertical-align:top;margin:0;padding:0;padding-top:5;" data-bind="text:estado" class="text-muted"> sap </span> 
                         </td>
                         <!-- <td colspan="2">
                              <a href="#" data-bind="click:$parent.navAct">Actividades</a>
                              </td> -->
+                    </tr>
+                    <tr style="border-bottom:none;border-top:none;">
+                        <td style="vertical-align:top;border-bottom:none;border-top:none;margin:0;margin-right:3px;margin-left:4px;margin-top:0px;margin-bottom:10px;" colspan="5">
+                            <p  style="left-margin:5px;vertical-align:top;" class="article-content" data-bind="text: dscription"></p>
+                            <p/>
+                        </td>
                     </tr>
                 </tbody>
             </table>

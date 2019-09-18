@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Hyper - Responsive Bootstrap 4 Admin Dashboard</title>
+        <title>HelpDesk - AddvisoryGC</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -19,7 +19,9 @@
     </head>
 
     <body class="loading">
-        <div id="detached-topbar-placeholder"></div>
+
+        {% include "html/partials/topbar.html" %}
+        <!-- <div id="detached-topbar-placeholder"></div> -->
         <!-- Begin page -->
         <div class="wrapper">
 
@@ -55,12 +57,16 @@
                             </div>
                         </div>     
                         <!-- end page title --> 
-                        
+
+
+
+	                      {% block page_content %}{% endblock %}
                     </div> <!-- container -->
 
                 </div> <!-- content -->
 
-                @@include('./partials/footer.html')
+                <!-- @@include('./partials/footer.html') -->
+                {% include "html/partials/footer.html" %}
 
             </div>
 
@@ -73,7 +79,8 @@
         <!-- END wrapper -->
 
 
-        @@include('./partials/right-sidebar.html')
+        <!-- @@include('./partials/right-sidebar.html') -->
+        {% include "html/partials/right-sidebar.html" %}
 
 
         <!-- App js -->

@@ -1,5 +1,5 @@
 ﻿//######### Obtiene datos del usuario ########
-let getUsuario = (obj) => {
+var getUsuario = (obj) => {
     return $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -10,7 +10,7 @@ let getUsuario = (obj) => {
 }
 
 //######### Obtiene las activdades ########
-let getActividades = (obj) => {
+var getActividades = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -21,7 +21,7 @@ let getActividades = (obj) => {
 }
 
 //######### Obtiene los tickets ########
-let getLlam = (obj) => {
+var getLlam = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -30,11 +30,8 @@ let getLlam = (obj) => {
         dataType: "json",
     });
 }
-//######### Descarga atachments ########
-let getLista = (param) => {
-    let hel = param.id;
-    console.log(hel);
-    console.log(param);
+//######### Obtine lista de atachments ########
+var getLista = (param) => {
     return $.ajax({type: "GET",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -43,19 +40,9 @@ let getLista = (param) => {
         dataType: "json",
     });
 };
-//######### Descarga atachments ########
-let getAtach = (obj) => {
-    return $.ajax({type: "GET",
-                   dataType: "json",
-                   contentType: "application/json; charset=utf-8",
-                   url: "archivo",
-                   data: JSON.stringify(obj),
-                   dataType: "json",
-                  });
-};
 
 //######### Graba los datos del formulario ########
-let grabarF = (param) => {
+var grabarF = (param) => {
     $.ajax({type: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -72,7 +59,7 @@ let grabarF = (param) => {
 };
 
 //######### Graba los datos del formulario ########
-let getCargar = (archivo) => {
+var getCargar = (archivo) => {
     var formData = new FormData();
     formData.append('inputFile', archivo.files[0].Name);
 
@@ -118,12 +105,12 @@ function vm() {
         self.oarchivo(datos.archivo);
     };
     this.setEstado = (datos) => {
-        self.estadollam(datos); 
-    }
+        self.estadollam(datos);
+    };
     this.setflag = (datos) => {
         // self.pra('hola');
-        self.flag(datos); 
-        // self.flag(true); 
+        self.flag(datos);
+        // self.flag(true);
     };
 
     // Navega a la activiadd
@@ -132,7 +119,12 @@ function vm() {
 
         // window.location.href = "/actividades?tparam=" + param;
         window.location.href = "/actividad?tparam=" + param;
-    }
+    };
+
+    //######### Descarga atachments ########
+    self.getAtach = function (param) {
+        window.location.href = "/archivo?filename=" + param.filename;
+    };
 
     self.marcar = function (con, element) {
         let estado = con.action ? 'cerrado' : 'abierto';

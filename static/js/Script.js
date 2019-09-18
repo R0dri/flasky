@@ -58,7 +58,7 @@ window.addEventListener('load', function() {
         let muyAlta = document.querySelector("#muyAlta");
         muyAlta.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.Priority.toLowerCase().indexOf('muy alta') !== -1;
+                return v.priority.toLowerCase().indexOf('muy alta') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
@@ -66,14 +66,14 @@ window.addEventListener('load', function() {
         let alta = document.querySelector("#alta");
         alta.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.Priority.toLowerCase().indexOf('alta') !== -1;
+                return v.priority.toLowerCase().indexOf('alta') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
         let media = document.querySelector("#media");
         media.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.Priority.toLowerCase().indexOf('media') !== -1;
+                return v.priority.toLowerCase().indexOf('media') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
@@ -81,7 +81,7 @@ window.addEventListener('load', function() {
         let baja = document.querySelector("#baja");
         baja.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.Priority.toLowerCase().indexOf('baja') !== -1;
+                return v.priority.toLowerCase().indexOf('baja') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
@@ -89,7 +89,9 @@ window.addEventListener('load', function() {
         let abierto = document.querySelector("#abierto");
         abierto.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.CntctSbjct.toLowerCase().indexOf('abierto') !== -1;
+                return v.estado.toLowerCase().indexOf('abierto') !== -1
+                    || v.estado.toLowerCase().indexOf('cliente') !== -1
+                    || v.estado.toLowerCase().indexOf('agc') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
@@ -97,7 +99,7 @@ window.addEventListener('load', function() {
         let cerrado = document.querySelector("#cerrado");
         cerrado.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.CntctSbjct.toLowerCase().indexOf('cerrado') !== -1;
+                return v.estado.toLowerCase().indexOf('cerrado') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
@@ -105,7 +107,7 @@ window.addEventListener('load', function() {
         let cliente = document.querySelector("#cliente");
         cliente.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.CntctSbjct.toLowerCase().indexOf('cliente') !== -1;
+                return v.estado.toLowerCase().indexOf('cliente') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
@@ -113,14 +115,19 @@ window.addEventListener('load', function() {
         let agc = document.querySelector("#agc");
         agc.addEventListener("click", () => {
             let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.CntctSbjct.toLowerCase().indexOf('agc') !== -1;
+                return v.estado.toLowerCase().indexOf('agc') !== -1;
             });
             vmv.mapHistorial(found_tickets);
         });
 
         let todos = document.querySelector("#todos");
         todos.addEventListener("click", () => {
-            vmv.mapHistorial(found_tickets);
+            vmv.mapHistorial(listaGlobal);
+        });
+
+        let todos2 = document.querySelector("#todos2");
+        todos2.addEventListener("click", () => {
+            vmv.mapHistorial(listaGlobal);
         });
 
         let buscador = document.querySelector("#buscador");
@@ -268,7 +275,12 @@ var getHistoricoCOM = () => {
             return dat;
         });
         listaGlobal = newData;
-        vmv.mapHistorial(newData);
+        let found_tickets = $.grep(listaGlobal, function(v) {
+            return v.estado.toLowerCase().indexOf('abierto') !== -1
+                || v.estado.toLowerCase().indexOf('cliente') !== -1
+                || v.estado.toLowerCase().indexOf('agc') !== -1;
+        });
+        vmv.mapHistorial(found_tickets);
     });
 }
 

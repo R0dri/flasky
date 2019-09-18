@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>HelpDesk - Responsive Bootstrap 4 Admin Dashboard</title>
+        <title>HelpDesk - AddvisoryGC</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -204,7 +204,7 @@
                                             </div>
                                         </div>
 
-                                        <h4 class="mt-0 mb-3">Actividades (258)</h4>
+                                        <!-- <h4 class="mt-0 mb-3">Actividades (258)</h4> -->
 
                                         <!-- <div class="Squire-UI">
                                              <div class="menu" contenteditable="false">
@@ -287,12 +287,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="card mb-0">
+                                            <div data-bind="visible: flag" class="card mb-0">
                                                 <div class="card-body">
                                                     <p class="text-muted font-14 mb-2">
-                                                        Just specify the data attribute
-                                                        <code>data-plugin='dropzone'</code> to have file upload widget with drag and drop support in your
-                                                        <code>form</code> element.
+                                                        En esta seccion podemos poner o quitar archvios antes de subirlos.
+                                                        Los archivos adjuntos seran subidos
+                                                        al ajustar el boton
+                                                        <code>'Enviar'</code>.
                                                     </p>
                                                     <!-- <form action="/archivo" method="post" class="dropzone dz-clickable" id="myAwesomeDropzone" -->
                                                     <form action="/archivo"  method="post" class="dropzone dz-clickable" id="myAwesomeDropzone"
@@ -300,8 +301,8 @@
                                                           data-upload-preview-template="#uploadPreviewTemplate">
                                                         <div class="dz-message needsclick">
                                                             <i class="h1 text-muted dripicons-cloud-upload"></i>
-                                                            <h3>Drop files here or click to upload.</h3>
-                                                            <span class="text-muted font-13">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+                                                            <h3>Arrastre archivos aqui, o haga click para subirlos.</h3>
+                                                            <span class="text-muted font-13">(Los archivos adjuntos forman parte de la actividad)</span>
                                                         </div>
                                                         <input name="file" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
                                                     </form>
@@ -328,7 +329,7 @@
                                                                 <h5 class="mb-2">
                                                                     <span data-bind="text:usuario">
                                                                     </span>
-                                                                    <small class="mt-0" data-bind="text:moment(recontact).locale('es').calendar()"></small>
+
                                                                     <small class="text-muted"># <span data-bind="text:id"></span></small>
                                                                 </h5>
                                                                 <!-- <div class="mb-2 ml-2"> -->
@@ -378,7 +379,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col pl-0">
-                                                            <a href="javascript:void(0);" class="text-muted font-weight-bold" data-bind="text:filename"></a>
+                                                            <a href="javascript:void(0);" class="text-muted font-weight-bold" data-bind="text:filename, click:$root.getAtach"></a>
                                                             <p class="mb-0">2.3 MB</p>
                                                         </div>
                                                         <div class="col-auto">

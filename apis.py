@@ -365,9 +365,10 @@ class archivo(Resource):
                 u = db.engine.execute(se, filename=filename).fetchall()
                 su = [dict(row) for row in u]
                 su = su[0]
+                print(su)
                 # return {tick:act}
                 # return su
-                return send_file('files/'+su['diskname'], as_attachment=True)
+                return send_file('files/'+su['diskname'], as_attachment=True, attachment_filename=filename)
             except Exception as e:
                print('error')
                print(e)
