@@ -261,7 +261,12 @@ var getHistoricoCOM = () => {
 
     llam.then((data) => {
         // vmv.mapHistorial(result);
-        data.sort(function(a, b){return a.priority-b.priority});
+        // data.sort(function(a, b){return a.priority-b.priority});
+        data.sort(function(a, b){
+
+            return a.priority > b.priority ? 1 : -1 && a.estado == 'Cerrado' ? 1 : -1;
+        });
+
         let newData = data.map((dat, e) => {
             switch (dat.priority){
             case 1:

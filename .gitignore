@@ -9,3 +9,7 @@ migrations/
 .models.py.swp
 files/
 qstart.sh
+Squire/
+templates/document.html
+templates/html/squire.js
+templates/html/squire-raw.js
