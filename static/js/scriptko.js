@@ -145,7 +145,7 @@ function vm() {
 
         function refrescar (data) {
             // this.actividad.push(actividad);
-            // getAct(data.result);
+            getAct(data.result);
         };
     };
 

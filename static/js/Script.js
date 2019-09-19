@@ -1,4 +1,20 @@
-﻿var listaGlobal;
+﻿// jQuery.event.special.touchstart = 
+//     {
+//         setup: function( _, ns, handle )
+//         {
+//             if ( ns.includes("noPreventDefault") ) 
+//             {
+//                 this.addEventListener("touchstart", handle, { passive: false });
+//             } 
+//             else 
+//             {
+//                 this.addEventListener("touchstart", handle, { passive: true });
+//             }
+//         }
+//     };
+
+
+var listaGlobal;
 // $(document).ready(function () {
 // $(window).load(function () {
     // window.onLoad = function () {
@@ -326,46 +342,69 @@ var getHistoricoCOM = () => {
 
         }).then((actob) => {
 
+            let rmensaje = document.querySelector(".divUltima");
+            let rmensaje2 = document.querySelector(".divPenUltima");
+            // let rmensaje3 = document.querySelector(".divRespuesta");
+            rmensaje.style.display = 'none';
+            rmensaje2.style.display = 'none';
+            // rmensaje3.style.display = 'none';
+
             let curUser = document.querySelector("#oUser").innerText;
 
-            let flag = actob.map((act, e) => {
+            for(var e = 0; e < actob.length; e++){
                 let index = e;
                 let len = actob.length;
                 // act.flag == "P
                 // return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
-                if(e == len -2){
+                if(e == len -2 || actob[e].action == 1){
                     let usuario = document.querySelector("#penUltima");
                     let texto = document.querySelector("#penultimaText");
                     let fecha = document.querySelector("#penultimaRecontact");
-                    let mensaje = document.querySelector("#penUltimaR")
+                    let respuesta = document.querySelector("#penUltimaR");
+                    let mensaje = document.querySelector(".divPenUltima");
 
-                    actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    actob[e].action == 1 ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
+
+                    mensaje.style.display = 'inline';
 
                     usuario.innerText = actob[e].CntctSbjct;
                     texto.innerText = actob[e].notes;
-                    fecha.innerText = moment(actob[e].recontact).locale('es').calendar();
+                    // fecha.innerText = moment(actob[e].recontact).locale('es').calendar();
                 }
-                if(e == len -1){
+
+                if(actob[e].action == 1) { break; }
+
+                if(e == len -1 && actob[e].action !== 1){
                     let usuario = document.querySelector("#Ultima");
                     let texto = document.querySelector("#ultimaText");
-                    let mensaje = document.querySelector("#ultimaR")
+                    let mensaje2 = document.querySelector(".divUltima");
 
-                    actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
-
-                    usuario.innerText = actob[e].CntctSbjct;
-                    texto.innerText = actob[e].notes;
-                }
-                if((e != len -2 || e != len -1) && actob[e].action == 1){
-                    let usuario = document.querySelector("#Respuesta");
-                    let texto = document.querySelector("#respuestaText");
-                    let mensaje = document.querySelector("#respuestaR");
-
-                    actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    // actob[e].action !== 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    mensaje2.style.display = 'inline';
 
                     usuario.innerText = actob[e].CntctSbjct;
                     texto.innerText = actob[e].notes;
+                    // break;
                 }
-                return actob.length == e+1 && act.CntctSbjct != curUser ? true : false;
+                // if((e != len -2 || e != len -1) && actob[e].action == 1){
+                //     let usuario = document.querySelector("#Respuesta");
+                //     let texto = document.querySelector("#respuestaText");
+                //     let mensaje = document.querySelector(".divRespuesta");
+
+                //     actob[e].action == 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+
+                //     usuario.innerText = actob[e].CntctSbjct;
+                //     texto.innerText = actob[e].notes;
+                // }
+                // return;
+            };
+
+            var resp = true;
+            let flag = actob.map((act, e) => {
+                let index = e;
+                let len = actob.length;
+                if (actob[e].action == 1) resp = false;
+                return actob.length == e+1 && act.CntctSbjct != curUser && resp ? true : false;
             });
 
             let len = actob.length;
@@ -374,7 +413,7 @@ var getHistoricoCOM = () => {
             if (len == 0){
                 callb.flag = true;
             }else {
-                callb.flag = flag[len-1];
+                callb.flag = flag[len -1];
             }
 
             callb.newNotes = '';
