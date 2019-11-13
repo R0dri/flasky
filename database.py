@@ -4,13 +4,18 @@ from flask_mail import Mail, Message
 
 from flask_uploads import UploadSet, configure_uploads, patch_request_class, AllExcept, AUDIO, SCRIPTS, EXECUTABLES, DATA, TestingFileStorage
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 
 
 # Create app and import configurations
 app = Flask(__name__)
-app.config.from_json('config.json')
+# After 'Create app'
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
+app.config.from_json('config.json')
 app.config['UPLOADS_DEFAULT_DEST'] = 'files'
+
 # # Test Overrides
 # app.config['DEBUG'] = True
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/rodri'
@@ -89,12 +94,13 @@ class SendMail:
             res = make_response(render_template('security/email/actividad.html', var=self.var))
             res.headers["Content-Type"]="text/html; charset=utf-8"
             return res
-
+        else:
             print("rendering mail")
             print(self.msg)
             self.msg.html = render_template('security/email/actividad.html',var=self.var)
-            mail.connect()
-            mail.send(self.msg)
+            print(self.msg.html)
+            print(mail.connect())
+            print(mail.send(self.msg))
             return 'Sent email'
 
 

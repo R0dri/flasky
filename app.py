@@ -73,6 +73,29 @@ def endless(route):
     return render_template('html/'+route)
 
 
+@app.route('/myip')
+def myip():
+    # if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        # return jsonify({'ip': request.environ['REMOTE_ADDR']}), 200
+    # return jsonify({'ip': request.environ['HTTP_X_FORWARDED_FOR']}), 200
+    # return request.headers['X-Forwarded-For'] , 200
+    if request.headers.getlist("X-Forwarded-For"):
+        ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+        ip = request.remote_addr
+
+    # ip = request.headers.getlist("X-Forwarded-For")
+    return jsonify(ip)
+    # return jsonify({'ip': request.environ['REMOTE_ADDR']}), 200
+
+    # else:
+    # su = su[0]
+    # return jsonify(request.environ.get_json()), 200
+    # return su
+
+    # return 'hello'
+
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -88,7 +111,7 @@ api.add_resource(historial, '/historial')
 api.add_resource(actividad, '/actividad')
 api.add_resource(activate, '/activate')
 api.add_resource(archivo, '/archivo',
-                 '/archivo/<action>/')
+                 '/archivo/<action>')
 
 api.add_resource(prueba, '/prueba')
 

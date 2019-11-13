@@ -39,13 +39,14 @@ window.addEventListener('load', function() {
             o.preventDefault();
             grabarForm();
         });
+
         button.addEventListener("change", selectProblemas);
 
-        botonArchivo.addEventListener("change", () => {
-            var i = $(this).prev('label').clone();
-            var file = document.querySelector("#archivo").files[0].name;
-            $(this).prev('label').text(file);
-        });
+        // botonArchivo.addEventListener("change", () => {
+        //     var i = $(this).prev('label').clone();
+        //     var file = document.querySelector("#archivo").files[0].name;
+        //     $(this).prev('label').text(file);
+        // });
     }
     else if (documento.indexOf("test") > -1) {
 
@@ -76,113 +77,117 @@ window.addEventListener('load', function() {
     }
     else if (documento.indexOf("historial") > -1) {
 
-        let muyAlta = document.querySelector("#muyAlta");
-        muyAlta.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.priority.toLowerCase().indexOf('muy alta') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let alta = document.querySelector("#alta");
-        alta.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.priority.toLowerCase().indexOf('alta') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-        let media = document.querySelector("#media");
-        media.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.priority.toLowerCase().indexOf('media') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let baja = document.querySelector("#baja");
-        baja.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.priority.toLowerCase().indexOf('baja') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let abierto = document.querySelector("#abierto");
-        abierto.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.estado.toLowerCase().indexOf('abierto') !== -1
-                    || v.estado.toLowerCase().indexOf('cliente') !== -1
-                    || v.estado.toLowerCase().indexOf('agc') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let cerrado = document.querySelector("#cerrado");
-        cerrado.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.estado.toLowerCase().indexOf('cerrado') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let cliente = document.querySelector("#cliente");
-        cliente.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.estado.toLowerCase().indexOf('cliente') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let agc = document.querySelector("#agc");
-        agc.addEventListener("click", () => {
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.estado.toLowerCase().indexOf('agc') !== -1;
-            });
-            vmv.mapHistorial(found_tickets);
-        });
-
-        let todos = document.querySelector("#todos");
-        todos.addEventListener("click", () => {
-            vmv.mapHistorial(listaGlobal);
-        });
-
-        let todos2 = document.querySelector("#todos2");
-        todos2.addEventListener("click", () => {
-            vmv.mapHistorial(listaGlobal);
-        });
-
-        let buscador = document.querySelector("#buscador");
-        buscador.addEventListener("keyup", () => {
-            let filtro = document.querySelector("#buscador");
-
-            let found_tickets = $.grep(listaGlobal, function(v) {
-                return v.CntctSbjct.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1
-                    || v.estado.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || v.callType.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || v.BPContact.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || v.dscription.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || v.id.toString().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || v.priority.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || moment(v.createTime).locale('es').calendar().toString().indexOf(filtro.value.toLowerCase())  !== -1 
-                    || v.subject.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 ;
-            });
-
-            vmv.mapHistorial(found_tickets);
-        });
-
         let button = document.querySelector("btnActividad");
         getHistoricoCOM();
+
+        let muyAlta = document.querySelector("#muyAlta");
+
+        if(muyAlta){
+            muyAlta.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.priority.toLowerCase().indexOf('muy alta') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let alta = document.querySelector("#alta");
+            alta.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.priority.toLowerCase().indexOf('alta') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+            let media = document.querySelector("#media");
+            media.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.priority.toLowerCase().indexOf('media') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let baja = document.querySelector("#baja");
+            baja.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.priority.toLowerCase().indexOf('baja') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let abierto = document.querySelector("#abierto");
+            abierto.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.estado.toLowerCase().indexOf('abierto') !== -1
+                        || v.estado.toLowerCase().indexOf('cliente') !== -1
+                        || v.estado.toLowerCase().indexOf('agc') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let cerrado = document.querySelector("#cerrado");
+            cerrado.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.estado.toLowerCase().indexOf('cerrado') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let cliente = document.querySelector("#cliente");
+            cliente.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.estado.toLowerCase().indexOf('cliente') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let agc = document.querySelector("#agc");
+            agc.addEventListener("click", () => {
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.estado.toLowerCase().indexOf('agc') !== -1;
+                });
+                vmv.mapHistorial(found_tickets);
+            });
+
+            let todos = document.querySelector("#todos");
+            todos.addEventListener("click", () => {
+                vmv.mapHistorial(listaGlobal);
+            });
+
+            let todos2 = document.querySelector("#todos2");
+            todos2.addEventListener("click", () => {
+                vmv.mapHistorial(listaGlobal);
+            });
+
+            let buscador = document.querySelector("#buscador");
+            buscador.addEventListener("keyup", () => {
+                let filtro = document.querySelector("#buscador");
+
+                let found_tickets = $.grep(listaGlobal, function(v) {
+                    return v.CntctSbjct.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1
+                        || v.estado.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                        || v.callType.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                        || v.BPContact.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                        || v.dscription.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                        || v.id.toString().indexOf(filtro.value.toLowerCase()) !== -1 
+                        || v.priority.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                    || moment(v.createTime).locale('es').calendar().toString().indexOf(filtro.value.toLowerCase())  !== -1 
+                        || v.subject.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 ;
+                });
+                
+                vmv.mapHistorial(found_tickets);
+            });
+        }
+        
     }
     else {
     }
-
+    
 }, false);
 
 var filtrar = () => {
     let inbuscador = document.querySelector("#buscador");
     alert(inbuscador.value);
         // var dataC = d3.selectAll(".dataC");
-        // //Filtra seleccion
+    // //Filtra seleccion
         // var found_names = $.grep(clientList, function(v) {
         //     return v.CardCode.toLowerCase().indexOf(filtro.toLowerCase()) !== -1
         //         || v.CardName.toLowerCase().indexOf(filtro.toLowerCase()) !== -1 ;
@@ -218,6 +223,7 @@ function grabarForm () {
         estado: '',
         dscription: document.querySelector("#dscription").value
     };
+    //valida que todos los campos obligatorios esten llenos
     if(!obsesion['priority'] == ''
        & !obsesion['problemTyp'] == ''
        & !obsesion['callType'] == ''
@@ -227,24 +233,37 @@ function grabarForm () {
       )
     {
 
+        //graba el nuevo ticket y obtiene su id
         let opromise = new Promise((resolve, reject) => {
-            if(grabarF(obsesion)){
-                resolve('bien');
-            }
-        });
 
-        opromise.then((mensaje) => {
-            let archivo = document.querySelector("#archivo");
-            archivo.map((param, e) => {
-                if(getCargar(param[e]) && param.length == e){
-                    resolve('bien');
-                };
+            let respuesta = grabarF(obsesion);
+            respuesta.done((datos) => {
+                    resolve(datos);
             });
+            // if(respuesta != 0){
+            //     resolve(respuesta);
+            // }
         });
 
+        // opromise.then((mensaje) => {
+        //     let archivo = document.querySelector("#archivo");
+        //     archivo.map((param, e) => {
+        //         if(getCargar(param[e]) && param.length == e){
+        //             resolve('bien');
+        //         };
+        //     });
+        // });
+
+        //llama a la funcion que sube los archivos
+        opromise.then((mensaje) => {
+            console.log(mensaje);
+            // uploadAct(obsesion.);
+        });
+
+        //Navega a la pantalla historial
         opromise.then((mensaje) => {
             window.location.href = "/";
-        })
+        });
     }
 }
 
@@ -330,7 +349,7 @@ var getHistoricoCOM = () => {
             vmv.mapArchivo(neOb);
 
             return data;
-        })
+        });
 
         actividades.then((data) => {
             let newOb = [];
@@ -453,6 +472,7 @@ var getHistoricoCOM = () => {
         });
     }
 }
+
 //sube los los archivos
 var oUpload = () =>{
 
@@ -475,7 +495,7 @@ var oUpload = () =>{
         });
         // console.log(nuevoac);
         idactid = nuevoac[nuevoac.length -1];
-        myDropzone.options['url'] =  '/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
+        myDropzone.options['url'] =  'https://agcsap.com/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
 
         myDropzone.processQueue();
         return nuevoac[nuevoac.length -1];
@@ -484,10 +504,8 @@ var oUpload = () =>{
     // let actividad = actividades[lastact].id;
     // actividades((oob) => { console.log(oob);});
     // console.log('no. actividad: ' +  actividad);
-     
     // let elementos = document.querySelector("#actividades").children;
     // let actividad = elementos[0] ? elementos[elementos.length-1].id + 1 : 1;
-
 }
 
 

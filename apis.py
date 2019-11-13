@@ -69,9 +69,10 @@ class validar():
 class usuarioInfo(Resource):
     def post(self):
         sn = request.get_json()
-        se = db.text("SELECT * FROM [user] WHERE username=:usuario")
+        se = db.text("SELECT * FROM [user] WHERE id=:ids")
         usuario = sn["usuario"]
-        u = db.engine.execute(se, usuario=usuario).fetchall()
+        ids = current_user.get_id()
+        u = db.engine.execute(se, ids=ids).fetchall()
         su = [dict(row) for row in u]
         su = su[0]
         su["password"] = '' 
@@ -115,8 +116,8 @@ class historial(Resource):
         headers = {'Content-Type':'text/html'}
         return make_response(render_template('html/pages-historial.html'),200,headers)
 
+    @login_required
     def post(self):
-        print("sent")
         try:
             sn = request.get_json()
             # usuario = sn["usuario"]

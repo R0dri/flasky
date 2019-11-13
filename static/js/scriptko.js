@@ -14,7 +14,7 @@ var getActividades = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "actividad",
+        url: "https://agcsap.com/actividad",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -25,7 +25,7 @@ var getLlam = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "historial",
+        url: "https://agcsap.com/historial",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -35,7 +35,7 @@ var getLista = (param) => {
     return $.ajax({type: "GET",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        url: "archivo/lista?ticket="+param,
+        url: "https://agcsap.com/archivo/lista?ticket="+param,
         data: null,
         dataType: "json",
     });
@@ -43,19 +43,35 @@ var getLista = (param) => {
 
 //######### Graba los datos del formulario ########
 var grabarF = (param) => {
-    $.ajax({type: "POST",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            url: "ticket",
-            data: ko.toJSON(param),
-            success: function (data) {
+    return $.ajax({type: "POST",
+                   dataType: "json",
+                   contentType: "application/json; charset=utf-8",
+                   url: "https://agcsap.com/ticket",
+                   data: ko.toJSON(param),
+                  });
 
-            }
-           }).then(function(){
-               return true;
-           });
+    // kkk.done((data) => {
+    //        return 'ab';
+    //    }).fail((data) => {
+    //        return 0;
+    //    });
+    // }).then(function(){
+    //     return true;
+    // });
+    //     return 0;
+    //     data: ko.toJSON(actividad),
+    //     success: function (data) {
+    //         // console.log(data);
+    //     }
+    // }).then(refrescar.bind(this), handleError);
+    // function refrescar (data) {
+    //     let opromise = new Promise((resolve, reject) => {
+    //         if(getAct(data.result)){
+    //             resolve('bien');
+    //         }
+    //     });
+    //     //Hace el upload del archivo de la actividad
 
-    return true;
 };
 
 //######### Graba los datos del formulario ########
@@ -65,7 +81,7 @@ var getCargar = (archivo) => {
 
     $.ajax({
         type:'POST',
-        url:'archivo',
+        url:'https://agcsap.com/archivo',
         processData: false,
         contentType: false,
         async: false,
@@ -118,12 +134,12 @@ function vm() {
         let param = con.id;
 
         // window.location.href = "/actividades?tparam=" + param;
-        window.location.href = "/actividad?tparam=" + param;
+        window.location.href = "https://agcsap.com/actividad?tparam=" + param;
     };
 
     //######### Descarga atachments ########
     self.getAtach = function (param) {
-        window.location.href = "/archivo?filename=" + param.filename;
+        window.location.href = "https://agcsap.com/archivo?filename=" + param.filename;
     };
 
     self.marcar = function (con, element) {
@@ -136,7 +152,7 @@ function vm() {
         $.ajax({type: "PATCH",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                url: "actividad",
+                url: "https://agcsap.com/actividad",
                 data: ko.toJSON(actividad),
                 success: function (data) {
                     // console.log(data);
@@ -188,7 +204,7 @@ function vm() {
         $.ajax({type: "PUT",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                url: "actividad",
+                url: "https://agcsap.com/actividad",
                 data: ko.toJSON(actividad),
                 success: function (data) {
                     // console.log(data);
@@ -201,6 +217,7 @@ function vm() {
                     resolve('bien');
                 }
             });
+            //Hace el upload del archivo de la actividad
             opromise.then(oUpload());
         };
 

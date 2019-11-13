@@ -146,8 +146,8 @@ class ATCH(db.Model):
 #Set Modification for Security Forms
 class ExtendedLoginForm(LoginForm):
     # username = StringField('Usuario', [Required()])
-    email = StringField('Correo', [Required()])
-    password = PasswordField('Contrase&ntilde;a', [Required()])
+    email = StringField('', [Required()])
+    password = PasswordField('', [Required()])
 
 class ExtendedRegisterForm(RegisterForm):
     username = StringField('Usuario', [Required()])
