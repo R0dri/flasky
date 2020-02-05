@@ -12,7 +12,7 @@
         <!-- inline style to handle loading of various element-->
         <style>body.loading {visibility: hidden;}</style>
         <link href="static/css/style.css" rel="stylesheet">
-        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+        <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 
         <!-- App css -->
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
@@ -100,7 +100,7 @@
                                             <div class="col-md-4">
                                                 <div class="mb-4">
                                                     <h5>Fecha de creacion</h5>
-                                                    <p>17 March 2018 <small class="text-muted">1:00 PM</small></p>
+                                                    <p id="createDate"><small class="text-muted" id="createTime"></small> </p>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -170,10 +170,10 @@
                                                 <div id="penUltimaR" class="alert alert-success divPenUltima" role="alert" style="display:none">
                                                     <i class="dripicons-checkmark mr-2"></i> Esta respuesta ha sido marcada como <strong>correcta</strong>.
                                                 </div>
-                                                <div class="media mt-2">
+                                                <div class="media mt-2 divUltima">
                                                     <img src="assets/images/users/avatar-4.jpg" class="mr-3 avatar-sm rounded-circle divUltima" alt="Generic placeholder image">
                                                     <!-- </a> -->
-                                                    <div class="media-body divUltima">
+                                                    <div class="media-body ">
 
                                                         <h5 id="Ultima" class="mt-0">
                                                             <!-- <span id="ultimaText"></span> -->

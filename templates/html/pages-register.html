@@ -40,8 +40,7 @@
                                 </div>
 
                                 {% from "security/_macros.html" import render_field_with_errors, render_field %}
-                                {% include "security/_messages.html" %}
-                                <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
+                                {% include "security/_messages.html" %} <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
 
 
 	                                  {{ register_user_form.hidden_tag() }}
@@ -52,8 +51,8 @@
                                         <!-- <input class="form-control" type="text" id="fullname" placeholder="Enter your name" required> -->
                                     </div>
                                     <div class="form-group">
-                                        <!-- <label for="fullname">Correo Electrónico</label> -->
-	                                      {{ render_field_with_errors(register_user_form.password, class="form-control", placeholder=" ") }}
+                                        <!-- <label for="fullname">Usuario</label> -->
+	                                      {{ render_field_with_errors(register_user_form.email, class="form-control", placeholder=" ") }}
                                         <!-- <input class="form-control" type="text" id="fullname" placeholder="Enter your name" required> -->
                                     </div>
                                     <div class="form-group">
@@ -88,20 +87,24 @@
 
                                     <div class="form-group">
                                         <!-- <label for="password">Contraseña</label> -->
-	                                      {{ render_field_with_errors(register_user_form.password  , class="form-control", placeholder=" ") }}
+	                                      {{ render_field_with_errors(register_user_form.password, class="form-control", placeholder=" ") }}
                                         <!-- <input class="form-control" type="password" required id="password" placeholder="Enter your password"> -->
                                     </div>
 
                                     <div class="form-group">
                                         <!-- <label for="password">Contraseña</label> -->
-	                                      {{ render_field_with_errors(register_user_form.password_confirm  , class="form-control", placeholder=" ") }}
+
+	                                      {% if register_user_form.password_confirm %}
+		                                    {{ render_field_with_errors(register_user_form.password_confirm, class="form-control", placeholder=" ") }}
+	                                      {% endif %}
+	                                      <!-- {{ render_field_with_errors(register_user_form.password_confirm  , class="form-control", placeholder=" ") }} -->
                                         <!-- <input class="form-control" type="password" required id="password" placeholder="Enter your password"> -->
                                     </div>
 
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="checkbox-signup">
-                                            <label class="custom-control-label" for="checkbox-signup">I accept <a href="#" class="text-muted">Terms and Conditions</a></label>
+                                            <label class="custom-control-label" for="checkbox-signup">Acepto <a href="/about" class="text-muted">Términos y Condiciones</a></label>
                                         </div>
                                     </div>
                                     <div class="form-group mb-0 text-center">

@@ -14,7 +14,7 @@ var getActividades = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "https://agcsap.com/actividad",
+        url: "https://helpdesk.agcsap.com/actividad",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -25,7 +25,7 @@ var getLlam = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "https://agcsap.com/historial",
+        url: "https://helpdesk.agcsap.com/historial",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -35,7 +35,7 @@ var getLista = (param) => {
     return $.ajax({type: "GET",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        url: "https://agcsap.com/archivo/lista?ticket="+param,
+        url: "https://helpdesk.agcsap.com/archivo/lista?ticket="+param,
         data: null,
         dataType: "json",
     });
@@ -46,7 +46,7 @@ var grabarF = (param) => {
     return $.ajax({type: "POST",
                    dataType: "json",
                    contentType: "application/json; charset=utf-8",
-                   url: "https://agcsap.com/ticket",
+                   url: "https://helpdesk.agcsap.com/ticket",
                    data: ko.toJSON(param),
                   });
 
@@ -81,7 +81,7 @@ var getCargar = (archivo) => {
 
     $.ajax({
         type:'POST',
-        url:'https://agcsap.com/archivo',
+        url:'https://helpdesk.agcsap.com/archivo',
         processData: false,
         contentType: false,
         async: false,
@@ -134,12 +134,12 @@ function vm() {
         let param = con.id;
 
         // window.location.href = "/actividades?tparam=" + param;
-        window.location.href = "https://agcsap.com/actividad?tparam=" + param;
+        window.location.href = "https://helpdesk.agcsap.com/actividad?tparam=" + param;
     };
 
     //######### Descarga atachments ########
     self.getAtach = function (param) {
-        window.location.href = "https://agcsap.com/archivo?filename=" + param.filename;
+        window.location.href = "https://helpdesk.agcsap.com/archivo?filename=" + param.filename;
     };
 
     self.marcar = function (con, element) {
@@ -152,7 +152,7 @@ function vm() {
         $.ajax({type: "PATCH",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                url: "https://agcsap.com/actividad",
+                url: "https://helpdesk.agcsap.com/actividad",
                 data: ko.toJSON(actividad),
                 success: function (data) {
                     // console.log(data);
@@ -204,7 +204,7 @@ function vm() {
         $.ajax({type: "PUT",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                url: "https://agcsap.com/actividad",
+                url: "https://helpdesk.agcsap.com/actividad",
                 data: ko.toJSON(actividad),
                 success: function (data) {
                     // console.log(data);

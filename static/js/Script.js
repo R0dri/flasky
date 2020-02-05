@@ -13,6 +13,7 @@
 //         }
 //     };
 
+//import 'moment/locale/es'
 
 var listaGlobal;
 // $(document).ready(function () {
@@ -169,7 +170,7 @@ window.addEventListener('load', function() {
                         || v.dscription.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
                         || v.id.toString().indexOf(filtro.value.toLowerCase()) !== -1 
                         || v.priority.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                    || moment(v.createTime).locale('es').calendar().toString().indexOf(filtro.value.toLowerCase())  !== -1 
+                        || moment(v.createTime).locale('es').format('LL').toString().indexOf(filtro.value.toLowerCase())  !== -1 
                         || v.subject.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 ;
                 });
                 
@@ -373,38 +374,61 @@ var getHistoricoCOM = () => {
             for(var e = 0; e < actob.length; e++){
                 let index = e;
                 let len = actob.length;
+                let rmensaje2 = document.querySelector(".divPenUltima");
+                rmensaje2.style.display = 'inline';
                 // act.flag == "P
                 // return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
+                // if(len == 1){
+                //     let rmensaje = document.querySelector(".divUltima");
+                //     rmensaje.style.display = 'none';
+                // } else {
+                //     let rmensaje = document.querySelector(".divUltima");
+                //     rmensaje.style.display = 'inline';
+                // }
+                // if(e == len -1 && actob[e].action == 1){
+                //     let rmensaje = document.querySelector(".divUltima");
+                //     rmensaje.style.display = 'none';
+                // }
+                // if(e == len -2 && actob[e].action == 1){
+                //     let rmensaje = document.querySelector(".divUltima");
+                //     rmensaje.style.display = 'none';
+                // }
+
                 if(e == len -2 || actob[e].action == 1){
                     let usuario = document.querySelector("#penUltima");
                     let texto = document.querySelector("#penultimaText");
-                    let fecha = document.querySelector("#penultimaRecontact");
+                    // let fecha = document.querySelector("#penultimaRecontact");
                     let respuesta = document.querySelector("#penUltimaR");
-                    let mensaje = document.querySelector(".divPenUltima");
+                    let mensaje = document.querySelector(".divUltima");
 
-                    actob[e].action == 1 ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
+                    actob[e].action == 1 && len > 1 ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
+                    actob[e].action == 1 && len > 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
 
-                    mensaje.style.display = 'inline';
+                    // mensaje.style.display = 'inline';
 
                     usuario.innerText = actob[e].CntctSbjct;
                     texto.innerText = actob[e].notes;
                     // fecha.innerText = moment(actob[e].recontact).locale('es').calendar();
                 }
+                
 
-                if(actob[e].action == 1) { break; }
 
-                if(e == len -1 && actob[e].action !== 1){
+                if(e == len -1 || actob[e].action !== 1){
                     let usuario = document.querySelector("#Ultima");
                     let texto = document.querySelector("#ultimaText");
-                    let mensaje2 = document.querySelector(".divUltima");
+                    let respuesta = document.querySelector("#penUltimaR");
+                    let mensaje = document.querySelector(".divUltima");
 
-                    // actob[e].action !== 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
-                    mensaje2.style.display = 'inline';
+                    actob[e].action == 1 && len > 1 ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
+                    actob[e].action == 1 && len > 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    // mensaje2.style.display = 'inline';
 
                     usuario.innerText = actob[e].CntctSbjct;
                     texto.innerText = actob[e].notes;
                     // break;
                 }
+                if(actob[e].action == 1) { break; }
+
                 // if((e != len -2 || e != len -1) && actob[e].action == 1){
                 //     let usuario = document.querySelector("#Respuesta");
                 //     let texto = document.querySelector("#respuestaText");
@@ -458,6 +482,9 @@ var getHistoricoCOM = () => {
             document.querySelector("#CntctSbjct").innerText = datos.usuario;
             document.querySelector("#subject").innerText = datos.subject;
             document.querySelector("#descripcion").innerText = datos.dscription;
+            moment.locale('es');
+            document.querySelector("#createDate").innerText = moment(datos.createTime).format('LL').toString();
+            //document.querySelector("#createTime").innerText = datos.createTime;
             document.querySelector("#id").innerText = datos.id;
             if(datos.estado == 'cerrado'){
                 document.querySelector("#actAbierto").style.display = 'none';
@@ -567,7 +594,17 @@ var selectProblemas = () => {
     let select = document.querySelector("#problema");
 
     switch(tipo){
-    case "SAP": case "SAPHANA":
+    case "SAPHANA":
+	      select.options.length = 0;
+        select.options[select.options.length] = new Option('', '');
+        select.options[select.options.length] = new Option('HANA Configuration',	'S-HANA');
+        select.options[select.options.length] = new Option('PROCESO DE COMPRAS',	'S-COMPRAS');
+        select.options[select.options.length] = new Option('PROCESO DE VENTAS',	'S-VENTAS');
+        select.options[select.options.length] = new Option('PROCESOS FINANZAS',	'S-FINANZAS');
+        select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
+        select.options[select.options.length] = new Option('OTROS',	'S-OTROS');
+        break;
+    case "SAP":
 	      select.options.length = 0;
         select.options[select.options.length] = new Option('', '');
         select.options[select.options.length] = new Option('PROCESO DE COMPRAS',	'S-COMPRAS');
@@ -579,17 +616,18 @@ var selectProblemas = () => {
     case "ADDON":
 	      select.options.length = 0;
         select.options[select.options.length] = new Option('', '');
+        select.options[select.options.length] = new Option('ASEGURADORAS',	'A-ASEGURADORA');
+        select.options[select.options.length] = new Option('CUADRE DE CAJA',	'A-CUADRE');
+        select.options[select.options.length] = new Option('GESTION',	'A-GESTION');
+        select.options[select.options.length] = new Option('HISTORIA CLINICA',	'A-HISTORIA');
+        select.options[select.options.length] = new Option('HOSPITALIZACION',	'A-HOSPITALIZACION');
+        select.options[select.options.length] = new Option('IMPRESOR FISCAL',	'A-IMPRESOR'); 
+        select.options[select.options.length] = new Option('INTEGRADORES',	'A-INTEGRADORES');
         select.options[select.options.length] = new Option('NOMINA', 'A-NOMINA');
         select.options[select.options.length] = new Option('PROYECTOS',	'A-PROYECTOS');
-        select.options[select.options.length] = new Option('CLINICA	HISTORIA CLINICA',	'A-HISTORIA');
-        select.options[select.options.length] = new Option('ASEGURADORAS',	'A-ASEGURADORA');
-        select.options[select.options.length] = new Option('CAJA	CUADRE CAJA',	'A-CUADRE');
-        select.options[select.options.length] = new Option('FISCAL	IMPRESOR FISCAL',	'A-IMPRESOR'); 
-        select.options[select.options.length] = new Option('HOSPITALIZACION',	'A-HOSPITALIZACION');
-        select.options[select.options.length] = new Option('INTEGRADORES',	'A-INTEGRADORES');
-        select.options[select.options.length] = new Option('GESTION',	'A-GESTION');
+        select.options[select.options.length] = new Option('REPLICACIÓN',	'A-REPLICACION');
+        //select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
         select.options[select.options.length] = new Option('TXT',	'A-TXT');
-        select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
         select.options[select.options.length] = new Option('OTROS',	'S-OTROS');
         break;
     case "OTROS":
@@ -597,7 +635,6 @@ var selectProblemas = () => {
         select.options[select.options.length] = new Option('', '');
         select.options[select.options.length] = new Option('IVEND',	'O-IVEND');
         select.options[select.options.length] = new Option('BEAS',	'O-BEAS');
-        select.options[select.options.length] = new Option('HANA Configuration',	'S-HANA');
         select.options[select.options.length] = new Option('LAYOUTS',	'S-LAYOUTS');
         select.options[select.options.length] = new Option('CRM FOR OUTLOOK',	'S-OUTLOOK');
         select.options[select.options.length] = new Option('SOLICITUD DE CAMBIO',	'S-CAMBIO');
