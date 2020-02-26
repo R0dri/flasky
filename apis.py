@@ -212,7 +212,7 @@ class ticket(Resource):
 
 class actividad(Resource):
     # @validar.empresa
-    @login_required
+    # @login_required
     def get(self):
         headers = {'Content-Type':'text/html'}
         return make_response(render_template('html/app-actividad.html'),200,headers)

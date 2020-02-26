@@ -480,8 +480,11 @@ var getHistoricoCOM = () => {
             let datos = data[0];
             // console.log(datos);
             document.querySelector("#CntctSbjct").innerText = datos.usuario;
+            document.querySelector("#BPContact").innerText = datos.usuario;
             document.querySelector("#subject").innerText = datos.subject;
             document.querySelector("#descripcion").innerText = datos.dscription;
+            document.querySelector("#callType").innerText = datos.callType;
+            document.querySelector("#problemTyp").innerText = datos.problemTyp;
             moment.locale('es');
             document.querySelector("#createDate").innerText = moment(datos.createTime).format('LL').toString();
             //document.querySelector("#createTime").innerText = datos.createTime;
@@ -492,6 +495,28 @@ var getHistoricoCOM = () => {
             }else{
                 document.querySelector("#actAbierto").style.display = 'inline';
                 document.querySelector("#actCerrado").style.display = 'none';
+            }
+
+            if(datos.priority == '1'){
+                document.querySelector("#actBaja").style.display = 'none';
+                document.querySelector("#actMedia").style.display = 'none';
+                document.querySelector("#actAlta").style.display = 'none';
+                document.querySelector("#actMuyAlta").style.display = 'inline';
+            }else if(datos.priority == '2'){
+                document.querySelector("#actBaja").style.display = 'none';
+                document.querySelector("#actMedia").style.display = 'none';
+                document.querySelector("#actAlta").style.display = 'inline';
+                document.querySelector("#actMuyAlta").style.display = 'none';
+            }else if(datos.priority == '3'){
+                document.querySelector("#actBaja").style.display = 'none';
+                document.querySelector("#actMedia").style.display = 'inline';
+                document.querySelector("#actAlta").style.display = 'none';
+                document.querySelector("#actMuyAlta").style.display = 'none';
+            }else{
+                document.querySelector("#actBaja").style.display = 'inline';
+                document.querySelector("#actMedia").style.display = 'none';
+                document.querySelector("#actAlta").style.display = 'none';
+                document.querySelector("#actMuyAlta").style.display = 'none';
             }
             // vmv.setEstado(datos.estado);
             // vmv.mapHistorial(result);

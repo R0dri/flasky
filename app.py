@@ -28,6 +28,7 @@ def send_ass(path):
 
 # Create a user to test with
 # @app.before_first_request
+# @app.route('/refreshdb')
 def create_user():
     print("CREATING USER")
     db.create_all()

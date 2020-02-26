@@ -15,7 +15,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 app.config.from_json('config.json')
 app.config['UPLOADS_DEFAULT_DEST'] = 'files'
-app.config['SERVER_NAME'] = "helpdesk.agcsap.com"
+app.config['SERVER_NAME'] = "develop.agcsap.com"
 
 # # Test Overrides
 # app.config['DEBUG'] = True
