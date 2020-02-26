@@ -15,6 +15,42 @@
 
 //import 'moment/locale/es'
 
+//sube los los archivos
+var oUpload = () =>{
+
+    Dropzone.autoDiscover = false;
+    var myDropzone = Dropzone.forElement(".dropzone");
+
+    let ourl = document.URL;
+    let url = new URL(ourl);
+    let vticket = url.searchParams.get("tparam");
+
+    let param = {"ticket":vticket};
+    let actividades = getActividades(param);
+
+    var idactid;
+    let actid = actividades.then((data) => {
+        let nuevoac = data.map((obj, e) => {
+            if(data.length == e +1){
+                return obj.id;
+            }
+        });
+        // console.log(nuevoac);
+        idactid = nuevoac[nuevoac.length -1];
+        myDropzone.options['url'] =  'https://agcsap.com/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
+
+        myDropzone.processQueue();
+        return nuevoac[nuevoac.length -1];
+    });
+    // let lastact = actividades.length -1;
+    // let actividad = actividades[lastact].id;
+    // actividades((oob) => { console.log(oob);});
+    // console.log('no. actividad: ' +  actividad);
+    // let elementos = document.querySelector("#actividades").children;
+    // let actividad = elementos[0] ? elementos[elementos.length-1].id + 1 : 1;
+}
+
+
 var listaGlobal;
 // $(document).ready(function () {
 // $(window).load(function () {
@@ -255,15 +291,19 @@ function grabarForm () {
         //     });
         // });
 
+        let tick = null;
         //llama a la funcion que sube los archivos
         opromise.then((mensaje) => {
             console.log(mensaje);
-            // uploadAct(obsesion.);
-        });
-
-        //Navega a la pantalla historial
-        opromise.then((mensaje) => {
+            return mensaje.ticket;
+            //Navega a la pantalla historial
+        }).then((vTick) => {
+            let newVar = tUpload(vTick);
+            return newVar;
+        }).then((redirect) => {
             window.location.href = "/";
+        }).catch(fail => {
+            console.log("failing haard");
         });
     }
 }
@@ -547,7 +587,7 @@ var oUpload = () =>{
         });
         // console.log(nuevoac);
         idactid = nuevoac[nuevoac.length -1];
-        myDropzone.options['url'] =  'https://agcsap.com/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
+        myDropzone.options['url'] =  'https://helpdesk.agcsap.com/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
 
         myDropzone.processQueue();
         return nuevoac[nuevoac.length -1];
@@ -558,6 +598,21 @@ var oUpload = () =>{
     // console.log('no. actividad: ' +  actividad);
     // let elementos = document.querySelector("#actividades").children;
     // let actividad = elementos[0] ? elementos[elementos.length-1].id + 1 : 1;
+}
+
+//sube los los archivos
+var tUpload = (vticket) =>{
+
+    console.log(vticket);
+    Dropzone.autoDiscover = false;
+    var myDropzone = Dropzone.forElement(".dropzone");
+
+    let ourl = document.URL;
+    let url = new URL(ourl);
+
+    myDropzone.options['url'] =  'https://helpdesk.agcsap.com/archivo?ticket='+ vticket +'&actividad='+ 0 +'';
+
+    myDropzone.processQueue();
 }
 
 

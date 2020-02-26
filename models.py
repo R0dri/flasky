@@ -160,6 +160,10 @@ class ExtendedRegisterForm(RegisterForm):
     password = PasswordField('Contrase&ntilde;a', [Required()])
     password_confirm = PasswordField('Confirmar Contrase&ntilde;a', [Required()])
 
+# class ResetPasswordRequestForm(FlaskForm):
+#     email = StringField('Email', validators=[DataRequired(), Email()])
+#     submit = SubmitField('Request Password Reset')
+
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore,

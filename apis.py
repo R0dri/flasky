@@ -134,7 +134,7 @@ class historial(Resource):
             u = db.engine.execute(se, usuario=usuario, bandera=bandera)
             su = [dict(row) for row in u]
             print("Data from query:")
-            print(su)
+            # print(su)
             # su = su[1]
             print("sent")
             return jsonify(su)
@@ -147,7 +147,7 @@ class historial(Resource):
             # return {"JSON Format Error."}, status=400, mimetype='application/json'
 
 class ticket(Resource):
-    @login_required
+    # @login_required
     def get(self):
         print("loading page ticket")
         headers = {'Content-Type':'text/html'}
@@ -202,7 +202,14 @@ class ticket(Resource):
 
             # return redirect("http://www.google.com", code=302)
             # return {'Saved call': sn['subject']}, 200
-            return {'Saved call': status}
+
+            se = db.text("SELECT MAX(Id) FROM OSCL")
+            ids = var["ticket"]
+            u = db.engine.execute(se, ids=ids).fetchall()
+            su = [dict(row) for row in u]
+            su = su[0]
+            print(su);
+            return {'Saved call': var["ticket"], 'ticket': su[""]}
 
         except Exception as error:
             print("Catched ERROR on POST @/ticket")
