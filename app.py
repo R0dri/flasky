@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify, make_response, redirect, send_from_directory
 from flask_security import Security, SQLAlchemyUserDatastore, login_required, user_registered
 from flask_mail import Message
-from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField
+from flask_security.forms import RegisterForm, LoginForm, Required, StringField, PasswordField, ForgotPasswordForm
 from flask_restful import Resource, Api
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
@@ -100,6 +100,9 @@ def myip():
 def about():
     return render_template('about.html')
 
+@app.route('/recuperar')
+def recover():
+    return render_template('security/forgot_password.html')
 
 @app.route('/template')
 def template():

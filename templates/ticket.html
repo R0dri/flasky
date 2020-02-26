@@ -88,32 +88,32 @@
 
 
 							      <button runat-server="false" class="btn btn-primary" id="formSubmit1">Enviar</button>
+                </form>
 
-						    </form>
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <p class="text-muted font-14 mb-2">
-                                En esta seccion podemos poner o quitar archvios antes de subirlos.
-                                Los archivos adjuntos seran subidos
-                                al ajustar el boton
-                                <code>'Enviar'</code>.
-                            </p>
-                            <!-- <form action="/archivo" method="post" class="dropzone dz-clickable" id="myAwesomeDropzone" -->
-                            <form action="/archivo"  method="post" class="dropzone dz-clickable" id="myAwesomeDropzone"
-                                  data-plugin="dropzone" data-previews-container="#file-previews"
-                                  data-upload-preview-template="#uploadPreviewTemplate">
-                                <div class="dz-message needsclick">
-                                    <i class="h1 text-muted dripicons-cloud-upload"></i>
-                                    <h3>Arrastre archivos aqui, o haga click para subirlos.</h3>
-                                    <span class="text-muted font-13">(Los archivos adjuntos forman parte de la actividad)</span>
-                                </div>
-                                <input name="file" type="file" multiple="multiple" class="dz-hidden-input" style="position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
-                            </form>
-                            <div class="dropzone-previews mt-3" id="file-previews"></div>
-                        </div>
+                <div data-bind="visible: true" class="card mb-0">
+                    <div class="card-body">
+                        <p class="text-muted font-14 mb-2">
+                            En esta seccion podemos poner o quitar archvios antes de subirlos.
+                            Los archivos adjuntos seran subidos
+                            al ajustar el bóton
+                            <code>'Enviar'</code>.
+                        </p>
+
+                        <form action="/archivo"  method="post" class="dropzone dz-clickable" id="myAwesomeDropzone"
+                              data-plugin="dropzone" data-previews-container="#file-previews"
+                              data-upload-preview-template="#uploadPreviewTemplate">
+                            <div class="dz-message needsclick">
+                                <i class="h1 text-muted dripicons-cloud-upload"></i>
+                                <h3>Arrastre archivos aqui, o haga click para subirlos.</h3>
+                                <span class="text-muted font-13">(Los archivos adjuntos forman parte de la actividad)</span>
+                            </div>
+                            <input name="file" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: visible; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+                        </form>
+                        <div class="dropzone-previews mt-3" id="file-previews"></div>
                     </div>
+                </div>
+                <div class="d-none" id="uploadPreviewTemplate"><div class="card mt-1 mb-0 shadow-none border border-light"><div class="p-2"><div class="row align-items-center"><div class="col-auto"><img data-dz-thumbnail="" class="avatar-sm rounded bg-light" alt=""></div><div class="col pl-0"><a href="javascript:void(0);" class="text-muted font-weight-bold" data-dz-name=""></a><p class="mb-0" data-dz-size=""></p></div><div class="col-auto"><a href="" class="btn btn-link btn-lg text-muted" data-dz-remove=""><i class="dripicons-cross"></i></a></div></div></div></div></div>
 					  </div>
-				</div>
 
         <!-- </div> -->
         <!-- </article> -->
@@ -140,7 +140,8 @@
 				<!-- Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. -->
 				<!-- </div> -->
 				<!-- </div> -->
-			</div>
+			      </div>
+      </div>
     </div>
   </div>
 			<!-- <hr> -->
