@@ -36,8 +36,9 @@ def create_user():
     db.session.commit()
     return redirect('/')
 
-
+# @app.before_first_request
 # @app.route('/rebuild')
+
 def rebuild():
     try:
         print('create all missing at db')
