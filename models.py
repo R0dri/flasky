@@ -42,10 +42,10 @@ class User(db.Model, UserMixin):
     celular = db.Column(db.String(255))
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    # empresa = db.Column(db.String(254))
+    # empresa = db.Column(db.String(255))
     CardCode = db.Column(db.String(20)) #id del Cliente
     password = db.Column(db.String(255))
-    active = db.Column(db.Boolean(), nullable=False)
+    active = db.Column(db.Boolean(), server_default=expression.false(), nullable=False)
     password = db.Column(db.String(255))
     confirmed_at = db.Column(db.DateTime(timezone=True))
     last_login_at = db.Column(db.DateTime(timezone=True))
@@ -104,7 +104,7 @@ class OCLG(db.Model):
     ticket = db.Column(db.Integer())       #ticket_id
     CntctSbjct = db.Column(db.String(20))  #user_id
     details = db.Column(db.String(50))     #asunto
-    notes = db.Column(db.Text())
+    notes = db.Column(db.String(100))
     recontact = db.Column(db.DateTime(timezone=True), server_default=func.now())
     begintime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # begintime = recontact
@@ -123,15 +123,17 @@ class OSCL(db.Model):
     callType = db.Column(db.String(100))    #?
     contactCode = db.Column(db.String(100)) #username?
     BPContact = db.Column(db.String(100))   #usuario afectado
-    # createTime = db.Column(db.DateTime(), server_default=func.now())
     createTime = db.Column(db.DateTime(timezone=True), server_default=func.now())
     createDate = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    # createDate = createTime
     BPPhone1 = db.Column(db.String(20))     #^
     BPCellular = db.Column(db.String(20))   #^
     BPE_Mail = db.Column(db.String(50))     #^correo usuario
     BPProjCode = db.Column(db.String(80))   #empresa?
-    dscription = db.Column(db.Text())
-    resolution = db.Column(db.Integer())
+    dscription = db.Column(db.String(8000))
+    resolution = db.Column(db.String(8000))
+    technician = db.Column(db.String(50))   #Consultor Asignado principal del ticket
+    OWNER = db.Column(db.String(50))    #Dueno del ticket (creeador fijo)
 
 class ATCH(db.Model):
     # __tablename__ = 'ATCH'
@@ -169,4 +171,3 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore,
                     confirm_register_form=ExtendedRegisterForm,
                     login_form=ExtendedLoginForm)
-

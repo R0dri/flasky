@@ -333,6 +333,11 @@ $ dpkg-reconfigure tzdata
 /usuario [GET]
 - muestra usuario.html
 
+/usuarioInfo [GET]
+- devuelve info del usuario actual
+./technician [GET]
+- devuelve todos los technician menos uno mismo
+
 /usuarioInfo [POST]
 - recibe json codigo usuario
 - devuelve json resultado select users
@@ -353,6 +358,7 @@ en vez del test y /llamada
 
 /actividades [GET, POST, PUT]
 - GET (send: json with *ticket* id; return: json with last activity)
+  - ./reasign (send json with ticket id and new technician; updates ticket assigned technician)
 - POST (send json with activity fields; return: fail,succes; post into db new activity)
 - UPDATE? (PUT) (send: json with *resolution* and *ticket* of ticket; return fail,succes; puts resolution into field of OSCL)
 ** Test jsons

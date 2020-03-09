@@ -37,7 +37,7 @@ var oUpload = () =>{
         });
         // console.log(nuevoac);
         idactid = nuevoac[nuevoac.length -1];
-        myDropzone.options['url'] =  'https://agcsap.com/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
+        myDropzone.options['url'] =  '/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
 
         myDropzone.processQueue();
         return nuevoac[nuevoac.length -1];
@@ -86,7 +86,161 @@ window.addEventListener('load', function() {
         // });
     }
     else if (documento.indexOf("test") > -1) {
+        let datas = [
+            {
+                'usuario': 'rodri',
+                'id': 1,
+                'priority': 3,
+                'subject': 'Arreglar campo de descripcion en tickets',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                // 'createTime': '10-10-2010',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'Cerrado'
+            },{
+                'usuario': 'rodri',
+                'id': 4,
+                'priority': 3,
+                'subject': ' descipcion en tickets',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'AGC'
+            },{
+                'usuario': 'rodri',
+                'id': 3,
+                'priority': 3,
+                'subject': 'Arreglar campo e descripcion en tickets',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'Cliente'
+            },{
+                'usuario': 'rodri',
+                'id': 6,
+                'priority': 3,
+                'subject': 'Arreglar campo de descripcion en ticets',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'SAP'
+            }
+        ];
 
+        let datas2 = [
+            {
+                'usuario': 'rodri',
+                'id': 1,
+                'priority': 3,
+                'subject': 'TEST',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                // 'createTime': '10-10-2010',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'Cerrado'
+            },{
+                'usuario': 'rodri',
+                'id': 4,
+                'priority': 3,
+                'subject': ' descipcion en tickets',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'AGC'
+            },{
+                'usuario': 'rodri',
+                'id': 3,
+                'priority': 3,
+                'subject': 'TEST',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'Cliente'
+            },{
+                'usuario': 'rodri',
+                'id': 6,
+                'priority': 3,
+                'subject': 'Arreglar campo e descripcion en tickets',
+                'problemTyp': 'S-OTROS',
+                'ProSubType': '',
+                'callType': 'OTROS',
+                'contactCode': '3',
+                'CardName': 'AGC',
+                'BPContact': 'maige',
+                'BPPhone1': '123',
+                'BPCellular': '124',
+                'BPE_Mail': 'rodri.mendoza.t@gmail.com',
+                'BPProjCode': 'P01',
+                'dscription': 'Replica de problema de actividades, cambiar el limite de caracteres permitidos (actual 100) en descripción de nuevos tickets. Cambiar campo a tipo texto en base de datos.',
+                'CntctSbjct': 'AGC',
+                'estado': 'SAP'
+            }
+        ];
+        let tablas =  [datas, datas2, datas];
+        vmv.mapTest(tablas);
     }
     else if (documento.indexOf("usuario") > -1) {
         let usr = usuarioInfo();
@@ -209,15 +363,12 @@ window.addEventListener('load', function() {
                         || moment(v.createTime).locale('es').format('LL').toString().indexOf(filtro.value.toLowerCase())  !== -1 
                         || v.subject.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 ;
                 });
-                
                 vmv.mapHistorial(found_tickets);
             });
         }
-        
     }
     else {
     }
-    
 }, false);
 
 var filtrar = () => {
@@ -340,7 +491,7 @@ var getHistoricoCOM = () => {
         // data.sort(function(a, b){return a.priority-b.priority});
         data.sort(function(a, b){
 
-            return a.priority > b.priority ? 1 : -1 && a.estado == 'Cerrado' ? 1 : -1;
+            return a.priority > b.priority ? 1 : -1 && a.estado == 'Cerrado' ? 1 : -1 && a.estado == 'AGC' ? -1 : 1;
         });
 
         let newData = data.map((dat, e) => {
@@ -381,6 +532,7 @@ var getHistoricoCOM = () => {
     let actividades = getActividades(param);
 
     let archivos = getLista(param.ticket);
+    let techis = getTech();
 
     let llamada = new Promise((resolve, reject) => {
         archivos.then((data) => {
@@ -391,7 +543,9 @@ var getHistoricoCOM = () => {
 
             return data;
         });
-
+        techis.then((data)=>{
+            vmv.mapTechs(data)
+        });
         actividades.then((data) => {
             let newOb = [];
             newOb.newNotes = '';
@@ -434,36 +588,36 @@ var getHistoricoCOM = () => {
                 //     rmensaje.style.display = 'none';
                 // }
 
-                if(e == len -2 || actob[e].action == 1){
+                //Penultimo, 1ra linea
+                if(len == 1 || e == len -2 || actob[e].action == true){
                     let usuario = document.querySelector("#penUltima");
                     let texto = document.querySelector("#penultimaText");
                     // let fecha = document.querySelector("#penultimaRecontact");
                     let respuesta = document.querySelector("#penUltimaR");
                     let mensaje = document.querySelector(".divUltima");
 
-                    actob[e].action == 1 && len > 1 ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
-                    actob[e].action == 1 && len > 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    actob[e].action == true ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
+                    actob[e].action == false ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
 
                     // mensaje.style.display = 'inline';
 
-                    usuario.innerText = actob[e].CntctSbjct;
+                    usuario.innerText = actob[e].usuario;
                     texto.innerText = actob[e].notes;
                     // fecha.innerText = moment(actob[e].recontact).locale('es').calendar();
                 }
-                
 
-
-                if(e == len -1 || actob[e].action !== 1){
+               //Ultimo 2da linea 
+                if(len > 1 && e == len -1 || e == len -1 && len > 1 && actob[e].action == true){
                     let usuario = document.querySelector("#Ultima");
                     let texto = document.querySelector("#ultimaText");
                     let respuesta = document.querySelector("#penUltimaR");
                     let mensaje = document.querySelector(".divUltima");
 
-                    actob[e].action == 1 && len > 1 ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
-                    actob[e].action == 1 && len > 1 ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    actob[e].action == true ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
+                    actob[e].action == false ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
                     // mensaje2.style.display = 'inline';
 
-                    usuario.innerText = actob[e].CntctSbjct;
+                    usuario.innerText = actob[e].usuario;
                     texto.innerText = actob[e].notes;
                     // break;
                 }
@@ -518,7 +672,10 @@ var getHistoricoCOM = () => {
 
         llam.then((data) => {
             let datos = data[0];
+            let userCardCode = document.querySelector('#oCardCode').innerText;
+            let uCard = userCardCode.toString().substring(0, 1);
             // console.log(datos);
+            document.querySelector("#btnDelegar").style.display = uCard !== 'C' ?  'inline': 'none';
             document.querySelector("#CntctSbjct").innerText = datos.usuario;
             document.querySelector("#BPContact").innerText = datos.usuario;
             document.querySelector("#subject").innerText = datos.subject;
@@ -587,7 +744,7 @@ var oUpload = () =>{
         });
         // console.log(nuevoac);
         idactid = nuevoac[nuevoac.length -1];
-        myDropzone.options['url'] =  'https://helpdesk.agcsap.com/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
+        myDropzone.options['url'] =  '/archivo?ticket='+ vticket +'&actividad='+ idactid +'';
 
         myDropzone.processQueue();
         return nuevoac[nuevoac.length -1];
@@ -610,7 +767,7 @@ var tUpload = (vticket) =>{
     let ourl = document.URL;
     let url = new URL(ourl);
 
-    myDropzone.options['url'] =  'https://helpdesk.agcsap.com/archivo?ticket='+ vticket +'&actividad='+ 0 +'';
+    myDropzone.options['url'] =  '/archivo?ticket='+ vticket +'&actividad='+ 0 +'';
 
     myDropzone.processQueue();
 }

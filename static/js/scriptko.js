@@ -25,7 +25,7 @@ var getLlam = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "/historial",
+        url: "https://develop.agcsap.com/historial",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -74,7 +74,7 @@ var grabarF = (param) => {
 
 };
 
-//######### Graba los datos del formulario ########
+//######### Graba los datos del formulario (archivos) ########
 var getCargar = (archivo) => {
     var formData = new FormData();
     formData.append('inputFile', archivo.files[0].Name);
@@ -94,6 +94,33 @@ var getCargar = (archivo) => {
     });
     return true;
 };
+
+
+
+//######### Obtine lista de technicians ########
+var getTech = (param) => {
+    return $.ajax({
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        url: "/usuarioInfo/technician",
+        data: null,
+        dataType: "json",
+    });
+};
+//######### Reasignar technicians ########
+var grabarTech = (obj) => {
+    return $.ajax({
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        url: "/ticket",
+        data: JSON.stringify(obj),
+        dataType: "json",
+    });
+};
+
+
 //######### knockoutjs auto mapping ########
 function vm() {
     var self = this;
@@ -106,19 +133,33 @@ function vm() {
     self.estadollam = ko.observable();
     this.pra = ko.observable();
 
+    this.windows = ko.observableArray();
     this.llamadas = ko.observableArray();
     this.oactividad = ko.observableArray();
     this.oarchivo = ko.observableArray();
+    this.techs = ko.observableArray();
+    // this.newtech = ko.observableArray();
 
+    this.mapTest = (datos) => {
+        // self.windows([{'state':'alta', 'id':1}, {'state':'media', 'id':2}, {'state':'baja','id':3}]);
+        self.windows({da: datos});
+        // self.llamadas(datos);
+    };
+
+    this.mapWindow = (datos) => {
+        self.llamadas(datos);
+    };
     this.mapHistorial = (datos) => {
         self.llamadas(datos);
     };
-
     this.mapAct = (datos) => {
         self.oactividad(datos.actividad);
     };
     this.mapArchivo = (datos) => {
         self.oarchivo(datos.archivo);
+    };
+    this.mapTechs = (datos) => {
+        self.techs(datos);
     };
     this.setEstado = (datos) => {
         self.estadollam(datos);
@@ -165,6 +206,26 @@ function vm() {
         };
     };
 
+    self.newtech = function (con, element) {
+        let url = new URL(document.URL);
+        let up = {
+            technician:con.username,
+            id:url.searchParams.get("tparam")
+        };
+        $.ajax({
+            type: "PUT",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            url: "/ticket",
+            data: JSON.stringify(up),
+            dataType: "json",
+        });
+    //     grabarTech({
+    //         "technician":con.username
+    //     }).then(()=>{
+    //         console.log("updated technician");
+    //     });
+    };
     // self.detailsEnabled = ko.observable(false);
 
     self.enableDetails = function(con, element) {

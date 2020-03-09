@@ -67,7 +67,34 @@ class validar():
 
 
 class usuarioInfo(Resource):
-    def post(self):
+    @login_required
+    def get(self, action=None, *args, **kwargs):
+        if action == 'technician':
+            # tick = request.args.get('ticket')
+            # print(tick)
+            se = db.text("SELECT username, CardCode from [user] where CardCode like 'P%' and username <> :ids")
+            ids = current_user.username
+            # ids = 'rodri'
+            u = db.engine.execute(se, ids=ids).fetchall()
+            su = [dict(row) for row in u]
+            print(su)
+            return(su)
+        if action == 'reasign':
+            # tick = request.args.get('ticket')
+            print('hello world')
+        else:
+            print(action)
+
+        se = db.text("SELECT * FROM OSCL WHERE contactCode=:ids or technician=:tech")
+        ids = current_user.get_id()
+        tech = current_user.get_id()
+        u = db.engine.execute(se, ids=ids, tech=tech).fetchall()
+        su = [dict(row) for row in u]
+        # su = su[0]
+        # print(su)
+        return jsonify(su)
+
+    def post(self, action=None, *args, **kwargs):
         sn = request.get_json()
         se = db.text("SELECT * FROM [user] WHERE id=:ids")
         usuario = sn["usuario"]
@@ -75,7 +102,7 @@ class usuarioInfo(Resource):
         u = db.engine.execute(se, ids=ids).fetchall()
         su = [dict(row) for row in u]
         su = su[0]
-        su["password"] = '' 
+        su["password"] = ''
         return jsonify(su)
 
 class activate(Resource):
@@ -111,12 +138,12 @@ class activate(Resource):
             return jsonify(error.args)
 
 class historial(Resource):
-    @login_required
+    # @login_required
     def get(self):
         headers = {'Content-Type':'text/html'}
         return make_response(render_template('html/pages-historial.html'),200,headers)
 
-    @login_required
+    # @login_required
     def post(self):
         try:
             sn = request.get_json()
@@ -153,22 +180,54 @@ class ticket(Resource):
         headers = {'Content-Type':'text/html'}
         return make_response(render_template('ticket.html'),200,headers)
 
+    def put(self):
+        sn = request.get_json()
+        se = db.text("UPDATE OSCL set technician=:tech WHERE id = :ids")
+        ids = sn["id"]
+        tech = sn["technician"]
+        try:
+            u = db.engine.execute(se, ids=ids, tech=tech)
+        except:
+            print('Failed to update')
+            return ['Failed to Update, contact admin']
+        print('updated technician!')
+        return ['updated']
+
     def post(self):
         print("Posting Ticket")
         try:
             sn = request.get_json()
+            #Get all user data
             se = db.text("SELECT * FROM [user] WHERE username = :ids")
             ids = sn["usuario"]
             u = db.engine.execute(se, ids=ids).fetchall()
             su = [dict(row) for row in u]
             su = su[0]
-            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"])
+            print('got user data')
+            #Get the default asigned employee
+            se = db.text("SELECT DfTcnician FROM OCRD WHERE CardCode= :ids")
+            ids = su["CardCode"]
+            print(ids)
+            type(ids)
+            u = db.engine.execute(se, ids=ids).fetchall()
+            print('succeded to execute')
+            st = [dict(row) for row in u]
+            st = st[0]
+            print('got user assigned employee')
+            #Check if ticket has special target user
+            if 'u_asigned' not in sn:
+                tech = st["DfTcnician"]
+            else:
+                tech = sn["u_asigned"]
+            print(tech)
+
+            #Insert ticket into DB
+            sas = OSCL(priority=sn["priority"], estado=sn["estado"], subject=sn["subject"], problemTyp=sn["problemTyp"], ProSubType=sn["ProSubType"], callType=sn["callType"], contactCode=su["id"], BPContact=sn["BPContact"], BPPhone1=su["telefono"], BPCellular=su["celular"], BPE_Mail=su["email"], BPProjCode=su["CardCode"], dscription=sn["dscription"], technician=tech, OWNER=st["DfTcnician"])
             db.session.add(sas)
             status = db.session.commit()
-            print('here')
+            print('just commited ticket to db')
 
-            try:
-                #Send Notification Mail
+            try: #to Send Notification Mail
                 t = datetime.date.today()
                 # t = d.day +" del "+t.month
                 d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
@@ -181,19 +240,28 @@ class ticket(Resource):
                 }
                 print(var)
 
-                sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call")
-                ids = sn["usuario"]
-                call = sn["callType"]
-                u = db.engine.execute(sm, ids=ids, call=call).fetchall()
-                su = [dict(row) for row in u]
-                # su = su["email"]
-                print()
-                print()
-                print("sending mail to:")
-                recipient = list(range(0,len(su)))
-                for i in range(0,len(su)):
-	                recipient[i] = su[i]['email']
+                # sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call")
+                # ids = sn["usuario"]
+                # call = sn["callType"]
+                # u = db.engine.execute(sm, ids=ids, call=call).fetchall()
+                # su = [dict(row) for row in u]
+                # # su = su["email"]
+                # print()
+                # print()
+                # print("sending mail to:")
+                # recipient = list(range(0,len(su)))
+                # for i in range(0,len(su)):
+	            #     recipient[i] = su[i]['email']
+                # print(recipient)
+
+                #Get technician data to be notified
+                se = db.text("SELECT email FROM [user] WHERE username = :tech")
+                u = db.engine.execute(se, tech=tech).fetchall()
+                recipient = [dict(row) for row in u]
+                recipient = {recipient[0]['email']}
+                # recipient = recipient['email']
                 print(recipient)
+
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.ticket())
             except Exception as error:
@@ -274,12 +342,6 @@ class actividad(Resource):
             print(su)
             print()
 
-            se = db.text("SELECT * FROM OSCL WHERE id = :ids")
-            ids = sn["ticket"]
-            u = db.engine.execute(se, ids=ids).fetchall()
-            sr = [dict(row) for row in u]
-            sr = sr[0]
-            print(sr)
 
             sas=OCLG(ticket=sn['ticket'], CntctSbjct=sn['CntctSbjct'], notes=sn['notes'])
             db.session.add(sas)
@@ -298,18 +360,41 @@ class actividad(Resource):
                 }
                 print(var)
 
-                sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call UNION select c.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE d.username = :ids")
-                ids = su["username"]
-                call = sr["callType"]
-                print(call)
-                print(ids)
-                u = db.engine.execute(sm, ids=ids, call=call).fetchall()
-                su = [dict(row) for row in u]
+                # se = db.text("SELECT * FROM OSCL WHERE id = :ids")
+                # ids = sn["ticket"]
+                # u = db.engine.execute(se, ids=ids).fetchall()
+                # sr = [dict(row) for row in u]
+                # sr = sr[0]
+                # print(sr)
+                # sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call UNION select c.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE d.username = :ids")
+                # ids = su["username"]
+                # call = sr["callType"]
+                # print(call)
+                # print(ids)
+                # u = db.engine.execute(sm, ids=ids, call=call).fetchall()
+                # su = [dict(row) for row in u]
+                # print("sending mail to:")
+                # recipient = list(range(0,len(su)))
+                # for i in range(0,len(su)):
+	            #     recipient[i] = su[i]['email']
+                # print(recipient)
 
-                print("sending mail to:")
-                recipient = list(range(0,len(su)))
-                for i in range(0,len(su)):
-	                recipient[i] = su[i]['email']
+                se = db.text("SELECT technician, contactCode FROM OSCL WHERE id = :ids")
+                ids = sn["ticket"]
+                u = db.engine.execute(se, ids=ids).fetchall()
+                sr = [dict(row) for row in u]
+                sr = sr[0]
+                print(sr)
+
+                if(sr["technician"]==current_user.ursername()):
+                    sn = db.text("SELECT email FROM user WHERE id = :ids")
+                    ids = sr["contactCode"]
+                if(sr["contactCode"]==current_user.get_id()):
+                    sn = db.text("SELECT email FROM user WHERE username = :ids")
+                    ids = sr["technician"]
+                u = db.engine.execute(se, ids=ids).fetchall()
+                recipient = [dict(row) for row in u]
+                recipient = {recipient[0]['email']}
                 print(recipient)
 
                 ma = SendMail(vara=var,recipient=recipient)

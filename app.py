@@ -32,17 +32,17 @@ def send_ass(path):
 def create_user():
     print("CREATING USER")
     db.create_all()
-    user_datastore.create_user(email='r', password='p')
+    user_datastore.create_user(email='r@mail.com',username='ro', password='p',active=True)
     db.session.commit()
     return redirect('/')
 
 
-@app.route('/rebuild')
+# @app.route('/rebuild')
 def rebuild():
     try:
         print('create all missing at db')
         db.create_all()
-        # user_datastore.create_user(email='r', password='p')
+        user_datastore.create_user(email='r', password='p')
         db.session.commit()
         # return redirect('/')
         return ('rebuilt')
@@ -97,6 +97,10 @@ def myip():
     # return 'hello'
 
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -109,16 +113,15 @@ def recover():
 def template():
     return render_template('/html/index.html')
 
-api.add_resource(ticket, '/ticket')
-api.add_resource(usuarioInfo, '/usuarioInfo')
+api.add_resource(ticket, '/ticket')#, '/ticket/<action>')
+api.add_resource(usuarioInfo, '/usuarioInfo', '/usuarioInfo/<action>')
 api.add_resource(historial, '/historial')
-api.add_resource(actividad, '/actividad')
+api.add_resource(actividad, '/actividad')#, '/actividad/<action>')
 api.add_resource(activate, '/activate')
-api.add_resource(archivo, '/archivo',
-                 '/archivo/<action>')
+api.add_resource(archivo, '/archivo', '/archivo/<action>')
 
 api.add_resource(prueba, '/prueba')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=4000)
