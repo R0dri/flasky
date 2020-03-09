@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Addvisory GC - Helpdesk</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- inline style to handle loading of various element-->
+        <style>body.loading {visibility: hidden;}</style>
+        <link href="static/css/style.css" rel="stylesheet">
+
+        <!-- <script src="http://momentjs.com/downloads/moment.min.js"></script> -->
+        <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
+	      <!-- <link href="static/css/main.css" rel="stylesheet"> -->
+        <script src="static/js/knockout-3.3.0.js"></script>
+        <script src="static/js/es-do.js"></script>
+        <script src="static/js/knockout.mapping-2.4.1.js"></script>
+
+        <!-- App css -->
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="main-style-container" />
+
+    </head>
+
+    <body class="loading">
+        <div id="detached-topbar-placeholder"> </div>
+        <!-- Begin page -->
+        <div class="wrapper">
+
+            <div id="vertical-sidebar-placeholder"></div>
+            <div id="detached-sidebar-placeholder"></div>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    {% include "html/partials/topbar.html" %}
+                    <!-- <div id="vertical-topbar-placeholder"></div> -->
+                    <div id="horizontal-topbar-placeholder"></div>
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <!-- <div class="page-title-right">
+                                         <ol class="breadcrumb m-0">
+                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
+                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
+                                         <li class="breadcrumb-item active">Starter</li>
+                                         </ol>
+                                         </div> -->
+                                    <h4 class="page-title">Soporte</h4>
+
+                                </div>
+                            </div>
+                        </div>     
+                        <!-- end page title --> 
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+<!-- Page Content -->
+    <div class="container" style="max-width: 100%">
+
+        <div class="wrapper">
+		<div class="row" style="margin-left:10px;" id="content">
+
+			  <!-- Post Content Column -->
+			  <div>
+
+				    <!-- Author -->
+				    <p class="lead">
+					      por
+					      <a href="#">Addviosry GC</a>
+				    </p>
+            <div class="" data-bind="foreach: { data: windows().da, as: 'window' }">
+              <table class="card table card-body col-3" style="display: inline-block; width: auto">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Ticket</th>
+                    <th>Empresa</th>
+                    <th>Usuario</th>
+                    <th>Prioridad</th>
+                    <!-- <th>Creado</th> -->
+                    <th>Estado</th>
+                    <th></th>
+                    <!-- <th>Archivos</th> -->
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: { data: window, as: 'llamada'}">
+                  <tr  style="border-bottom:none;border-top:none;margin:0;padding:0;" data-bind="click:$root.navAct">
+
+                    <td  style="vertical-align:middle;margin:0;padding-top:5;padding-bottom:0;" rowspan="2">
+                      <span style="margin-bottom:4px;vertical-align:middle;margin:0;padding:0;" class="article-title" data-bind="text:id"></span>
+                    </td>
+                    <!-- <td style="min-width:150px;" colspan="2"> -->
+                    <td class="lineasT" style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                      <strong   style="vertical-align:bottom;margin:0;padding:0;" class="article-title" data-bind="text:subject"></strong>
+                    </td>
+                    <!-- <td style="min-width:250px;" colspan="2"> -->
+                    <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                      <p  style="vertical-align:bottom;margin:0;padding:0;" class="article-content" data-bind="text: CardName"></p>
+                    </td>
+                    <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                      <p  style="vertical-align:bottom;margin:0;padding:0;" class="article-content" data-bind="text: CntctSbjct"></p>
+                    </td>
+                    <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                      <span  style="vertical-align:bottom;margin:0;padding:0;" class="article-title" data-bind="text:priority"></span>
+                    </td>
+                    <!-- <td style="min-width:150px;" colspan="2"> -->
+                      <!-- <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;"> -->
+                      <!-- <small  style="vertical-align:bottom;margin:0;padding:0;" class="text-muted" data-bind="text:moment(createTime).localeData('es').calendar()"></small> -->
+                      <!-- <small  style="vertical-align:bottom;margin:0;padding:0;" class="text-muted" data-bind="text:moment(createTime).locale('es').calendar()"></small> -->
+                      <!-- <small  style="vertical-align:bottom;margin:0;padding:0;" class="text-muted" data-bind="text:moment(createTime).calendar()"></small> -->
+                      <!-- </td> -->
+                    <!-- <td rowspan="2" style="margin:0;padding:0;width=7px;vertical-align:middle;"> -->
+                      <!-- <i data-bind="visible: estado == 'AGC'" class="dot1"></i> -->
+                      <!-- <i data-bind="visible: estado == 'Cliente'" class="dot2"></i> -->
+                      <!-- <i data-bind="visible: estado == 'SAP'" class="dot1"></i> -->
+                      <!-- <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i> -->
+                      <!-- </td> -->
+                    <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                      <i data-bind="visible: estado == 'AGC'" class="dot1"></i>
+                      <i data-bind="visible: estado == 'Cliente'" class="dot2"></i>
+                      <i data-bind="visible: estado == 'SAP'" class="dot1"></i>
+                      <i data-bind="visible: estado == 'Cerrado'" class="dot3"></i>
+                      <span  style="vertical-align:top;margin:0;padding:0;padding-top:5;" data-bind="text:estado" class="text-muted"> sap </span> 
+                    </td>
+                    <!-- <td colspan="2">
+                         <a href="#" data-bind="click:$parent.navAct">Actividades</a>
+                    </td> -->
+                  </tr>
+                  <tr style="border-bottom:none;border-top:none;" data-bind="click:$parent.navAct">
+                    <td class="lineasT" style="vertical-align:top;border-bottom:none;border-top:none;margin:0;margin-right:3px;margin-left:4px;margin-top:0px;margin-bottom:10px;" colspan="6">
+                      <p style="left-margin:5px;vertical-align:top;" class="article-content" data-bind="text: dscription"></p>
+                      <p/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+    {% include "html/partials/footer.html" %}
+  </div>
+                {% include "html/partials/footer.html" %}
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        {% include "html/partials/right-sidebar.html" %}
+
+
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+
+    </body>
+    <script src="static/jquery/jquery.min.js"></script>
+    <script src="static/js/scriptko.js"></script>
+    <script type="module" src="static/js/Script.js"></script>
+</html>
