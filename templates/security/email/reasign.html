@@ -1,11 +1,10 @@
 {% extends "security/email/mail.html" %}
 {% block page_content %}
 
-<p> {{ _('El dia %(dia)s', dia=var.date ) }} se gener&oacute; {{ _('un nuevo ticket creado por: %(usuario)s', usuario=var.usuario) }} </p>
+<p> {{ _('El dia %(dia)s', dia=var.date ) }} se te reasign&oacute; {{ _('un ticket creado por: %(usuario)s', usuario=var.usuario) }} </p>
 
 <p> {{ _('ticket: %(subject)s', subject=var.ticket) }} </p>
 
-<!-- <a href="helpdesk.agcsap.com"> Ir al ticket </a> -->
 <!-- <a href="http://localhost:5000/historial"> <h4> {{ var.actividad }} </h4> </a> -->
 
 {% endblock %}

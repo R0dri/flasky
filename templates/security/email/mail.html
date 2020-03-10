@@ -8,7 +8,8 @@
         <p> {{ _('Estimado/a cliente:') }} </p>
         <br/>
         {% block page_content %}{% endblock %}
-        <p> Si necesitas ayuda, visita al <a href='http://agctickets.hopto.org'> Soporte de la pagina web </a> </p>
+        <a href= {{ _('https://helpdesk.agcsap.com/actividad?tparam=%(tparam)s', tparam=var.id) }}> Ir al ticket </a>
+        <p> Si necesitas ayuda, visita al <a href='https://helpdesk.agcsap.com/about'> Soporte de la pagina web </a> </p>
         <p> Atentamente, </p>
         <br/>
         <p>Soporte tecnico de Addvisory</p>

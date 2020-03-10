@@ -268,6 +268,13 @@ window.addEventListener('load', function() {
     }
     else if (documento.indexOf("historial") > -1) {
 
+        let userCardCode = document.querySelector('#oCardCode').innerText;
+        let uCard = userCardCode.toString().substring(0, 1);
+        document.querySelector("#tusuario").style.color = uCard !== 'C' ?  '': 'transparent';
+        document.querySelector("#tempresa").style.color = uCard !== 'C' ?  '': 'transparent';
+        document.querySelector("#susuario").style.display = uCard !== 'C' ?  '': 'none';
+        document.querySelector("#sempresa").style.display = uCard !== 'C' ?  '': 'none';
+
         let button = document.querySelector("btnActividad");
         getHistoricoCOM();
 
@@ -550,6 +557,10 @@ var getHistoricoCOM = () => {
             let newOb = [];
             newOb.newNotes = '';
             newOb.actividad = data;
+            data.forEach(function(atr){
+                atr.recontact = moment(atr.recontact).format('LL').toString();
+            });
+
             vmv.mapAct(newOb);
 
             return data;
@@ -559,8 +570,8 @@ var getHistoricoCOM = () => {
             let rmensaje = document.querySelector(".divUltima");
             let rmensaje2 = document.querySelector(".divPenUltima");
             // let rmensaje3 = document.querySelector(".divRespuesta");
-            rmensaje.style.display = 'none';
-            rmensaje2.style.display = 'none';
+            rmensaje.style.display = 'hidden';
+            rmensaje2.style.display = 'hidden';
             // rmensaje3.style.display = 'none';
 
             let curUser = document.querySelector("#oUser").innerText;
@@ -569,7 +580,7 @@ var getHistoricoCOM = () => {
                 let index = e;
                 let len = actob.length;
                 let rmensaje2 = document.querySelector(".divPenUltima");
-                rmensaje2.style.display = 'inline';
+                rmensaje2.style.display = 'visible';
                 // act.flag == "P
                 // return actob.length == e+1 && act.CntctSbjct == "SAP" ? true : false;
                 // if(len == 1){
@@ -596,8 +607,8 @@ var getHistoricoCOM = () => {
                     let respuesta = document.querySelector("#penUltimaR");
                     let mensaje = document.querySelector(".divUltima");
 
-                    actob[e].action == true ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
-                    actob[e].action == false ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    actob[e].action == true ? respuesta.style.display = 'visible' : respuesta.style.display = 'hidden';
+                    actob[e].action == null || actob[e].action == false ? mensaje.style.display = 'visible' : mensaje.style.display = 'hidden';
 
                     // mensaje.style.display = 'inline';
 
@@ -613,8 +624,8 @@ var getHistoricoCOM = () => {
                     let respuesta = document.querySelector("#penUltimaR");
                     let mensaje = document.querySelector(".divUltima");
 
-                    actob[e].action == true ? respuesta.style.display = 'inline' : respuesta.style.display = 'none';
-                    actob[e].action == false ? mensaje.style.display = 'inline' : mensaje.style.display = 'none';
+                    actob[e].action == true ? respuesta.style.display = 'visible' : respuesta.style.display = 'hidden';
+                    actob[e].action == null || actob[e].action == false ? mensaje.style.display = 'visible' : mensaje.style.display = 'hidden';
                     // mensaje2.style.display = 'inline';
 
                     usuario.innerText = actob[e].usuario;
@@ -682,6 +693,8 @@ var getHistoricoCOM = () => {
             document.querySelector("#descripcion").innerText = datos.dscription;
             document.querySelector("#callType").innerText = datos.callType;
             document.querySelector("#problemTyp").innerText = datos.problemTyp;
+            document.querySelector("#owner").innerText = datos.OWNER;
+            document.querySelector("#aowner").style.display = uCard !== 'C' ?  'inline': 'none';
             moment.locale('es');
             document.querySelector("#createDate").innerText = moment(datos.createTime).format('LL').toString();
             //document.querySelector("#createTime").innerText = datos.createTime;

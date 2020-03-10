@@ -13,6 +13,7 @@ app = Flask(__name__)
 # After 'Create app'
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
+
 app.config.from_json('config.json')
 app.config['UPLOADS_DEFAULT_DEST'] = 'files'
 
@@ -82,8 +83,11 @@ class SendMail:
             print("rendering mail")
             print(self.msg)
             self.msg.html = render_template('security/email/ticket.html',var=self.var)
+            print("building mail")
             mail.connect()
+            print("connected to mailserver")
             mail.send(self.msg)
+            print("sent mail")
             return 'Sent email'
 
     def actividad(self):
@@ -103,4 +107,21 @@ class SendMail:
             print(mail.send(self.msg))
             return 'Sent email'
 
-
+    def reasign(self):
+        self.msg = Message(subject='Se te ha asignado una llamada de servicio', recipients=self.recipient)
+        if(self.test):
+        #     headers = {'Content-Type':['text/html', 'charset=utf-8']}
+        #     return make_response(render_template('security/email/mail.html',var=self.var),200,headers)
+            res = make_response(render_template('security/email/reasign.html', var=self.var))
+            res.headers["Content-Type"]="text/html; charset=utf-8"
+            return res
+        else:
+            print("rendering mail")
+            print(self.msg)
+            self.msg.html = render_template('security/email/reasign.html',var=self.var)
+            print("building mail")
+            mail.connect()
+            print("connected to mailserver")
+            mail.send(self.msg)
+            print("sent mail")
+            return 'Sent email'

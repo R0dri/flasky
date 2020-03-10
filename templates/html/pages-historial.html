@@ -26,7 +26,7 @@
 
     </head>
 
-    <body class="loading">
+    <body class="loading" data-leftbar-theme="light">
         <div id="detached-topbar-placeholder"> </div>
         <!-- Begin page -->
         <div class="wrapper">
@@ -90,8 +90,8 @@
                     <tr>
                         <th>No.</th>
                         <th>Ticket</th>
-                        <th>Empresa</th>
-                        <th>Usuario</th>
+                        <th id=tempresa>Empresa</th>
+                        <th id=tusuario>Usuario</th>
                         <th>Prioridad</th>
                         <th>Creado</th>
                         <th>Estado</th>
@@ -104,14 +104,14 @@
                                     <span style="margin-bottom:4px;vertical-align:middle;margin:0;padding:0;" class="article-title" data-bind="text:id"></span>
                                 </td>
                                 <!-- <td style="min-width:150px;" colspan="2"> -->
-                                <td class="lineasT" style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                                <td class="lineasT" style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;" data-bind="attr:{colspan: CardName == '' ? 3 : 1 }">
                                     <strong   style="vertical-align:bottom;margin:0;padding:0;" class="article-title" data-bind="text:subject"></strong>
                                 </td>
                                 <!-- <td style="min-width:250px;" colspan="2"> -->
-                                <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                                <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;" data-bind="style:{display: CardName == '' ? 'none' : 'visible' }">
                                     <p  style="vertical-align:bottom;margin:0;padding:0;" class="article-content" data-bind="text: CardName"></p>
                                 </td>
-                                <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">
+                                <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;" data-bind="style:{display: CntctSbjct == '' ? 'none' : 'visible' }">
                                     <p  style="vertical-align:bottom;margin:0;padding:0;" class="article-content" data-bind="text: CntctSbjct"></p>
                                 </td>
                                 <td style="vertical-align:top;margin:0;padding-top:5;padding-bottom:0;">

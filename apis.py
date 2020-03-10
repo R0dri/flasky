@@ -191,6 +191,34 @@ class ticket(Resource):
             print('Failed to update')
             return ['Failed to Update, contact admin']
         print('updated technician!')
+
+        try: #to Send Notification Mail
+            t = datetime.date.today()
+            # t = d.day +" del "+t.month
+            d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
+
+            se = db.text("SELECT email, first_name FROM [user] WHERE username = :tech")
+            u = db.engine.execute(se, tech=tech).fetchall()
+            su = [dict(row) for row in u]
+            su = su[0]
+
+            var = {
+                'id':sn['id'],
+                'ticket':sn['subject'],
+                'date':d,
+                'usuario':sn["usuario"],
+                'first_name':su["first_name"],
+            }
+            print(var)
+
+            #Get technician data to be notified
+            recipient = [su['email']]
+            print(recipient)
+            ma = SendMail(vara=var,recipient=recipient)
+            print(ma.reasign())
+        except Exception as error:
+            print("Catched ERROR on SendMail @/postticket")
+            print(error)
         return ['updated']
 
     def post(self):
@@ -227,12 +255,20 @@ class ticket(Resource):
             status = db.session.commit()
             print('just commited ticket to db')
 
+            se = db.text("SELECT MAX(Id) FROM OSCL")
+            u = db.engine.execute(se).fetchall()
+            sid = [dict(row) for row in u]
+            sid = sid[0][""]
+            print('Ticket ID')
+            print(sid);
+
             try: #to Send Notification Mail
                 t = datetime.date.today()
                 # t = d.day +" del "+t.month
                 d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
 
                 var = {
+                    'id':sid,
                     'ticket':sn['subject'],
                     'date':d,
                     'usuario':sn["usuario"],
@@ -240,6 +276,15 @@ class ticket(Resource):
                 }
                 print(var)
 
+                #Get technician data to be notified
+                se = db.text("SELECT email FROM [user] WHERE username = :tech")
+                u = db.engine.execute(se, tech=tech).fetchall()
+                recipient = [dict(row) for row in u]
+                recipient = [recipient[0]['email']]
+                # recipient = recipient['email']
+                print(recipient)
+
+                # #Get technician data to be notified(OLD Query)
                 # sm = db.text("select d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.Estado <> 'ADDON' UNION select  d.email FROM OPMG as b inner join [user] as c on b.CardCode = c.cardcode inner join [user] as d on b.owner = d.username WHERE c.username = :ids and b.estado = :call")
                 # ids = sn["usuario"]
                 # call = sn["callType"]
@@ -254,13 +299,6 @@ class ticket(Resource):
 	            #     recipient[i] = su[i]['email']
                 # print(recipient)
 
-                #Get technician data to be notified
-                se = db.text("SELECT email FROM [user] WHERE username = :tech")
-                u = db.engine.execute(se, tech=tech).fetchall()
-                recipient = [dict(row) for row in u]
-                recipient = {recipient[0]['email']}
-                # recipient = recipient['email']
-                print(recipient)
 
                 ma = SendMail(vara=var,recipient=recipient)
                 print(ma.ticket())
@@ -271,13 +309,7 @@ class ticket(Resource):
             # return redirect("http://www.google.com", code=302)
             # return {'Saved call': sn['subject']}, 200
 
-            se = db.text("SELECT MAX(Id) FROM OSCL")
-            ids = var["ticket"]
-            u = db.engine.execute(se, ids=ids).fetchall()
-            su = [dict(row) for row in u]
-            su = su[0]
-            print(su);
-            return {'Saved call': var["ticket"], 'ticket': su[""]}
+            return {'Saved call': var["ticket"], 'ticket': sid}
 
         except Exception as error:
             print("Catched ERROR on POST @/ticket")
@@ -349,16 +381,6 @@ class actividad(Resource):
 
             # Send Notification Mail
             try:
-                #Send Notification Mail
-                t = datetime.date.today()
-                d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
-                var = {
-                    'ticket':sr['subject'],
-                    'date':d,
-                    'usuario':su["username"],
-                    'first_name':su["first_name"]
-                }
-                print(var)
 
                 # se = db.text("SELECT * FROM OSCL WHERE id = :ids")
                 # ids = sn["ticket"]
@@ -379,22 +401,37 @@ class actividad(Resource):
 	            #     recipient[i] = su[i]['email']
                 # print(recipient)
 
-                se = db.text("SELECT technician, contactCode FROM OSCL WHERE id = :ids")
+                #Get all data from current ticket
+                se = db.text("SELECT technician, contactCode, subject FROM OSCL WHERE id = :ids")
                 ids = sn["ticket"]
                 u = db.engine.execute(se, ids=ids).fetchall()
                 sr = [dict(row) for row in u]
                 sr = sr[0]
                 print(sr)
 
-                if(sr["technician"]==current_user.ursername()):
-                    sn = db.text("SELECT email FROM user WHERE id = :ids")
+                #Send Notification Mail
+                t = datetime.date.today()
+                d=t.strftime("%d")+" del "+t.strftime("%m")+", "+t.strftime("%Y")
+                var = {
+                    'id':sn['ticket'],
+                    'ticket':sr['subject'],
+                    'date':d,
+                    'usuario':su["username"],
+                    'first_name':su["first_name"]
+                }
+                print(var)
+
+                if(sr["technician"]==current_user.username):
+                    sn = db.text("SELECT email FROM [user] WHERE id = :ids")
                     ids = sr["contactCode"]
-                if(sr["contactCode"]==current_user.get_id()):
-                    sn = db.text("SELECT email FROM user WHERE username = :ids")
+                elif(sr["contactCode"]==current_user.get_id()):
+                    sn = db.text("SELECT email FROM [user] WHERE username = :ids")
                     ids = sr["technician"]
-                u = db.engine.execute(se, ids=ids).fetchall()
+                u = db.engine.execute(sn, ids=ids).fetchall()
                 recipient = [dict(row) for row in u]
-                recipient = {recipient[0]['email']}
+                # recipient = [recipient['email']]
+                print(recipient)
+                recipient = [recipient[0]['email']]
                 print(recipient)
 
                 ma = SendMail(vara=var,recipient=recipient)

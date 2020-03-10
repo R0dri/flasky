@@ -25,7 +25,7 @@ var getLlam = (obj) => {
     return $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "https://develop.agcsap.com/historial",
+        url: "/historial",
         data: JSON.stringify(obj),
         dataType: "json",
     });
@@ -210,7 +210,9 @@ function vm() {
         let url = new URL(document.URL);
         let up = {
             technician:con.username,
-            id:url.searchParams.get("tparam")
+            id:url.searchParams.get("tparam"),
+            subject:document.querySelector("#subject").innerText,
+            usuario:document.querySelector("#CntctSbjct").innerText
         };
         $.ajax({
             type: "PUT",
@@ -219,7 +221,9 @@ function vm() {
             url: "/ticket",
             data: JSON.stringify(up),
             dataType: "json",
-        });
+        }).then(
+	   window.location.href='/historial'
+	);
     //     grabarTech({
     //         "technician":con.username
     //     }).then(()=>{
