@@ -98,6 +98,17 @@ var getCargar = (archivo) => {
 
 
 //######### Obtine lista de technicians ########
+var getEmp = (param) => {
+    return $.ajax({
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        url: "/usuarioInfo/empresas",
+        data: null,
+        dataType: "json",
+    });
+};
+//######### Obtine lista de technicians ########
 var getTech = (param) => {
     return $.ajax({
         type: "GET",
@@ -138,6 +149,7 @@ function vm() {
     this.oactividad = ko.observableArray();
     this.oarchivo = ko.observableArray();
     this.techs = ko.observableArray();
+    this.emps = ko.observableArray();
     // this.newtech = ko.observableArray();
 
     this.mapTest = (datos) => {
@@ -161,6 +173,9 @@ function vm() {
     this.mapTechs = (datos) => {
         self.techs(datos);
     };
+    this.mapEmps = (datos) => {
+        self.emps(datos);
+    };
     this.setEstado = (datos) => {
         self.estadollam(datos);
     };
@@ -173,7 +188,6 @@ function vm() {
     // Navega a la activiadd
     this.navAct = function(con){
         let param = con.id;
-
         // window.location.href = "/actividades?tparam=" + param;
         window.location.href = "/actividad?tparam=" + param;
     };

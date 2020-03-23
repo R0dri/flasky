@@ -79,6 +79,12 @@ class usuarioInfo(Resource):
             su = [dict(row) for row in u]
             print(su)
             return(su)
+        if action == 'empresas':
+            print('sending all Cardnames')
+            se = db.text("SELECT CardName FROM OCRD")
+            u = db.engine.execute(se).fetchall()
+            su = [dict(row) for row in u]
+            return(su)
         if action == 'reasign':
             # tick = request.args.get('ticket')
             print('hello world')

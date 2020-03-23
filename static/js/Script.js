@@ -92,9 +92,9 @@ window.addEventListener('load', function() {
                 'id': 1,
                 'priority': 3,
                 'subject': 'Arreglar campo de descripcion en tickets',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -111,9 +111,9 @@ window.addEventListener('load', function() {
                 'id': 4,
                 'priority': 3,
                 'subject': ' descipcion en tickets',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -129,9 +129,9 @@ window.addEventListener('load', function() {
                 'id': 3,
                 'priority': 3,
                 'subject': 'Arreglar campo e descripcion en tickets',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -147,9 +147,9 @@ window.addEventListener('load', function() {
                 'id': 6,
                 'priority': 3,
                 'subject': 'Arreglar campo de descripcion en ticets',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -169,9 +169,9 @@ window.addEventListener('load', function() {
                 'id': 1,
                 'priority': 3,
                 'subject': 'TEST',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -188,9 +188,9 @@ window.addEventListener('load', function() {
                 'id': 4,
                 'priority': 3,
                 'subject': ' descipcion en tickets',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -206,9 +206,9 @@ window.addEventListener('load', function() {
                 'id': 3,
                 'priority': 3,
                 'subject': 'TEST',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -224,9 +224,9 @@ window.addEventListener('load', function() {
                 'id': 6,
                 'priority': 3,
                 'subject': 'Arreglar campo e descripcion en tickets',
-                'problemTyp': 'S-OTROS',
-                'ProSubType': '',
-                'callType': 'OTROS',
+                'ProSubType': 'S-OTROS',
+                'callType': '',
+                'problemType': 'OTROS',
                 'contactCode': '3',
                 'CardName': 'AGC',
                 'BPContact': 'maige',
@@ -362,7 +362,7 @@ window.addEventListener('load', function() {
                 let found_tickets = $.grep(listaGlobal, function(v) {
                     return v.CntctSbjct.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1
                         || v.estado.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
-                        || v.callType.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
+                        || v.problemType.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
                         || v.BPContact.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
                         || v.dscription.toLowerCase().indexOf(filtro.value.toLowerCase()) !== -1 
                         || v.id.toString().indexOf(filtro.value.toLowerCase()) !== -1 
@@ -409,19 +409,19 @@ function grabarForm () {
     let c = document.querySelector("#tproblema").selectedIndex;
     var obsesion = {
         priority: document.querySelector("#prioridad")[a].value,
-        problemTyp: document.querySelector("#problema")[b].value,
-        callType: document.querySelector("#tproblema")[c].value,
-        BPContact: document.querySelector("#Usuario").value,
+        ProSubType: document.querySelector("#problema")[b].value,
+        problemType: document.querySelector("#tproblema")[c].value,
+        BPContact: document.querySelector("#usuario").value,
         subject: document.querySelector("#asunto").value,
         usuario: document.querySelector("#oUser").innerText,
-        ProSubType: '',
+        callType: '',
         estado: '',
         dscription: document.querySelector("#dscription").value
     };
     //valida que todos los campos obligatorios esten llenos
     if(!obsesion['priority'] == ''
-       & !obsesion['problemTyp'] == ''
-       & !obsesion['callType'] == ''
+       & !obsesion['ProSubType'] == ''
+       & !obsesion['problemType'] == ''
        & !obsesion['subject'] == ''
        & !obsesion['usuario'] == ''
        & !obsesion['dscription'] == ''
@@ -551,7 +551,7 @@ var getHistoricoCOM = () => {
             return data;
         });
         techis.then((data)=>{
-            vmv.mapTechs(data)
+            vmv.mapTechs(data);
         });
         actividades.then((data) => {
             let newOb = [];
@@ -656,16 +656,16 @@ var getHistoricoCOM = () => {
             });
 
             let len = actob.length;
-            let callb = [];
+            let problemTypeb = [];
 
             if (len == 0){
-                callb.flag = true;
+                problemTypeb.flag = true;
             }else {
-                callb.flag = flag[len -1];
+                problemTypeb.flag = flag[len -1];
             }
 
-            callb.newNotes = '';
-            vmv.setflag(callb.flag);
+            problemTypeb.newNotes = '';
+            vmv.setflag(problemTypeb.flag);
             resolve('bien');
             return(actob);
         });
@@ -691,8 +691,9 @@ var getHistoricoCOM = () => {
             document.querySelector("#BPContact").innerText = datos.usuario;
             document.querySelector("#subject").innerText = datos.subject;
             document.querySelector("#descripcion").innerText = datos.dscription;
-            document.querySelector("#callType").innerText = datos.callType;
             document.querySelector("#problemTyp").innerText = datos.problemTyp;
+            document.querySelector("#ProSubType").innerText = datos.ProSubType;
+            document.querySelector("#callType").innerText = datos.callType;
             document.querySelector("#owner").innerText = datos.OWNER;
             document.querySelector("#aowner").style.display = uCard !== 'C' ?  'inline': 'none';
             moment.locale('es');
@@ -803,11 +804,11 @@ var tUpload = (vticket) =>{
 //     }).then((objtemp) => {
 //         llam.then((data) => {
 
-//             let result = data.map((callb) => {
+//             let result = data.map((problemTypeb) => {
 
 //                 let actob = objtemp.filter((actividad) => {
 //                     // actividad.newNotes = '';
-//                     return actividad.ticket === callb.id;
+//                     return actividad.ticket === problemTypeb.id;
 //                 });
 
 //                 // let mapFunc = (act, e) => {
@@ -817,7 +818,7 @@ var tUpload = (vticket) =>{
 //                 //     actob.length == e+1 && act.CntctSbjct == "SAP" ? act.flag = true : act.flag = false; 
 //                 //     return act;
 //                 // };
-//                 // let usuario = callb.usuario;
+//                 // let usuario = problemTypeb.usuario;
 //                 // actob = actob.map(mapFunc.bind(usuario));
 
 
@@ -829,10 +830,10 @@ var tUpload = (vticket) =>{
 
 //                 let len = actob.length;
 
-//                 callb.flag = flag[len-1];
-//                 callb.newNotes = '';
-//                 callb.actividad = actob;
-//                 return callb;
+//                 problemTypeb.flag = flag[len-1];
+//                 problemTypeb.newNotes = '';
+//                 problemTypeb.actividad = actob;
+//                 return problemTypeb;
 //             }, []);
 //             vmv.mapHistorial(result);
 //         });
@@ -895,4 +896,5 @@ var selectProblemas = () => {
 	  //     var select = document.getElementById("dynamic-select");
 	  //     select.options[select.options.length - 1] = null;
     // }
+
 }
